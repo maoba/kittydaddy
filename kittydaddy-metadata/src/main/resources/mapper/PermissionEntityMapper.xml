@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kittydaddy.metadata.system.dao.PermissionEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.kittydaddy.metadata.system.domain.PermissionEntity" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+    <result column="module_code" property="moduleCode" jdbcType="VARCHAR" />
+    <result column="permission_code" property="permissionCode" jdbcType="VARCHAR" />
+    <result column="permission_ico" property="permissionICO" jdbcType="VARCHAR"/>
+    <result column="permission_url" property="permissionUrl" jdbcType="VARCHAR" />
+    <result column="permission_type" property="permissionType" jdbcType="TINYINT" />
+    <result column="terminal_type" property="terminalType" jdbcType="TINYINT" />
+    <result column="tenant_id" property="tenantId" jdbcType="BIGINT" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="parent_name" property="parentName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, module_name, module_code, permission_code, permission_ico ,permission_url, permission_type, terminal_type, 
+    tenant_id, parent_id, status, create_time, update_time , parent_name
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_permission
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!--根据parentId进行查询-->
+  <select id="queryPermissionByParentId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+     select 
+    <include refid="Base_Column_List" />
+    from system_permission
+    where parent_id = #{parentId,jdbcType=BIGINT}
+  </select>
+  
+  <!--查询所有的目录权限-->
+  <select id="queryCatalogPermission" resultMap="BaseResultMap">
+     select * from system_permission where status = 1 and permission_type = 0
+  </select>
+  
+  <!--根据租户的id查询权限-->
+  <select id="queryPermissionByTenantId" resultMap="BaseResultMap">
+     select * from system_permission where status = 1 and tenant_id = #{tenantId}
+  </select>
+  
+  <!--分页查询-->
+  <select id="queryPermissionByPage" resultMap="BaseResultMap">
+      select * from system_permission where 1 = 1
+      <if test="moduleName !=null  and moduleName !=''">
+          and module_name = #{moduleName}
+      </if>
+      and tenant_id = #{tenantId}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from system_permission
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.kittydaddy.metadata.system.domain.PermissionEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into system_permission (id, module_name, module_code, 
+      permission_code, permission_ico ,permission_url, permission_type, 
+      terminal_type, tenant_id, parent_id, 
+      status, create_time, update_time ,parent_name
+      )
+    values (#{id,jdbcType=BIGINT}, #{moduleName,jdbcType=VARCHAR}, #{moduleCode,jdbcType=VARCHAR}, 
+      #{permissionCode,jdbcType=VARCHAR}, #{permissionICO,jdbcType=VARCHAR} ,#{permissionUrl,jdbcType=VARCHAR}, #{permissionType,jdbcType=TINYINT}, 
+      #{terminalType,jdbcType=TINYINT}, #{tenantId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{parentName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kittydaddy.metadata.system.domain.PermissionEntity" >
+    insert into system_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="moduleName != null" >
+        module_name,
+      </if>
+      <if test="moduleCode != null" >
+        module_code,
+      </if>
+      <if test="permissionCode != null" >
+        permission_code,
+      </if>
+      <if test="permissionICO !=null">
+        permission_ico,
+      </if>
+      <if test="permissionUrl != null" >
+        permission_url,
+      </if>
+      <if test="permissionType != null" >
+        permission_type,
+      </if>
+      <if test="terminalType != null" >
+        terminal_type,
+      </if>
+      <if test="tenantId != null" >
+        tenant_id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="parentName !=null">
+        parent_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="moduleName != null" >
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleCode != null" >
+        #{moduleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionCode != null" >
+        #{permissionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionICO !=null">
+        #{permissionICO,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionUrl != null" >
+        #{permissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionType != null" >
+        #{permissionType,jdbcType=TINYINT},
+      </if>
+      <if test="terminalType != null" >
+        #{terminalType,jdbcType=TINYINT},
+      </if>
+      <if test="tenantId != null" >
+        #{tenantId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="parentName != null">
+        #{parentName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kittydaddy.metadata.system.domain.PermissionEntity" >
+    update system_permission
+    <set >
+      <if test="moduleName != null" >
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleCode != null" >
+        module_code = #{moduleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionCode != null" >
+        permission_code = #{permissionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionICO !=null" >
+        permission_ico = #{permissionICO,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionUrl != null" >
+        permission_url = #{permissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionType != null" >
+        permission_type = #{permissionType,jdbcType=TINYINT},
+      </if>
+      <if test="terminalType != null" >
+        terminal_type = #{terminalType,jdbcType=TINYINT},
+      </if>
+      <if test="tenantId != null" >
+        tenant_id = #{tenantId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="parentName != null">
+        parent_name = #{parentName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kittydaddy.metadata.system.domain.PermissionEntity" >
+    update system_permission
+    set module_name = #{moduleName,jdbcType=VARCHAR},
+      module_code = #{moduleCode,jdbcType=VARCHAR},
+      permission_code = #{permissionCode,jdbcType=VARCHAR},
+      permission_ico = #{permissionICO,jdbcType=VARCHAR},
+      permission_url = #{permissionUrl,jdbcType=VARCHAR},
+      permission_type = #{permissionType,jdbcType=TINYINT},
+      terminal_type = #{terminalType,jdbcType=TINYINT},
+      tenant_id = #{tenantId,jdbcType=BIGINT},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      parent_name = #{parentName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

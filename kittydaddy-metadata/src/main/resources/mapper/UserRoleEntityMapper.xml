@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kittydaddy.metadata.system.dao.UserRoleEntityMapper">
+  <resultMap id="BaseResultMap" type="com.kittydaddy.metadata.system.domain.UserRoleEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, role_id, role_name, role_code, user_id, tenant_id, user_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from system_user_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!--根据角色id进行删除-->
+  <delete id="deleteByRoleId" parameterType="java.lang.Long">
+      delete from  system_user_role where role_id = #{roleId,jdbcType=BIGINT}
+  </delete>
+  
+  <!--根据用户的id进行删除-->
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+      delete from system_user_role where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  
+  <!--根据用户id以及租户的id进行查询-->
+  <select id="queryRole" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+    from system_user_role
+    where user_id = #{userId,jdbcType=BIGINT} and tenant_id = #{tenantId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from system_user_role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.kittydaddy.metadata.system.domain.UserRoleEntity">
+    insert into system_user_role (id, role_id, role_name, 
+      role_code, user_id, tenant_id, 
+      user_name)
+    values (#{id,jdbcType=BIGINT}, #{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
+      #{roleCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{tenantId,jdbcType=BIGINT}, 
+      #{userName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kittydaddy.metadata.system.domain.UserRoleEntity">
+    insert into system_user_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="roleCode != null">
+        role_code,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="tenantId != null">
+        tenant_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null">
+        #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="tenantId != null">
+        #{tenantId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kittydaddy.metadata.system.domain.UserRoleEntity">
+    update system_user_role
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null">
+        role_code = #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="tenantId != null">
+        tenant_id = #{tenantId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kittydaddy.metadata.system.domain.UserRoleEntity">
+    update system_user_role
+    set role_id = #{roleId,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      role_code = #{roleCode,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      tenant_id = #{tenantId,jdbcType=BIGINT},
+      user_name = #{userName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

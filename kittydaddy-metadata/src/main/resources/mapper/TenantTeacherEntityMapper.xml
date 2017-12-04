@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kittydaddy.metadata.tenant.dao.TenantTeacherEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.kittydaddy.metadata.tenant.domain.TenantTeacherEntity" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="home_address" property="homeAddress" jdbcType="VARCHAR" />
+    <result column="now_address" property="nowAddress" jdbcType="VARCHAR" />
+    <result column="experience" property="experience" jdbcType="INTEGER" />
+    <result column="tenant_id" property="tenantId" jdbcType="BIGINT" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="qualifications" property="qualifications" jdbcType="VARCHAR" />
+    <result column="graduate_institutions" property="graduateInstitutions" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="email" property="email" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, cellphone, telephone, nickname, sex, position, home_address, now_address, 
+    experience, tenant_id, avatar, qualifications, graduate_institutions, description, 
+    create_time, update_time, status, email
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tenant_teacher
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!--根据条件查询租户信息-->
+  <select id="queryTeachersByPage" resultMap="BaseResultMap">
+        select * from tenant_teacher where 1=1 and status = 1
+        <if test="name !=null and name !=''">
+              and name = #{name}
+        </if>
+        <if test="nickName !=null  and nickName !=''">
+             and nickname = #{nickName}
+        </if>
+        <if test="tenantId !=null and tenantId !=1">
+             and  tenant_id = #{tenantId}
+        </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tenant_teacher
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.kittydaddy.metadata.tenant.domain.TenantTeacherEntity" >
+    insert into tenant_teacher (id, name, cellphone, 
+      telephone, nickname, sex, 
+      position, home_address, now_address, 
+      experience, tenant_id, avatar, 
+      qualifications, graduate_institutions, description, 
+      create_time, update_time, status, email
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{cellphone,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
+      #{position,jdbcType=VARCHAR}, #{homeAddress,jdbcType=VARCHAR}, #{nowAddress,jdbcType=VARCHAR}, 
+      #{experience,jdbcType=INTEGER}, #{tenantId,jdbcType=BIGINT}, #{avatar,jdbcType=VARCHAR}, 
+      #{qualifications,jdbcType=VARCHAR}, #{graduateInstitutions,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT},
+      #{email,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.kittydaddy.metadata.tenant.domain.TenantTeacherEntity" >
+    insert into tenant_teacher
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="cellphone != null" >
+        cellphone,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="homeAddress != null" >
+        home_address,
+      </if>
+      <if test="nowAddress != null" >
+        now_address,
+      </if>
+      <if test="experience != null" >
+        experience,
+      </if>
+      <if test="tenantId != null" >
+        tenant_id,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="qualifications != null" >
+        qualifications,
+      </if>
+      <if test="graduateInstitutions != null" >
+        graduate_institutions,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="nowAddress != null" >
+        #{nowAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="experience != null" >
+        #{experience,jdbcType=INTEGER},
+      </if>
+      <if test="tenantId != null" >
+        #{tenantId,jdbcType=BIGINT},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="qualifications != null" >
+        #{qualifications,jdbcType=VARCHAR},
+      </if>
+      <if test="graduateInstitutions != null" >
+        #{graduateInstitutions,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kittydaddy.metadata.tenant.domain.TenantTeacherEntity" >
+    update tenant_teacher
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        cellphone = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        home_address = #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="nowAddress != null" >
+        now_address = #{nowAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="experience != null" >
+        experience = #{experience,jdbcType=INTEGER},
+      </if>
+      <if test="tenantId != null" >
+        tenant_id = #{tenantId,jdbcType=BIGINT},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="qualifications != null" >
+        qualifications = #{qualifications,jdbcType=VARCHAR},
+      </if>
+      <if test="graduateInstitutions != null" >
+        graduate_institutions = #{graduateInstitutions,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kittydaddy.metadata.tenant.domain.TenantTeacherEntity" >
+    update tenant_teacher
+    set name = #{name,jdbcType=VARCHAR},
+      cellphone = #{cellphone,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      position = #{position,jdbcType=VARCHAR},
+      home_address = #{homeAddress,jdbcType=VARCHAR},
+      now_address = #{nowAddress,jdbcType=VARCHAR},
+      experience = #{experience,jdbcType=INTEGER},
+      tenant_id = #{tenantId,jdbcType=BIGINT},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      qualifications = #{qualifications,jdbcType=VARCHAR},
+      graduate_institutions = #{graduateInstitutions,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      email = #{email,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
