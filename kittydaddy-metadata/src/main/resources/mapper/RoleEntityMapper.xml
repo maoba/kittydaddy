@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kittydaddy.metadata.system.dao.RoleEntityMapper" >
   <resultMap id="BaseResultMap" type="com.kittydaddy.metadata.system.domain.RoleEntity" >
-    <id column="id" property="id" jdbcType="BIGINT" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
     <result column="tenant_id" property="tenantId" jdbcType="BIGINT" />
     <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
@@ -43,6 +43,9 @@
   </delete>
   
   <insert id="insert" parameterType="com.kittydaddy.metadata.system.domain.RoleEntity" useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+       SELECT UUID() FROM dual
+    </selectKey>
     insert into system_role (id, role_name, tenant_id, 
       role_code, description, create_time, 
       update_time)

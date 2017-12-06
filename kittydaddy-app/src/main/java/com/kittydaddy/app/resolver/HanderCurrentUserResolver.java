@@ -50,13 +50,11 @@ public class HanderCurrentUserResolver implements HandlerMethodArgumentResolver{
 					}
 					
 					if(session.getAttribute("userId")!=null){
-						long userId = (Long)session.getAttribute("userId");
-						currentUserInfo.setUserId(userId);
+						currentUserInfo.setUserId(session.getAttribute("userId").toString());
 					}
 					
 					if(session.getAttribute("tenantId")!=null){
-						long tenantId = (Long)session.getAttribute("tenantId");
-						currentUserInfo.setTenantId(tenantId);
+						currentUserInfo.setTenantId(session.getAttribute("tenantId").toString());
 					}
 					
 					if(session.getAttribute("tenantName")!=null){

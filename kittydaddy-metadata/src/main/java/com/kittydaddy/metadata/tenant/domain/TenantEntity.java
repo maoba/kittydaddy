@@ -9,7 +9,7 @@ public class TenantEntity {
 	/**
 	 * 主键id
 	 */
-	private Long id;
+	private String id;
 
     /**
      * 学校名称
@@ -29,7 +29,7 @@ public class TenantEntity {
     /**
      * 关联详细租户的Id
      */
-    private Long detailId;
+    private String detailId;
 
     /**
      * 状态 -1：删除 0：失效 1：生效
@@ -46,13 +46,7 @@ public class TenantEntity {
      */
     private Date updateTime;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    
 
     public String getName() {
         return name;
@@ -78,15 +72,23 @@ public class TenantEntity {
         this.location = location == null ? null : location.trim();
     }
 
-    public Long getDetailId() {
-        return detailId;
-    }
+    public String getId() {
+		return id;
+	}
 
-    public void setDetailId(Long detailId) {
-        this.detailId = detailId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Integer getStatus() {
+	public String getDetailId() {
+		return detailId;
+	}
+
+	public void setDetailId(String detailId) {
+		this.detailId = detailId;
+	}
+
+	public Integer getStatus() {
         return status;
     }
 

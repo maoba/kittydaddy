@@ -11,7 +11,7 @@ public class UserEntity implements Serializable{
 	/**
 	 * 主键
 	 */
-    private Long id;
+    private String id;
 
     /**
      * 用户名称
@@ -26,7 +26,7 @@ public class UserEntity implements Serializable{
     /**
      * 租户id
      */
-    private Long tenantId;
+    private String tenantId;
 
    /**
     * 租户名称 
@@ -114,15 +114,15 @@ public class UserEntity implements Serializable{
 		this.terminalType = terminalType;
 	}
 
-	public Long getId() {
-        return id;
-    }
+    public String getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getUserName() {
+	public String getUserName() {
         return userName;
     }
 
@@ -138,15 +138,15 @@ public class UserEntity implements Serializable{
         this.userPwd = userPwd == null ? null : userPwd.trim();
     }
 
-    public Long getTenantId() {
-        return tenantId;
-    }
+    public String getTenantId() {
+		return tenantId;
+	}
 
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
 
-    public String getTenantName() {
+	public String getTenantName() {
         return tenantName;
     }
 

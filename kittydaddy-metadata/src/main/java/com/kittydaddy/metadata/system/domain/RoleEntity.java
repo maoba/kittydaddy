@@ -9,7 +9,7 @@ public class RoleEntity {
 	/**
 	 * 主键Id
 	 */
-    private Long id;
+    private String id;
     
     /**
      * 角色名称
@@ -41,15 +41,15 @@ public class RoleEntity {
      */
     private Date updateTime;
 
-    public Long getId() {
-        return id;
-    }
+    public String getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getRoleName() {
+	public String getRoleName() {
         return roleName;
     }
 

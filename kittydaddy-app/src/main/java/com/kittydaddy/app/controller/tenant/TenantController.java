@@ -47,9 +47,9 @@ public class TenantController {
         @RequestParam(value="pageSize", required=false,defaultValue="0") Integer pageSize,@CurrentUser CurrentUserInfo currentUser){
     	PageResponse pageResponse = new PageResponse();
     	Long tenantId = null;
-    	if(currentUser.getTenantId() != 1){
-    		tenantId = currentUser.getTenantId();
-    	}
+//    	if(currentUser.getTenantId() != 1){
+//    		tenantId = currentUser.getTenantId();
+//    	}
     	//根据名称，租户的id查询角色
     	PageInfo<TenantDto> tenantDtos = tenantService.queryTenantsByPage(tenantId,name,pageIndex,pageSize);
 	    return pageResponse.getSuccessPage(tenantDtos);

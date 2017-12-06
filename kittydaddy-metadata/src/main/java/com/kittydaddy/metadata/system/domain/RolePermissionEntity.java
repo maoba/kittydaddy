@@ -8,12 +8,12 @@ public class RolePermissionEntity {
 	/**
 	 * 主键id
 	 */
-    private Long id;
+    private String id;
     
     /**
      * 角色id
      */
-    private Long roleId;
+    private String roleId;
     
     /**
      * 角色名称
@@ -23,7 +23,7 @@ public class RolePermissionEntity {
     /**
      * 权限id
      */
-    private Long permissionId;
+    private String permissionId;
     
     /**
      * 权限编码
@@ -41,23 +41,23 @@ public class RolePermissionEntity {
     private Date updateTime;
 
     
-    public Long getId() {
-        return id;
-    }
+    public String getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Long getRoleId() {
-        return roleId;
-    }
+	public String getRoleId() {
+		return roleId;
+	}
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
+	}
 
-    public String getRoleName() {
+	public String getRoleName() {
         return roleName;
     }
 
@@ -65,15 +65,15 @@ public class RolePermissionEntity {
         this.roleName = roleName == null ? null : roleName.trim();
     }
 
-    public Long getPermissionId() {
-        return permissionId;
-    }
+    public String getPermissionId() {
+		return permissionId;
+	}
 
-    public void setPermissionId(Long permissionId) {
-        this.permissionId = permissionId;
-    }
+	public void setPermissionId(String permissionId) {
+		this.permissionId = permissionId;
+	}
 
-    public String getPermissionCode() {
+	public String getPermissionCode() {
         return permissionCode;
     }
     

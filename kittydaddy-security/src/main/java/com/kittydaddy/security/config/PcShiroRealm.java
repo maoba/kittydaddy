@@ -124,10 +124,11 @@ public class PcShiroRealm extends AuthorizingRealm {
 	 * @return
 	 */
 	private Set<String> getPermissions(long userId, long tenantId) {
-		Set<String> permissions = new HashSet<String>();
-		List<UserRoleEntity> userRoles = userRoleService.queryUserRole(userId, tenantId);
-		permissions = rolePermissionService.queryRolePermission(userRoles);
-		return permissions;
+//		Set<String> permissions = new HashSet<String>();
+//		List<UserRoleEntity> userRoles = userRoleService.queryUserRole(userId, tenantId);
+//		permissions = rolePermissionService.queryRolePermission(userRoles);
+//		return permissions;
+		return null;
 	}
 
 	/**

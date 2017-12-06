@@ -7,12 +7,12 @@ public class UserRoleEntity {
     /**
      * 主键
      */
-    private Long id;
+    private String id;
 
     /**
      * 角色Id
      */
-    private Long roleId;
+    private String roleId;
 
     /**
      * 角色名称
@@ -27,35 +27,17 @@ public class UserRoleEntity {
     /**
      * 用户id
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 租户Id
      */
-    private Long tenantId;
+    private String tenantId;
 
     /**
      * 用户名称
      */
     private String userName;
-
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-   
-    public Long getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
-	}
 
 	public String getRoleName() {
         return roleName;
@@ -73,23 +55,39 @@ public class UserRoleEntity {
         this.roleCode = roleCode == null ? null : roleCode.trim();
     }
 
-    public Long getUserId() {
-        return userId;
-    }
+    public String getId() {
+		return id;
+	}
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Long getTenantId() {
-        return tenantId;
-    }
+	public String getRoleId() {
+		return roleId;
+	}
 
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
+	}
 
-    public String getUserName() {
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+
+	public String getUserName() {
         return userName;
     }
 

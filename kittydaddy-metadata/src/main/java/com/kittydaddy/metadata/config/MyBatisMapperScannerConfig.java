@@ -19,7 +19,8 @@ public class MyBatisMapperScannerConfig {
         mapperScannerConfigurer.setBasePackage("com.kittydaddy.metadata.*.dao");
         Properties properties = new Properties();
         properties.setProperty("notEmpty", "false");
-        properties.setProperty("IDENTITY", "MYSQL");
+        properties.setProperty("ORDER", "BEFORE");
+        properties.setProperty("IDENTITY", "select uuid() ");
         mapperScannerConfigurer.setProperties(properties);
         return mapperScannerConfigurer;
     }

@@ -9,7 +9,7 @@ public class CurrentUserInfo {
 	/**
 	 * 用户id
 	 */
-    private Long userId;
+    private String userId;
     
     /**
      * 用户名称
@@ -24,7 +24,7 @@ public class CurrentUserInfo {
     /**
      * 租户Id
      */
-    private Long tenantId;
+    private String tenantId;
     
     /**
      * 租户名称
@@ -53,12 +53,20 @@ public class CurrentUserInfo {
 		this.sessionId = sessionId;
 	}
 
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	public String getUserName() {
@@ -69,13 +77,7 @@ public class CurrentUserInfo {
 		this.userName = userName;
 	}
 
-	public Long getTenantId() {
-		return tenantId;
-	}
-
-	public void setTenantId(Long tenantId) {
-		this.tenantId = tenantId;
-	}
+	
 
 	public String getTenantName() {
 		return tenantName;

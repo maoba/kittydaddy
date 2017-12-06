@@ -59,10 +59,8 @@ public class RolePermissionServiceImpl implements RolePermissionService{
 
 	@Override
 	public Set<RolePermissionEntity> queryRolePermissionEntity(List<UserRoleEntity> userRoles) {
-		Set<RolePermissionEntity> rolePermissionEntities = null;
-		
-		if(CollectionUtils.isNotEmpty(userRoles)){
-			rolePermissionEntities = new HashSet<RolePermissionEntity>();
+		    if(CollectionUtils.isEmpty(userRoles)) return null;
+		    Set<RolePermissionEntity> rolePermissionEntities = new HashSet<RolePermissionEntity>();
 			
 			for(UserRoleEntity userRoleEntity : userRoles){
 				//根据角色id查看角色权限
@@ -75,8 +73,6 @@ public class RolePermissionServiceImpl implements RolePermissionService{
 					}
 				}
 			}
-		}
-		
 		return rolePermissionEntities;
 	}
 
@@ -98,37 +94,37 @@ public class RolePermissionServiceImpl implements RolePermissionService{
          }		
 	}
 
-	@Override
-	public List<RolePermissionDto> queryRolePermissionByRoleId(Long roleId) {
-		List<RolePermissionEntity> entities = rolePermissionMapper.queryRolePermissionByRoleId(roleId);
-		List<RolePermissionDto> rolePermissionDtos = RolePermissionConvert.convertEntity2Dto(entities);
-		return rolePermissionDtos;
-	}
+//	@Override
+//	public List<RolePermissionDto> queryRolePermissionByRoleId(Long roleId) {
+//		List<RolePermissionEntity> entities = rolePermissionMapper.queryRolePermissionByRoleId(roleId);
+//		List<RolePermissionDto> rolePermissionDtos = RolePermissionConvert.convertEntity2Dto(entities);
+//		return rolePermissionDtos;
+//	}
 
-	@Override
-	public void saveRolePermission(RolePermissionRequest request) {
-		//根据角色id删除角色权限关系
-        rolePermissionMapper.deleteByRoleId(request.getRoleId());
-        
-        //重新插入角色权限关系
-        Set<Long> permissionIds = IdSplitUtil.splitString2Long(request.getPermissionIds());
-        if(CollectionUtils.isNotEmpty(permissionIds)){
-        	for(Long permissionId : permissionIds){
-        		 RolePermissionEntity entity = new RolePermissionEntity();
-        		 entity.setCreateTime(new Date());
-        		 PermissionEntity permissionEntity = permissionMapper.selectByPrimaryKey(permissionId);
-        		 if(permissionEntity!=null){
-        			 entity.setPermissionCode(permissionEntity.getPermissionCode());
-        		 }
-        		 entity.setPermissionId(permissionId);
-        		 entity.setRoleId(request.getRoleId());
-        		 RoleEntity roleEntity = roleMapper.selectByPrimaryKey(request.getRoleId());
-        		 if(roleEntity!=null){
-        			 entity.setRoleName(roleEntity.getRoleName());
-        		 }
-        		 rolePermissionMapper.insert(entity);
-        	}
-        }
-	}
+//	@Override
+//	public void saveRolePermission(RolePermissionRequest request) {
+//		//根据角色id删除角色权限关系
+//        rolePermissionMapper.deleteByRoleId(request.getRoleId());
+//        
+//        //重新插入角色权限关系
+//        Set<Long> permissionIds = IdSplitUtil.splitString2Long(request.getPermissionIds());
+//        if(CollectionUtils.isNotEmpty(permissionIds)){
+//        	for(Long permissionId : permissionIds){
+//        		 RolePermissionEntity entity = new RolePermissionEntity();
+//        		 entity.setCreateTime(new Date());
+//        		 PermissionEntity permissionEntity = permissionMapper.selectByPrimaryKey(permissionId);
+//        		 if(permissionEntity!=null){
+//        			 entity.setPermissionCode(permissionEntity.getPermissionCode());
+//        		 }
+//        		 entity.setPermissionId(permissionId);
+//        		 entity.setRoleId(request.getRoleId());
+//        		 RoleEntity roleEntity = roleMapper.selectByPrimaryKey(request.getRoleId());
+//        		 if(roleEntity!=null){
+//        			 entity.setRoleName(roleEntity.getRoleName());
+//        		 }
+//        		 rolePermissionMapper.insert(entity);
+//        	}
+//        }
+//	}
 
 }

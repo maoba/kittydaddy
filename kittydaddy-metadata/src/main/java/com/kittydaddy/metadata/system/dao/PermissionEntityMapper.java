@@ -13,17 +13,19 @@ public interface PermissionEntityMapper {
 
     int insertSelective(PermissionEntity record);
 
-    PermissionEntity selectByPrimaryKey(Long id);
+    PermissionEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(PermissionEntity record);
 
     int updateByPrimaryKey(PermissionEntity record);
     
-	List<PermissionEntity> queryPermissionByParentId(@Param(value="parentId") Long id);
+	List<PermissionEntity> queryPermissionByParentId(@Param(value="parentId") String id);
 
 	List<PermissionEntity> queryPermissionByPage(@Param(value="moduleName") String name,@Param(value="tenantId") Long tenantId);
 
 	List<PermissionEntity> queryCatalogPermission();
 
-	List<PermissionEntity> queryPermissionByTenantId(@Param(value="tenantId") Long tenantId);
+	List<PermissionEntity> queryPermissionByTenantId(@Param(value="tenantId") String tenantId);
+	
+	
 }

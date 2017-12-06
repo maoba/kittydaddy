@@ -34,16 +34,16 @@ public interface RolePermissionService {
 	 */
 	void deleteByPermissionIds(Set<Long> ids);
     
-	/**
-	 * 查询某个角色已经绑定过的角色
-	 * @param roleId
-	 * @return
-	 */
-	List<RolePermissionDto> queryRolePermissionByRoleId(Long roleId);
+//	/**
+//	 * 查询某个角色已经绑定过的角色
+//	 * @param roleId
+//	 * @return
+//	 */
+//	List<RolePermissionDto> queryRolePermissionByRoleId(Long roleId);
     
-	/**
-	 * 保存角色权限
-	 * @param request
-	 */
-	void saveRolePermission(RolePermissionRequest request);
+//	/**
+//	 * 保存角色权限
+//	 * @param request
+//	 */
+//	void saveRolePermission(RolePermissionRequest request);
 }

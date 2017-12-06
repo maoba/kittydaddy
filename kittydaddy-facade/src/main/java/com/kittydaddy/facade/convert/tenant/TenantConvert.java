@@ -54,11 +54,11 @@ public class TenantConvert {
 	 */
 	public static TenantEntity converRequest2Entity(TenantRequest request,TenantEntity oldTenantEntity) {
 		if(request!=null && oldTenantEntity!=null){
-             Long oldId = oldTenantEntity.getId();
-             BeanUtils.copyProperties(request, oldTenantEntity);
-             oldTenantEntity.setUpdateTime(new Date()); 
-             oldTenantEntity.setUpdateTime(new Date());
-             oldTenantEntity.setId(oldId);
+//             Long oldId = oldTenantEntity.getId();
+//             BeanUtils.copyProperties(request, oldTenantEntity);
+//             oldTenantEntity.setUpdateTime(new Date()); 
+//             oldTenantEntity.setUpdateTime(new Date());
+//             oldTenantEntity.setId(oldId);
 		}
 		return oldTenantEntity;
 	}

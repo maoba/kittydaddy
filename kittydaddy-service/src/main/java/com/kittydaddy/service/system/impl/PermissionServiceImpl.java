@@ -17,6 +17,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.common.enums.StatusEnum;
 import com.kittydaddy.facade.convert.system.PermissionConvert;
+import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.PermissionDto;
 import com.kittydaddy.facade.dto.system.PermissionTreeDto;
 import com.kittydaddy.facade.dto.system.request.PermissionRequest;
@@ -69,20 +70,75 @@ public class PermissionServiceImpl implements PermissionService{
 	@Autowired
 	private RedisUtil redisUtil;
 
+	
+	/**
+	 * 查询左侧的菜单项
+	 */
+	@Override
+	public List<LeftMenusDto> queryLeftMenus(String userId, String tenantId) {
+		List<UserRoleEntity> userRoleEntities = userRoleMapper.queryRole(userId, tenantId);
+		//查询获取角色权限实体类
+		Set<RolePermissionEntity> rolePermissionEntitys = rolePermissionService.queryRolePermissionEntity(userRoleEntities);
+		List<LeftMenusDto> leftMenus = buildLeftMenu(rolePermissionEntitys);
+		return leftMenus;
+	}
+	
+	
+	
+	/**
+	 * 构建左侧的导航站点
+	 * @param rolePermissionEntitys
+	 * @return
+	 */
+	private List<LeftMenusDto> buildLeftMenu(Set<RolePermissionEntity> rolePermissionEntitys) {
+		if (CollectionUtils.isEmpty(rolePermissionEntitys)) return null;
+		List<LeftMenusDto> list = new ArrayList<LeftMenusDto>();
+		Map<String,LeftMenusDto> map = new HashMap<String, LeftMenusDto>();//记录已经找到的父节点以及树信息
+		for(RolePermissionEntity rPentity : rolePermissionEntitys){
+			PermissionEntity permissionEntity = permissionMapper.selectByPrimaryKey(rPentity.getPermissionId());
+			if(StringUtils.isNotEmpty(permissionEntity.getParentId())){//如果有父节点
+				 if(!map.containsKey(permissionEntity.getParentId())){
+					 PermissionEntity parentPermissionEntity = permissionMapper.selectByPrimaryKey(permissionEntity.getParentId());
+					 LeftMenusDto leftMenusDto = PermissionConvert.convert2LeftMeusDto(parentPermissionEntity,null);
+					 List<LeftMenusDto> children = new ArrayList<LeftMenusDto>();
+					 LeftMenusDto childMenuDto = PermissionConvert.convert2LeftMeusDto(permissionEntity,null);
+					 children.add(childMenuDto);
+					 leftMenusDto.setChildren(children);
+					 map.put(permissionEntity.getParentId(), leftMenusDto);
+				 }else{
+					 LeftMenusDto menuDto = map.get(permissionEntity.getParentId());
+					 LeftMenusDto childMenuDto = PermissionConvert.convert2LeftMeusDto(permissionEntity,null);
+					 menuDto.getChildren().add(childMenuDto);
+					 map.put(permissionEntity.getParentId(), menuDto);					 
+				 }
+			}
+		}
+		
+		//获取最终的树
+		Set<String> parentIds = map.keySet();
+		if(CollectionUtils.isNotEmpty(parentIds)){
+			for(String permissionId : parentIds){
+				list.add(map.get(permissionId));
+			}
+		}
+		return list;
+	}
+
+    
 	@Override
 	public void savePermission(PermissionRequest request) {
-		if(request.getParentId()!=null){
-			PermissionEntity entity = permissionMapper.selectByPrimaryKey(request.getParentId());
-            if(entity!=null){
-            	request.setParentName(entity.getModuleName());
-            }
-		}
-		PermissionEntity entity = PermissionConvert.convertRequest2Entity(request);	
-		if(entity!=null){
-			entity.setStatus(StatusEnum.NORMAL.getValue());
-			entity.setCreateTime(new Date());
-			permissionMapper.insert(entity);
-		}
+//		if(request.getParentId()!=null){
+//			PermissionEntity entity = permissionMapper.selectByPrimaryKey(request.getParentId());
+//            if(entity!=null){
+//            	request.setParentName(entity.getModuleName());
+//            }
+//		}
+//		PermissionEntity entity = PermissionConvert.convertRequest2Entity(request);	
+//		if(entity!=null){
+//			entity.setStatus(StatusEnum.NORMAL.getValue());
+//			entity.setCreateTime(new Date());
+//			permissionMapper.insert(entity);
+//		}
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -97,37 +153,38 @@ public class PermissionServiceImpl implements PermissionService{
 	}
 
 	@Override
-	public List<PermissionTreeResponse> queryPermissionTree(Long userId, Long tenantId) {
-		//TODO   此处代码可以进行优化处理（可以直接存入redis缓存中，之后作改造）
-		//获取用户角色实体类
-		List<UserRoleEntity> userRoleEntitys = userRoleService.queryUserRole(userId, tenantId);
-
-		//查询获取角色权限实体类
-		Set<RolePermissionEntity> rolePermissionEntitys = rolePermissionService.queryRolePermissionEntity(userRoleEntitys);
-
-		//查询权限组装权限
-        List<PermissionTreeResponse> response = buildPermissionTree(rolePermissionEntitys);
-		List<Map<String,Object>> resources = new ArrayList<Map<String,Object>>();
-
-
-		return response;
+	public List<PermissionTreeResponse> queryPermissionTree(String userId, String tenantId) {
+//		//TODO   此处代码可以进行优化处理（可以直接存入redis缓存中，之后作改造）
+//		//获取用户角色实体类
+//		List<UserRoleEntity> userRoleEntitys = userRoleService.queryUserRole(userId, tenantId);
+//
+//		//查询获取角色权限实体类
+//		Set<RolePermissionEntity> rolePermissionEntitys = rolePermissionService.queryRolePermissionEntity(userRoleEntitys);
+//
+//		//查询权限组装权限
+//        List<PermissionTreeResponse> response = buildPermissionTree(rolePermissionEntitys);
+//		List<Map<String,Object>> resources = new ArrayList<Map<String,Object>>();
+//
+//
+//		return response;
+		return null;
 	}
 
 
 	@Override
-	public List<PermissionTreeResponse> queryMenus(Long userId, Long tenantId) {
-		//TODO   此处代码可以进行优化处理（可以直接存入redis缓存中，之后作改造）
-		try{
-            //获取用户角色实体类
-			List<UserRoleEntity> userRoleEntitys = userRoleService.queryUserRole(userId, tenantId);
-			//查询获取角色权限实体类
-			Set<RolePermissionEntity> rolePermissionEntitys = rolePermissionService.queryRolePermissionEntity(userRoleEntitys);
-			//查询权限组装权限
-			List<PermissionTreeResponse> menus = buildPermissionTree(rolePermissionEntitys);
-			return menus;
-		}catch (NullPointerException e){
-			e.printStackTrace();
-		}
+	public List<PermissionTreeResponse> queryMenus(String userId, String tenantId) {
+//		//TODO   此处代码可以进行优化处理（可以直接存入redis缓存中，之后作改造）
+//		try{
+//            //获取用户角色实体类
+//			List<UserRoleEntity> userRoleEntitys = userRoleService.queryUserRole(userId, tenantId);
+//			//查询获取角色权限实体类
+//			Set<RolePermissionEntity> rolePermissionEntitys = rolePermissionService.queryRolePermissionEntity(userRoleEntitys);
+//			//查询权限组装权限
+//			List<PermissionTreeResponse> menus = buildPermissionTree(rolePermissionEntitys);
+//			return menus;
+//		}catch (NullPointerException e){
+//			e.printStackTrace();
+//		}
           return null;
 	}
     
@@ -141,33 +198,33 @@ public class PermissionServiceImpl implements PermissionService{
 		Set<PermissionEntity> topPermissions = null;
 		
 		List<PermissionTreeResponse> responses = null;
-		Set<Long> permissionIdContainer = new HashSet<Long>();
-		if(CollectionUtils.isNotEmpty(rolePermissionEntitys)){
-		     topPermissions = new HashSet<PermissionEntity>();
-		     
-		     for(RolePermissionEntity rolePermissionEntity : rolePermissionEntitys){
-		    	   PermissionEntity permissionEntity = permissionMapper.selectByPrimaryKey(rolePermissionEntity.getPermissionId());
-		    	    //获取最上级的树
-		    	   if(permissionEntity.getParentId() == 0){
-		    		    topPermissions.add(permissionEntity);
-		    	   }
-		    	   
-		    	   permissionIdContainer.add(rolePermissionEntity.getPermissionId());
-		     } 	
-		}
+//		Set<Long> permissionIdContainer = new HashSet<Long>();
+//		if(CollectionUtils.isNotEmpty(rolePermissionEntitys)){
+//		     topPermissions = new HashSet<PermissionEntity>();
+//		     
+//		     for(RolePermissionEntity rolePermissionEntity : rolePermissionEntitys){
+//		    	   PermissionEntity permissionEntity = permissionMapper.selectByPrimaryKey(rolePermissionEntity.getPermissionId());
+//		    	    //获取最上级的树
+//		    	   if(permissionEntity.getParentId() == 0){
+//		    		    topPermissions.add(permissionEntity);
+//		    	   }
+//		    	   
+//		    	   permissionIdContainer.add(rolePermissionEntity.getPermissionId());
+//		     } 	
+//		}
 		
-		if(CollectionUtils.isNotEmpty(topPermissions)){
-			responses = new ArrayList<PermissionTreeResponse>();
-			//最上层的树 最终进行组装
-			for(PermissionEntity topEntity : topPermissions){
-				  List<PermissionEntity> childEntitys = permissionMapper.queryPermissionByParentId(topEntity.getId());
-				  //过滤掉权限中不存在的权限实体
-				  List<PermissionEntity> filterEntitys = this.filterPermissionEntity(childEntitys,permissionIdContainer);
-				  
-				  PermissionTreeResponse treeResponse = PermissionConvert.convertEntity2TreeResponse(topEntity,filterEntitys);
-				  responses.add(treeResponse);
-			}
-		}
+//		if(CollectionUtils.isNotEmpty(topPermissions)){
+//			responses = new ArrayList<PermissionTreeResponse>();
+//			//最上层的树 最终进行组装
+//			for(PermissionEntity topEntity : topPermissions){
+//				  List<PermissionEntity> childEntitys = permissionMapper.queryPermissionByParentId(topEntity.getId());
+//				  //过滤掉权限中不存在的权限实体
+//				  List<PermissionEntity> filterEntitys = this.filterPermissionEntity(childEntitys,permissionIdContainer);
+//				  
+//				  PermissionTreeResponse treeResponse = PermissionConvert.convertEntity2TreeResponse(topEntity,filterEntitys);
+//				  responses.add(treeResponse);
+//			}
+//		}
 		return responses;
 	}
     
@@ -208,136 +265,139 @@ public class PermissionServiceImpl implements PermissionService{
 
 	@Override
 	public void updatePermission(PermissionRequest request) {
-		PermissionEntity oldParentEntity = permissionMapper.selectByPrimaryKey(request.getParentId());
-        PermissionEntity oldEntity = permissionMapper.selectByPrimaryKey(request.getId());   
-		oldEntity = PermissionConvert.convertRequest2Entity(oldEntity,request);
-		if(oldParentEntity!=null){
-			oldEntity.setParentName(oldParentEntity.getModuleName());
-		}
-		oldEntity.setUpdateTime(new Date());
-        permissionMapper.updateByPrimaryKey(oldEntity);
+//		PermissionEntity oldParentEntity = permissionMapper.selectByPrimaryKey(request.getParentId());
+//        PermissionEntity oldEntity = permissionMapper.selectByPrimaryKey(request.getId());   
+//		oldEntity = PermissionConvert.convertRequest2Entity(oldEntity,request);
+//		if(oldParentEntity!=null){
+//			oldEntity.setParentName(oldParentEntity.getModuleName());
+//		}
+//		oldEntity.setUpdateTime(new Date());
+//        permissionMapper.updateByPrimaryKey(oldEntity);
 	}
 
 	@Override
 	public List<PermissionTreeDto> queryPermissionByTenantId(Long tenantId) {
-		List<PermissionEntity> entities = permissionMapper.queryPermissionByTenantId(tenantId);
-		List<PermissionTreeDto> treeDtos = PermissionConvert.convertEntity2TreeDto(entities);
-		return treeDtos;
+//		List<PermissionEntity> entities = permissionMapper.queryPermissionByTenantId(tenantId);
+//		List<PermissionTreeDto> treeDtos = PermissionConvert.convertEntity2TreeDto(entities);
+//		return treeDtos;
+		return null;
 	}
 
 	@Override
 	public List<PermissionDto> queryPermissionDtoByTenantId(Long tenantId) {
-		List<PermissionEntity> entities = permissionMapper.queryPermissionByTenantId(tenantId);
-		List<PermissionDto> permissionDtos = PermissionConvert.convertEntitys2Dtos(entities);
-		return permissionDtos;
+//		List<PermissionEntity> entities = permissionMapper.queryPermissionByTenantId(tenantId);
+//		List<PermissionDto> permissionDtos = PermissionConvert.convertEntitys2Dtos(entities);
+//		return permissionDtos;
+		return null;
 	}
 
 	@Override
 	public void openPermission(TenantPermissionRequest request) {
-          List<Long> permissionIds = request.getPermissionIds();	
-          //清空原权限，新增新权限
-          List<PermissionEntity> permissionEntities = permissionMapper.queryPermissionByTenantId(request.getTenantId());//存在的权限
-		     if(CollectionUtils.isNotEmpty(permissionEntities)){
-		    	  for(PermissionEntity existPermission : permissionEntities){
-		    		    permissionMapper.deleteByPrimaryKey(existPermission.getId());
-		    	   }
-		     }
-		  Set<Long> newPermissionIds = new HashSet<Long>();   
-		  //重新分配权限   
-          if(CollectionUtils.isNotEmpty(permissionIds)){
-        	  /**
-        	   * 入库父集目录
-        	   */
-        	  Map<String,PermissionEntity> parentEntityMap = this.getParentId(permissionIds,request.getTenantId());
-        	  //入子目录
-        	  for(Long permissionId : permissionIds){
-        		  PermissionEntity entity = permissionMapper.selectByPrimaryKey(permissionId);
-        		  //判断父权限编码是否一致
-        		  if(entity !=null && StringUtils.isNotEmpty(entity.getPermissionUrl())){
-        			  String originCode = permissionMapper.selectByPrimaryKey(entity.getParentId()).getPermissionCode();
-        			  PermissionEntity parentEntity = parentEntityMap.get(originCode);
-        			  if(parentEntity == null) return;
-        			  entity.setTenantId(request.getTenantId());
-        			  entity.setParentId(parentEntity.getId());
-            		  entity.setId(null);
-            		  permissionMapper.insert(entity);
-            		  newPermissionIds.add(parentEntity.getId());
-            		  newPermissionIds.add(entity.getId());
-        		  }
-        	  }
-          }
-          
-          //1、自动生成角色信息，绑定分配权限
-          //判断root权限的角色是否存在
-          RoleEntity oldRoleEntity = roleEntityMapper.queryRoleByCodeAndTenantId("root",request.getTenantId());
-          if(oldRoleEntity == null){
-        	  RoleEntity roleEntity = new RoleEntity();
-        	  roleEntity.setCreateTime(new Date());
-        	  roleEntity.setDescription("super manager");
-        	  roleEntity.setRoleCode("root");
-        	  roleEntity.setRoleName("超级管理员");
-        	  roleEntity.setTenantId(request.getTenantId());
-        	  roleEntityMapper.insert(roleEntity);
-        	  oldRoleEntity = roleEntity;
-          }
-          
-          //更新角色权限
-          this.updateRolePermission(oldRoleEntity, newPermissionIds);
-    	  
-    	  //2、给用户绑定角色
-          List<UserRoleEntity> userRoleEntities = userRoleMapper.queryRole(request.getUserId(), request.getTenantId());
-          if(CollectionUtils.isEmpty(userRoleEntities)){
-        	  UserRoleEntity userRoleEntity = new UserRoleEntity();
-        	  userRoleEntity.setRoleCode("root");
-        	  userRoleEntity.setRoleId(oldRoleEntity.getId());
-        	  userRoleEntity.setRoleName(oldRoleEntity.getRoleName());
-        	  userRoleEntity.setTenantId(request.getTenantId());
-        	  userRoleEntity.setUserId(request.getUserId());
-        	  userRoleEntity.setUserName("超级管理员");
-        	  userRoleMapper.insert(userRoleEntity);
-          }
+//          List<Long> permissionIds = request.getPermissionIds();	
+//          //清空原权限，新增新权限
+//          List<PermissionEntity> permissionEntities = permissionMapper.queryPermissionByTenantId(request.getTenantId());//存在的权限
+//		     if(CollectionUtils.isNotEmpty(permissionEntities)){
+//		    	  for(PermissionEntity existPermission : permissionEntities){
+//		    		    permissionMapper.deleteByPrimaryKey(existPermission.getId());
+//		    	   }
+//		     }
+//		  Set<Long> newPermissionIds = new HashSet<Long>();   
+//		  //重新分配权限   
+//          if(CollectionUtils.isNotEmpty(permissionIds)){
+//        	  /**
+//        	   * 入库父集目录
+//        	   */
+//        	  Map<String,PermissionEntity> parentEntityMap = this.getParentId(permissionIds,request.getTenantId());
+//        	  //入子目录
+//        	  for(Long permissionId : permissionIds){
+//        		  PermissionEntity entity = permissionMapper.selectByPrimaryKey(permissionId);
+//        		  //判断父权限编码是否一致
+//        		  if(entity !=null && StringUtils.isNotEmpty(entity.getPermissionUrl())){
+//        			  String originCode = permissionMapper.selectByPrimaryKey(entity.getParentId()).getPermissionCode();
+//        			  PermissionEntity parentEntity = parentEntityMap.get(originCode);
+//        			  if(parentEntity == null) return;
+//        			  entity.setTenantId(request.getTenantId());
+//        			  entity.setParentId(parentEntity.getId());
+//            		  entity.setId(null);
+//            		  permissionMapper.insert(entity);
+//            		  newPermissionIds.add(parentEntity.getId());
+//            		  newPermissionIds.add(entity.getId());
+//        		  }
+//        	  }
+//          }
+//          
+//          //1、自动生成角色信息，绑定分配权限
+//          //判断root权限的角色是否存在
+//          RoleEntity oldRoleEntity = roleEntityMapper.queryRoleByCodeAndTenantId("root",request.getTenantId());
+//          if(oldRoleEntity == null){
+//        	  RoleEntity roleEntity = new RoleEntity();
+//        	  roleEntity.setCreateTime(new Date());
+//        	  roleEntity.setDescription("super manager");
+//        	  roleEntity.setRoleCode("root");
+//        	  roleEntity.setRoleName("超级管理员");
+//        	  roleEntity.setTenantId(request.getTenantId());
+//        	  roleEntityMapper.insert(roleEntity);
+//        	  oldRoleEntity = roleEntity;
+//          }
+//          
+//          //更新角色权限
+//          this.updateRolePermission(oldRoleEntity, newPermissionIds);
+//    	  
+//    	  //2、给用户绑定角色
+//          List<UserRoleEntity> userRoleEntities = userRoleMapper.queryRole(request.getUserId(), request.getTenantId());
+//          if(CollectionUtils.isEmpty(userRoleEntities)){
+//        	  UserRoleEntity userRoleEntity = new UserRoleEntity();
+//        	  userRoleEntity.setRoleCode("root");
+//        	  userRoleEntity.setRoleId(oldRoleEntity.getId());
+//        	  userRoleEntity.setRoleName(oldRoleEntity.getRoleName());
+//        	  userRoleEntity.setTenantId(request.getTenantId());
+//        	  userRoleEntity.setUserId(request.getUserId());
+//        	  userRoleEntity.setUserName("超级管理员");
+//        	  userRoleMapper.insert(userRoleEntity);
+//          }
 	}
 
 	/**
 	   * 获取父集目录id
 	   */
 	private Map<String,PermissionEntity> getParentId(List<Long> permissionIds,Long tenantId) {
-		Map<String,PermissionEntity> map = null;
-	    if(CollectionUtils.isNotEmpty(permissionIds)){
-	    	map = new HashMap<String, PermissionEntity>();
-	    	for(Long permissionId : permissionIds){
-	    		 PermissionEntity entity = permissionMapper.selectByPrimaryKey(permissionId);
-	    		 if(entity!=null & entity.getParentId() == 0){
-	    			  entity.setTenantId(tenantId);
-	        		  entity.setId(null);
-	        		  permissionMapper.insert(entity);
-	        		  map.put(entity.getPermissionCode(), entity);
-	    		 }
-	    	}
-	    }
-		return map;
+//		Map<String,PermissionEntity> map = null;
+//	    if(CollectionUtils.isNotEmpty(permissionIds)){
+//	    	map = new HashMap<String, PermissionEntity>();
+//	    	for(Long permissionId : permissionIds){
+//	    		 PermissionEntity entity = permissionMapper.selectByPrimaryKey(permissionId);
+////	    		 if(entity!=null & entity.getParentId() == 0){
+////	    			  entity.setTenantId(tenantId);
+////	        		  entity.setId(null);
+////	        		  permissionMapper.insert(entity);
+////	        		  map.put(entity.getPermissionCode(), entity);
+////	    		 }
+//	    	}
+//	    }
+//		return map;
+		return null;
 	}
 
 	/**
 	 * 更新角色权限关系
 	 */
 	private void updateRolePermission(RoleEntity roleEntity,Set<Long> newPermissionIds){
-		 //清除原先角色权限的关系
-		 rolePermissionMapper.deleteByRoleId(roleEntity.getId());
-		 //新增现有关系
-		 if(CollectionUtils.isNotEmpty(newPermissionIds)){
-   		  for(Long permissionId : newPermissionIds){
-   			   RolePermissionEntity rolePermissionEntity = new RolePermissionEntity();
-   			   rolePermissionEntity.setCreateTime(new Date());
-   			   PermissionEntity entity = permissionMapper.selectByPrimaryKey(permissionId);
-   			   if(entity !=null){
-   				   rolePermissionEntity.setPermissionCode(entity.getPermissionCode());
-   			   }
-   			   rolePermissionEntity.setPermissionId(permissionId);
-   			   rolePermissionEntity.setRoleId(roleEntity.getId());
-   			   rolePermissionEntity.setRoleName(roleEntity.getRoleName());
-   			   rolePermissionMapper.insert(rolePermissionEntity);
-   		  }
-   	  }
+//		 //清除原先角色权限的关系
+//		 rolePermissionMapper.deleteByRoleId(roleEntity.getId());
+//		 //新增现有关系
+//		 if(CollectionUtils.isNotEmpty(newPermissionIds)){
+//   		  for(Long permissionId : newPermissionIds){
+//   			   RolePermissionEntity rolePermissionEntity = new RolePermissionEntity();
+//   			   rolePermissionEntity.setCreateTime(new Date());
+//   			   PermissionEntity entity = permissionMapper.selectByPrimaryKey(permissionId);
+//   			   if(entity !=null){
+//   				   rolePermissionEntity.setPermissionCode(entity.getPermissionCode());
+//   			   }
+//   			   rolePermissionEntity.setPermissionId(permissionId);
+//   			   rolePermissionEntity.setRoleId(roleEntity.getId());
+//   			   rolePermissionEntity.setRoleName(roleEntity.getRoleName());
+//   			   rolePermissionMapper.insert(rolePermissionEntity);
+//   		  }
+//   	  }
 	}
 }

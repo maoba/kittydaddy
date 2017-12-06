@@ -1,18 +1,15 @@
 package com.kittydaddy.app.controller.system;
-
 import com.kittydaddy.common.constant.TemplateConstants;
 import com.kittydaddy.common.enums.EncryptionEnum;
+import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.request.UserLoginRequest;
-import com.kittydaddy.facade.dto.system.response.PermissionTreeResponse;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.security.service.SecurityService;
 import com.kittydaddy.security.util.PublicKeyMap;
 import com.kittydaddy.security.util.RSAUtils;
 import com.kittydaddy.service.system.PermissionService;
-
 import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
@@ -82,8 +79,9 @@ public class BaseController {
 		if(StringUtils.isEmpty(sessionId)){
 			mav.addObject("errorMessage","用户名或密码错误");
             mav.setViewName("login");
+            return mav;
 		}
-		mav.setViewName("redirect:/index.do");
+		mav.setViewName("index");
 		return mav;
 	} 
     
@@ -95,9 +93,8 @@ public class BaseController {
     @RequestMapping(value="/index.do",method = RequestMethod.GET)
     public ModelAndView layoutPage(@CurrentUser CurrentUserInfo currentUserInfo){
     	ModelAndView view = new ModelAndView();
-        //根据用户的Id以及租户的id查询权限信息
-        List<PermissionTreeResponse> menus = permissionService.queryMenus(currentUserInfo.getUserId(),currentUserInfo.getTenantId());
-        view.addObject("menus",menus);
+    	List<LeftMenusDto> leftMenus = permissionService.queryLeftMenus(currentUserInfo.getUserId(),currentUserInfo.getTenantId());
+        view.addObject("leftMenus",leftMenus);
         return view;
     }
 	

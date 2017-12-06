@@ -7,59 +7,48 @@ import java.util.List;
  * 权限树返回[权限树目前只会有两层]
  */
 public class PermissionTreeResponse {
-	
-	 private Long id;
      /**
       * 权限名称
       */
-	 private String permissionName;
+	 private String title;
      
 	 /**
 	  * 权限图标
 	  */
-     private String permissionICO;
+     private String ico;
      
      /**
       * 权限对应的资源url
       */
-     private String permissionUrl;
+     private String href;
      
      /**
       * 子目录
       */
      private List<PermissionTreeResponse> child;
      
-
-	 public Long getId() {
-		return id;
+	 public String getTitle() {
+		return title;
 	 }
 
-	 public void setId(Long id) {
-		this.id = id;
+	 public void setTitle(String title) {
+		this.title = title;
 	 }
 
-	public String getPermissionName() {
-		return permissionName;
+	 public String getIco() {
+		return ico;
 	 }
 
-	 public void setPermissionName(String permissionName) {
-		this.permissionName = permissionName;
+	 public void setIco(String ico) {
+	 	this.ico = ico;
 	 }
 
-	 public String getPermissionICO() {
-		return permissionICO;
+	 public String getHref() {
+		return href;
 	 }
 
-	 public void setPermissionICO(String permissionICO) {
-		this.permissionICO = permissionICO;
-	 }
-
-	 public String getPermissionUrl() {
-		return permissionUrl;
-	 }
-
-	 public void setPermissionUrl(String permissionUrl) {
-		this.permissionUrl = permissionUrl;
+	 public void setHref(String href) {
+		this.href = href;
 	 }
 
 	 public List<PermissionTreeResponse> getChild() {

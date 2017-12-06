@@ -14,7 +14,7 @@ public class PermissionEntity implements Serializable{
 	/**
      * 主键id
      */
-    private Long id;
+    private String id;
     
     /**
      * 模块名称
@@ -55,12 +55,12 @@ public class PermissionEntity implements Serializable{
     /**
      * 租户的id
      */
-    private Long tenantId;
+    private String tenantId;
     
     /**
      * 父节点
      */
-    private Long parentId;
+    private String parentId;
     
     /**
      * 父节点名称
@@ -99,13 +99,6 @@ public class PermissionEntity implements Serializable{
 		this.permissionICO = permissionICO;
 	}
 
-	public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Integer getPermissionType() {
 		return permissionType;
@@ -135,7 +128,6 @@ public class PermissionEntity implements Serializable{
         return moduleName;
     }
 
-    
     public void setModuleName(String moduleName) {
         this.moduleName = moduleName == null ? null : moduleName.trim();
     }
@@ -164,24 +156,31 @@ public class PermissionEntity implements Serializable{
         this.permissionUrl = permissionUrl == null ? null : permissionUrl.trim();
     }
 
+    public String getId() {
+		return id;
+	}
 
-    public Long getTenantId() {
-        return tenantId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
+	public String getTenantId() {
+		return tenantId;
+	}
 
-    public Long getParentId() {
-        return parentId;
-    }
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
+	public String getParentId() {
+		return parentId;
+	}
 
-    public Date getCreateTime() {
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	public Date getCreateTime() {
         return createTime;
     }
 

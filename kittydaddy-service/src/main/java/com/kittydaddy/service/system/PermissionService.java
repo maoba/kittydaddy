@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.github.pagehelper.PageInfo;
+import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.PermissionDto;
 import com.kittydaddy.facade.dto.system.PermissionTreeDto;
 import com.kittydaddy.facade.dto.system.request.PermissionRequest;
@@ -25,7 +26,7 @@ public interface PermissionService {
 	 * @param tenantId [租户id]
 	 * @return
 	 */
-	List<PermissionTreeResponse> queryPermissionTree(Long userId, Long tenantId);
+	List<PermissionTreeResponse> queryPermissionTree(String userId, String tenantId);
 
 	
 	/**
@@ -83,6 +84,14 @@ public interface PermissionService {
 	 * @param tenantId 租户Id
 	 * @return
 	 */
-	List<PermissionTreeResponse> queryMenus(Long userId, Long tenantId);
+	List<PermissionTreeResponse> queryMenus(String userId, String tenantId);
+    
+	/**
+	 * 查询左侧菜单
+	 * @param userId
+	 * @param tenantId
+	 * @return
+	 */
+	List<LeftMenusDto> queryLeftMenus(String userId, String tenantId);
 
 }

@@ -1,11 +1,8 @@
 package com.kittydaddy.app.controller.system;
-import java.net.URLDecoder;
 import java.util.Date;
-
 import com.kittydaddy.common.enums.LoginTypeEnum;
 import com.kittydaddy.facade.dto.system.request.UserRequest;
 import com.kittydaddy.service.system.UserService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.kittydaddy.common.constant.TemplateConstants;
 import com.kittydaddy.common.enums.TerminalTypeEnum;
-import com.kittydaddy.facade.dto.system.request.UserLoginRequest;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.security.service.SecurityService;
-import com.kittydaddy.security.util.RSAUtils;
 
 /**
  * @author kitty daddy
@@ -36,7 +28,6 @@ public class UserController extends BaseController{
 
 	@Autowired
 	private UserService userService;
-
 
 
 	/**

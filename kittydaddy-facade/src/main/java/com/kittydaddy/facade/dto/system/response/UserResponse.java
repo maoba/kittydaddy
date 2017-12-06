@@ -8,7 +8,7 @@ public class UserResponse {
 	/**
 	 * id
 	 */
-	private Long id;
+	private String id;
     /**
      * 用户名称
      */
@@ -22,7 +22,7 @@ public class UserResponse {
     /**
      * 租户id
      */
-    private Long tenantId;
+    private String tenantId;
 
    /**
     * 租户名称 
@@ -96,14 +96,6 @@ public class UserResponse {
 		this.sex = sex;
 	}
 
-	public Long getId() {
-	   return id;
-    }
-
-    public void setId(Long id) {
-	  this.id = id;
-    }
-
 	public String getUserName() {
         return userName;
     }
@@ -120,15 +112,23 @@ public class UserResponse {
         this.userPwd = userPwd == null ? null : userPwd.trim();
     }
 
-    public Long getTenantId() {
-        return tenantId;
-    }
+    public String getId() {
+		return id;
+	}
 
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getTenantName() {
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+
+	public String getTenantName() {
         return tenantName;
     }
 

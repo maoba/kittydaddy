@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kittydaddy.metadata.system.dao.PermissionEntityMapper" >
   <resultMap id="BaseResultMap" type="com.kittydaddy.metadata.system.domain.PermissionEntity" >
-    <id column="id" property="id" jdbcType="BIGINT" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
     <result column="module_code" property="moduleCode" jdbcType="VARCHAR" />
     <result column="permission_code" property="permissionCode" jdbcType="VARCHAR" />
@@ -10,8 +10,8 @@
     <result column="permission_url" property="permissionUrl" jdbcType="VARCHAR" />
     <result column="permission_type" property="permissionType" jdbcType="TINYINT" />
     <result column="terminal_type" property="terminalType" jdbcType="TINYINT" />
-    <result column="tenant_id" property="tenantId" jdbcType="BIGINT" />
-    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="tenant_id" property="tenantId" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -22,19 +22,19 @@
     tenant_id, parent_id, status, create_time, update_time , parent_name
   </sql>
   
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from system_permission
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   
   <!--根据parentId进行查询-->
-  <select id="queryPermissionByParentId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  <select id="queryPermissionByParentId" resultMap="BaseResultMap">
      select 
     <include refid="Base_Column_List" />
     from system_permission
-    where parent_id = #{parentId,jdbcType=BIGINT}
+    where parent_id = #{parentId,jdbcType=VARCHAR}
   </select>
   
   <!--查询所有的目录权限-->
@@ -62,6 +62,9 @@
   </delete>
   
   <insert id="insert" parameterType="com.kittydaddy.metadata.system.domain.PermissionEntity" useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+       SELECT UUID() FROM dual
+    </selectKey>
     insert into system_permission (id, module_name, module_code, 
       permission_code, permission_ico ,permission_url, permission_type, 
       terminal_type, tenant_id, parent_id, 
