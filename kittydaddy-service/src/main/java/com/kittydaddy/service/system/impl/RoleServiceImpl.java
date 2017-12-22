@@ -1,6 +1,7 @@
 package com.kittydaddy.service.system.impl;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -31,16 +32,12 @@ public class RoleServiceImpl implements RoleService{
         roleEntityMapper.insert(entity);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public PageInfo<RoleDto> queryRolesByPage(String name, Long tenantId,
-			Integer pageIndex, Integer pageSize) {
-		PageHelper.startPage(pageIndex, pageSize, true, null, true);
-		List<RoleEntity> entitys = roleEntityMapper.queryRolesByName(name,tenantId);
-		PageInfo pageInfo = new PageInfo(entitys);
-		List<RoleDto> roleDtos = RoleConvert.convertEntitys2Dtos(entitys);
-		pageInfo.setList(roleDtos);
-		return pageInfo;
+	public PageInfo<RoleEntity> queryRolesByPage(String name, String tenantId,Integer pageIndex, Integer pageSize) {
+		PageHelper.startPage(pageIndex,pageSize, true, null, true);
+		List<RoleEntity> list = roleEntityMapper.queryRolesByTeanantId(tenantId);
+		PageInfo<RoleEntity> page = new PageInfo<RoleEntity>(list);
+		return page;
 	}
 
 	@Override
@@ -62,8 +59,18 @@ public class RoleServiceImpl implements RoleService{
 
 	@Override
 	public List<RoleDto> queryRolesByTenantId(Long tenantId) {
-		List<RoleEntity> entities = roleEntityMapper.queryRolesByTeanantId(tenantId);
-		List<RoleDto> roleDtos = RoleConvert.convertEntitys2Dtos(entities);
-		return roleDtos;
+//		List<RoleEntity> entities = roleEntityMapper.queryRolesByTeanantId(tenantId);
+//		List<RoleDto> roleDtos = RoleConvert.convertEntitys2Dtos(entities);
+		return null;
+	}
+
+	@Override
+	public PageInfo<RoleEntity> queryRolesByPage(Map<String, Object> params, String tenantId) {
+		Integer pageIndex =  (Integer) params.get("pageIndex")==null?1:(Integer) params.get("pageIndex");
+		Integer pageSize = (Integer)params.get("pageSize")==null?10:(Integer)params.get("pageSize");
+		PageHelper.startPage(pageIndex,pageSize, true, null, true);
+		List<RoleEntity> list = roleEntityMapper.queryRolesByTeanantId(tenantId);
+		PageInfo<RoleEntity> page = new PageInfo<RoleEntity>(list);
+		return page;
 	}
 }

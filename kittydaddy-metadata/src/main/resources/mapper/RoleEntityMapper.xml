@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.kittydaddy.metadata.system.domain.RoleEntity" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
-    <result column="tenant_id" property="tenantId" jdbcType="BIGINT" />
+    <result column="tenant_id" property="tenantId" jdbcType="VARCHAR" />
     <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />

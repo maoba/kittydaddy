@@ -1,23 +1,16 @@
 package com.kittydaddy.app.controller.system;
 import java.util.Date;
-import java.util.List;
-
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.servlet.ModelAndView;
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.common.utils.IdSplitUtil;
-import com.kittydaddy.facade.dto.system.RoleDto;
-import com.kittydaddy.facade.dto.system.UserRoleDto;
-import com.kittydaddy.facade.dto.system.request.RoleRequest;
-import com.kittydaddy.facade.dto.system.request.UserRoleRequest;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
-import com.kittydaddy.facade.dto.system.response.PageResponse;
+import com.kittydaddy.metadata.system.domain.RoleEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.system.RolePermissionService;
@@ -47,6 +40,21 @@ public class RoleController {
         */
        @Autowired
        private RolePermissionService rolePermissionService;
+       
+       @RequestMapping(method=RequestMethod.GET,value="roleList.html")
+       public ModelAndView queryRolesByPage(){
+    	   ModelAndView view = new ModelAndView();
+           view.setViewName("/page/system/roleList");
+           return view;
+       }
+       
+       @RequestMapping(method=RequestMethod.POST,value="roleList")
+       public PageInfo<RoleEntity> queryRolesList(String name,Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
+    	   PageInfo<RoleEntity> rolePage = roleService.queryRolesByPage(name,currentUser.getTenantId(),pageIndex,pageSize);
+    	   return rolePage;
+       }
+       
+       
        
 //       /**
 //	     * 分页查询

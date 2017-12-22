@@ -19,7 +19,7 @@ public class RoleEntity {
     /**
      * 租户id
      */
-    private Long tenantId;
+    private String tenantId;
     
     /**
      * 角色编码
@@ -57,15 +57,15 @@ public class RoleEntity {
         this.roleName = roleName == null ? null : roleName.trim();
     }
 
-    public Long getTenantId() {
-        return tenantId;
-    }
+    public String getTenantId() {
+		return tenantId;
+	}
 
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
 
-    public String getRoleCode() {
+	public String getRoleCode() {
         return roleCode;
     }
 

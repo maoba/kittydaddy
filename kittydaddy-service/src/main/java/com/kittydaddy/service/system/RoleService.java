@@ -1,11 +1,13 @@
 package com.kittydaddy.service.system;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.facade.dto.system.RoleDto;
 import com.kittydaddy.facade.dto.system.request.RoleRequest;
+import com.kittydaddy.metadata.system.domain.RoleEntity;
 
 public interface RoleService {
      
@@ -23,7 +25,7 @@ public interface RoleService {
 	 * @param pageSize  一页上面的总记录数
 	 * @return
 	 */
-	PageInfo<RoleDto> queryRolesByPage(String name, Long tenantId, Integer pageIndex, Integer pageSize);
+	PageInfo<RoleEntity> queryRolesByPage(String name, String tenantId, Integer pageIndex, Integer pageSize);
 
 	/**
 	 * 删除角色
@@ -43,5 +45,15 @@ public interface RoleService {
 	 * @return
 	 */
 	List<RoleDto> queryRolesByTenantId(Long tenantId);
+    
+	/**
+	 * 
+	 * @param object
+	 * @param tenantId
+	 * @param object2
+	 * @param object3
+	 * @return
+	 */
+	PageInfo<RoleEntity> queryRolesByPage(Map<String,Object> params , String tenantId);
 
 }
