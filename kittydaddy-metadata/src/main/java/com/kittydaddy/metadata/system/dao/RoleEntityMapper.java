@@ -4,17 +4,16 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.github.pagehelper.PageInfo;
 import com.kittydaddy.metadata.system.domain.RoleEntity;
 
 public interface RoleEntityMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     int insert(RoleEntity record);
 
     int insertSelective(RoleEntity record);
 
-    RoleEntity selectByPrimaryKey(Long id);
+    RoleEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(RoleEntity record);
 

@@ -188,7 +188,7 @@ public class PermissionController {
     	//删除权限
     	permissionService.delete(IdSplitUtil.splitString2Long(ids));
     	//删除角色权限关系
-    	rolePermissionService.deleteByPermissionIds(IdSplitUtil.splitString2Long(ids));
+//    	rolePermissionService.deleteByPermissionIds(IdSplitUtil.splitString2Long(ids));
     	
     	return BaseResponse.getSuccessResponse(new Date());
     }

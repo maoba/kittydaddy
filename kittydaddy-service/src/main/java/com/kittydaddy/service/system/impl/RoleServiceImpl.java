@@ -35,26 +35,16 @@ public class RoleServiceImpl implements RoleService{
 	@Override
 	public PageInfo<RoleEntity> queryRolesByPage(String name, String tenantId,Integer pageIndex, Integer pageSize) {
 		PageHelper.startPage(pageIndex,pageSize, true, null, true);
-		List<RoleEntity> list = roleEntityMapper.queryRolesByTeanantId(tenantId);
+		List<RoleEntity> list = roleEntityMapper.queryRolesByName(name, tenantId);
 		PageInfo<RoleEntity> page = new PageInfo<RoleEntity>(list);
 		return page;
 	}
 
 	@Override
-	@Transactional
-	public void delete(Set<Long> ids) {
-		 if(CollectionUtils.isNotEmpty(ids)){
-			 for(Long id : ids){
-				 roleEntityMapper.deleteByPrimaryKey(id);
-			 }
-		 } 
-	}
-
-	@Override
 	public void update(RoleRequest request) {
-         RoleEntity entity = roleEntityMapper.selectByPrimaryKey(request.getId());
-         entity = RoleConvert.convertRequest2Entity(request,entity);
-         roleEntityMapper.updateByPrimaryKey(entity);
+//         RoleEntity entity = roleEntityMapper.selectByPrimaryKey(request.getId());
+//         entity = RoleConvert.convertRequest2Entity(request,entity);
+//         roleEntityMapper.updateByPrimaryKey(entity);
 	}
 
 	@Override
@@ -72,5 +62,39 @@ public class RoleServiceImpl implements RoleService{
 		List<RoleEntity> list = roleEntityMapper.queryRolesByTeanantId(tenantId);
 		PageInfo<RoleEntity> page = new PageInfo<RoleEntity>(list);
 		return page;
+	}
+
+	@Override
+	public RoleEntity queryRolesById(String id) {
+		RoleEntity roleEntity = roleEntityMapper.selectByPrimaryKey(id);
+		return roleEntity;
+	}
+
+	@Override
+	public void saveUpdateRole(Map<String, Object> params) {
+		if(null == params.get("id")) {
+			RoleEntity roleEntity = new RoleEntity();
+			roleEntity.setRoleCode(params.get("roleCode")==null?null:params.get("roleCode").toString());
+			roleEntity.setDescription(params.get("description")==null?null:params.get("description").toString());
+			roleEntity.setRoleName(params.get("roleName")==null?null:params.get("roleName").toString());
+			roleEntity.setTenantId(params.get("tenantId")==null?null:params.get("tenantId").toString());
+			roleEntity.setCreateTime(new Date());
+			roleEntityMapper.insert(roleEntity);
+			
+		}else{
+			RoleEntity roleEntity = roleEntityMapper.selectByPrimaryKey(params.get("id").toString());
+			roleEntity.setRoleCode(params.get("roleCode")==null?null:params.get("roleCode").toString());
+			roleEntity.setDescription(params.get("description")==null?null:params.get("description").toString());
+			roleEntity.setRoleName(params.get("roleName")==null?null:params.get("roleName").toString());
+			roleEntity.setTenantId(params.get("tenantId")==null?null:params.get("tenantId").toString());
+			roleEntity.setUpdateTime(new Date());
+			roleEntityMapper.updateByPrimaryKey(roleEntity);
+			
+		}
+	}
+
+	@Override
+	public void deleteById(String roleId) {
+		roleEntityMapper.deleteByPrimaryKey(roleId);
 	}
 }

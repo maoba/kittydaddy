@@ -52,14 +52,7 @@ public class UserRoleServiceImpl implements UserRoleService{
 //		return userRoleMapper.queryRole(userId, tenantId);
 //	}
 
-	@Override//根据角色id进行删除用户角色关系
-	public void deleteByRoleIds(Set<Long> ids) {
-		if(CollectionUtils.isNotEmpty(ids)){
-			for(Long id : ids){
-				userRoleMapper.deleteByRoleId(id);
-			}
-		}
-	}
+
 
 	@Override//根据用户id进行删除用户角色关系
 	public void deleteByUserId(Set<Long> ids) {
@@ -68,6 +61,11 @@ public class UserRoleServiceImpl implements UserRoleService{
         		 userRoleMapper.deleteByUserId(id);
         	 }
          }		
+	}
+
+	@Override
+	public void deleteByRoleId(String roleId) {
+		userRoleMapper.deleteByRoleId(roleId);
 	}
 
 //	@Override

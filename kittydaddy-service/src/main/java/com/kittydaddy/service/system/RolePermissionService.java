@@ -1,9 +1,6 @@
 package com.kittydaddy.service.system;
 import java.util.List;
 import java.util.Set;
-
-import com.kittydaddy.facade.dto.system.RolePermissionDto;
-import com.kittydaddy.facade.dto.system.request.RolePermissionRequest;
 import com.kittydaddy.metadata.system.domain.RolePermissionEntity;
 import com.kittydaddy.metadata.system.domain.UserRoleEntity;
 public interface RolePermissionService {
@@ -22,17 +19,12 @@ public interface RolePermissionService {
 	 */
 	Set<RolePermissionEntity> queryRolePermissionEntity(List<UserRoleEntity> userRoles);
 
-	/**
-	 * 删除
-	 * @param ids
-	 */
-	void deleteByRoleIds(Set<Long> ids);
     
 	/**
-	 * 根据权限id进行删除角色权限关系
-	 * @param ids [权限id]
+	 * 根绝角色Id解除角色权限的关系
+	 * @param roleId
 	 */
-	void deleteByPermissionIds(Set<Long> ids);
+	void deleteByRoleId(String roleId);
     
 //	/**
 //	 * 查询某个角色已经绑定过的角色

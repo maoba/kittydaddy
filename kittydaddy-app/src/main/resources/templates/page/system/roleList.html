@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="${path}/static/css/news.css" media="all" />
 </head>
 <body class="childrenBody">
-	<blockquote class="layui-elem-quote news_search">
+	<blockquote class="layui-elem-quote role_search">
 		<div class="layui-inline">
 		    <div class="layui-input-inline">
 		    	<input type="text" value="" placeholder="请输入关键字" class="layui-input search_input">
@@ -23,14 +23,14 @@
 		    <a class="layui-btn search_btn">查询</a>
 		</div>
 		<div class="layui-inline">
-			<a class="layui-btn layui-btn-normal newsAdd_btn">添加文章</a>
+			<a class="layui-btn clear_btn" style="background-color:#5FB878">清空查询</a>
 		</div>
 		<div class="layui-inline">
-			<a class="layui-btn recommend" style="background-color:#5FB878">推荐文章</a>
+			<a class="layui-btn layui-btn-normal roleAdd_btn">添加角色</a>
 		</div>
 		<div class="layui-inline">
-			<a class="layui-btn audit_btn">审核文章</a>
-		</div>
+			<a class="layui-btn grant_permission" style="background-color:#00CED1">分配权限</a>
+		</div> 
 		<div class="layui-inline">
 			<a class="layui-btn layui-btn-danger batchDel">批量删除</a>
 		</div>
@@ -38,16 +38,16 @@
 			<div class="layui-form-mid layui-word-aux">本页面刷新后除新添加的文章外所有操作无效，关闭页面所有数据重置</div>
 		</div> -->
 	</blockquote>
-	<div class="layui-form news_list">
+	<div class="layui-form role_list">
 	  	<table class="layui-table">
 		    <colgroup>
-				<col width="50">
+				<col width="20">
 				<col>
-				<col width="9%">
-				<col width="9%">
-				<col width="9%">
-				<col width="9%">
-				<col width="15%">
+				<col width="20%">
+				<!-- <col width="9%"> -->
+				<col width="20%">
+				<col width="20%">
+				<col width="20%">
 		    </colgroup>
 		    <thead>
 				<tr>
@@ -55,16 +55,17 @@
 					<th style="text-align:left;">角色名称</th>
 					<th>角色编码</th>
 					<th>描述信息</th>
-					<th>是否展示</th>
+					<!-- <th>是否展示</th> -->
 					<th>创建时间</th>
 					<th>操作</th>
 				</tr> 
 		    </thead>
-		    <tbody class="news_content"></tbody>
+		    <tbody class="role_content"></tbody>
 		</table>
 	</div>
 	<div id="role_page"></div>
 	<script type="text/javascript" src="${path}/static/layui/layui.js"></script>
 	<script type="text/javascript" src="${path}/static/system/roleList.js"></script>
+	<script type="text/javascript" src="${path}/static/js/moment.js"></script>
 </body>
 </html>

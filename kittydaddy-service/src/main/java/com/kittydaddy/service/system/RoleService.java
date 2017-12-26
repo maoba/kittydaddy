@@ -28,12 +28,6 @@ public interface RoleService {
 	PageInfo<RoleEntity> queryRolesByPage(String name, String tenantId, Integer pageIndex, Integer pageSize);
 
 	/**
-	 * 删除角色
-	 * @param ids
-	 */
-	void delete(Set<Long> ids);
-    
-	/**
 	 * 更新角色
 	 * @param request
 	 */
@@ -55,5 +49,25 @@ public interface RoleService {
 	 * @return
 	 */
 	PageInfo<RoleEntity> queryRolesByPage(Map<String,Object> params , String tenantId);
+    
+	/**
+	 * 根据ID查询角色实体类
+	 * @param id
+	 * @return
+	 */
+	RoleEntity queryRolesById(String id);
+    
+	/**
+	 * 保存或者更新角色
+	 * @param params
+	 */
+	void saveUpdateRole(Map<String, Object> params);
+
+	
+	/**
+	 * 根据角色ID删除角色
+	 * @param roleId
+	 */
+	void deleteById(String roleId);
 
 }

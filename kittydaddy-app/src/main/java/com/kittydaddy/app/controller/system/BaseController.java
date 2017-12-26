@@ -28,6 +28,10 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value="/")
 public class BaseController {
 	
+	 public static String RESULT_SUCCESS = "success";
+	 
+	 public static String RESULT_FAILURE = "failure";
+	
 	 @Autowired
 	 private SecurityService securityService;
 	 

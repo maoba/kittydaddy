@@ -13,7 +13,7 @@
   <sql id="Base_Column_List" >
     id, role_name, tenant_id, role_code, description, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from system_role
@@ -23,7 +23,7 @@
   <select id="queryRolesByName" resultMap="BaseResultMap">
      select * from system_role where 1=1  
      <if test="name !=null and name !=''">
-       and  role_name = #{name}
+       and  role_name like  CONCAT('%',#{name},'%')
      </if>
        and tenant_id = #{tenantId}
   </select>
@@ -37,9 +37,8 @@
      select * from system_role where tenant_id = #{tenantId}
   </select>
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from system_role
-    where id = #{id,jdbcType=BIGINT}
+  <delete id="deleteByPrimaryKey"  >
+    delete from system_role where id = #{id,jdbcType=VARCHAR}
   </delete>
   
   <insert id="insert" parameterType="com.kittydaddy.metadata.system.domain.RoleEntity" useGeneratedKeys="true" keyProperty="id">
@@ -49,7 +48,7 @@
     insert into system_role (id, role_name, tenant_id, 
       role_code, description, create_time, 
       update_time)
-    values (#{id,jdbcType=BIGINT}, #{roleName,jdbcType=VARCHAR}, #{tenantId,jdbcType=BIGINT}, 
+    values (#{id,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{tenantId,jdbcType=VARCHAR}, 
       #{roleCode,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>

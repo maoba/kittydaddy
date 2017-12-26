@@ -1,6 +1,5 @@
 package com.kittydaddy.app.controller.system;
-import java.util.Date;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.github.pagehelper.PageInfo;
-import com.kittydaddy.common.utils.IdSplitUtil;
-import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.system.domain.RoleEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
@@ -22,19 +19,17 @@ import com.kittydaddy.service.system.UserRoleService;
  */
 @RestController
 @RequestMapping(value="/role")
-public class RoleController {
+public class RoleController extends BaseController{
 	  /**
 	   * 角色服务
 	   */
        @Autowired
    	   private RoleService roleService;
-       
        /**
         * 用户角色服务
         */
        @Autowired
        private UserRoleService userRoleService;
-       
        /**
         * 角色权限服务
         */
@@ -54,48 +49,45 @@ public class RoleController {
     	   return rolePage;
        }
        
+       @RequestMapping(method=RequestMethod.GET,value="roleEdit")
+       public ModelAndView roleEdit(@RequestParam(value="roleId") String id){
+    	   ModelAndView view = new ModelAndView();
+    	   RoleEntity roleEntity = roleService.queryRolesById(id);
+    	   view.addObject("roleInfo", roleEntity);
+    	   view.setViewName("/page/system/roleEdit");
+    	   return view;
+       }
        
+       @RequestMapping(method=RequestMethod.GET,value="roleAdd")
+       public ModelAndView roleAdd(){
+    	   ModelAndView view = new ModelAndView();
+    	   view.setViewName("/page/system/roleAdd");
+    	   return view;
+       }
        
-//       /**
-//	     * 分页查询
-//	     * @param name 用户名称
-//	     * @param pageIndex 当前页码
-//	     * @param pageSize 一页数量
-//	     * @param currentUser 
-//	     * @return
-//	     */
-//	    @SuppressWarnings("static-access")
-//		@RequestMapping(method=RequestMethod.GET,value="/rolePage.html")
-//	    public PageResponse queryRolesByPage(
-//			@RequestParam(value="name", required=false) String name,
-//            @RequestParam(value="pageIndex", required=false,defaultValue="0") Integer pageIndex,
-//            @RequestParam(value="pageSize", required=false,defaultValue="0") Integer pageSize,@CurrentUser CurrentUserInfo currentUser){
-//	    	PageResponse pageResponse = new PageResponse();
-//	    	//根据名称，租户的id查询角色
-//	    	PageInfo<RoleDto> roleDtos = roleService.queryRolesByPage(name,currentUser.getTenantId(),pageIndex,pageSize);
-//		    return pageResponse.getSuccessPage(roleDtos);
-//	    }
-   
-	    /**
-		 * 后台进行删除
-		 * @param ids
-		 * @return
-		 */
-		@RequestMapping(method=RequestMethod.GET,value="/delete")
-		@RequiresAuthentication//表示删除
-		public BaseResponse delete(@RequestParam(value="ids") String ids){
-			 //删除角色
-			roleService.delete(IdSplitUtil.splitString2Long(ids));
-			
-			 //删除角色用户关系
-			userRoleService.deleteByRoleIds(IdSplitUtil.splitString2Long(ids));
-			
-			 //删除角色权限关系
-            rolePermissionService.deleteByRoleIds(IdSplitUtil.splitString2Long(ids));
-            
-			return BaseResponse.getSuccessResponse(new Date());
-		}
-	    
+       @RequestMapping(method=RequestMethod.POST,value="saveUpdateRole")
+       public String saveUpdateRole(@RequestParam Map<String,Object> params,@CurrentUser CurrentUserInfo currentUserInfo){
+    	   //获取并设置租户的Id
+    	   params.put("tenantId", currentUserInfo.getTenantId());
+    	   roleService.saveUpdateRole(params);
+    	   return RESULT_SUCCESS;
+       }
+       
+       @RequestMapping(method=RequestMethod.GET,value="deleteRole")
+       public String deleteRole(@RequestParam String roleId){
+    	   try{
+    		   //删除角色
+        	   roleService.deleteById(roleId);
+        	   //删除角色用户关系
+        	   userRoleService.deleteByRoleId(roleId);
+        	   //删除角色权限关系
+        	   rolePermissionService.deleteByRoleId(roleId);
+    	   }catch(Exception e){
+    		   return RESULT_FAILURE;
+    	   }
+    	   return RESULT_SUCCESS;
+       }
+       
 		/**
 		 * 获取当前租户之下的所有的角色
 		 * @param currentUserInfo

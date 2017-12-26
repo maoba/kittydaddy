@@ -21,7 +21,7 @@ public interface UserRoleEntityMapper {
 
 	List<UserRoleEntity> queryRole(@Param(value = "userId") String userId,@Param(value = "tenantId") String tenantId);
 
-	void deleteByRoleId(@Param(value="roleId") Long roleId);
+	void deleteByRoleId(@Param(value="roleId") String roleId);
 
 	void deleteByUserId(@Param(value="userId") Long userId);
 }

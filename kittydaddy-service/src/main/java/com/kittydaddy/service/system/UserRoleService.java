@@ -1,10 +1,5 @@
 package com.kittydaddy.service.system;
-import java.util.List;
 import java.util.Set;
-
-import com.kittydaddy.facade.dto.system.UserRoleDto;
-import com.kittydaddy.facade.dto.system.request.UserRoleRequest;
-import com.kittydaddy.metadata.system.domain.UserRoleEntity;
 public interface UserRoleService {
     /**
      * 根据用户id以及租户Id获取角色编码
@@ -22,17 +17,18 @@ public interface UserRoleService {
 //	 */
 //	List<UserRoleEntity> queryUserRole(long userId, long tenantId);
     
-	/**
-	 * 删除角色id
-	 * @param ids
-	 */
-	void deleteByRoleIds(Set<Long> ids);
     
 	/**
 	 * 根据用户Id进行删除用户角色关系
 	 * @param ids
 	 */
 	void deleteByUserId(Set<Long> ids);
+    
+	/**
+	 * 根绝角色id解除角色用户的权限
+	 * @param roleId
+	 */
+	void deleteByRoleId(String roleId);
     
 //	/**
 //	 * 根据userId查询用户角色关系

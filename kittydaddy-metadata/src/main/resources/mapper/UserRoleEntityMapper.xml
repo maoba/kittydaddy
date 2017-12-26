@@ -7,7 +7,7 @@
     <result column="role_name" jdbcType="VARCHAR" property="roleName" />
     <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
+    <result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -21,13 +21,13 @@
   </select>
   
   <!--根据角色id进行删除-->
-  <delete id="deleteByRoleId" parameterType="java.lang.Long">
-      delete from  system_user_role where role_id = #{roleId,jdbcType=BIGINT}
+  <delete id="deleteByRoleId" >
+      delete from  system_user_role where role_id = #{roleId,jdbcType=VARCHAR}
   </delete>
   
   <!--根据用户的id进行删除-->
-  <delete id="deleteByUserId" parameterType="java.lang.Long">
-      delete from system_user_role where user_id = #{userId,jdbcType=BIGINT}
+  <delete id="deleteByUserId" >
+      delete from system_user_role where user_id = #{userId,jdbcType=VARCHAR}
   </delete>
   
   <!--根据用户id以及租户的id进行查询-->
@@ -39,7 +39,7 @@
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from system_user_role
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.kittydaddy.metadata.system.domain.UserRoleEntity">
     <selectKey keyProperty="id" resultType="String" order="BEFORE">
@@ -48,8 +48,8 @@
     insert into system_user_role (id, role_id, role_name, 
       role_code, user_id, tenant_id, 
       user_name)
-    values (#{id,jdbcType=BIGINT}, #{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
-      #{roleCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{tenantId,jdbcType=BIGINT}, 
+    values (#{id,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
+      #{roleCode,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{tenantId,jdbcType=VARCHAR}, 
       #{userName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.kittydaddy.metadata.system.domain.UserRoleEntity">
@@ -79,7 +79,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=BIGINT},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="roleId != null">
         #{roleId,jdbcType=VARCHAR},
@@ -91,10 +91,10 @@
         #{roleCode,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
+        #{userId,jdbcType=VARCHAR},
       </if>
       <if test="tenantId != null">
-        #{tenantId,jdbcType=BIGINT},
+        #{tenantId,jdbcType=VARCHAR},
       </if>
       <if test="userName != null">
         #{userName,jdbcType=VARCHAR},
@@ -114,10 +114,10 @@
         role_code = #{roleCode,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=VARCHAR},
       </if>
       <if test="tenantId != null">
-        tenant_id = #{tenantId,jdbcType=BIGINT},
+        tenant_id = #{tenantId,jdbcType=VARCHAR},
       </if>
       <if test="userName != null">
         user_name = #{userName,jdbcType=VARCHAR},
@@ -130,8 +130,8 @@
     set role_id = #{roleId,jdbcType=VARCHAR},
       role_name = #{roleName,jdbcType=VARCHAR},
       role_code = #{roleCode,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=BIGINT},
-      tenant_id = #{tenantId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=VARCHAR},
+      tenant_id = #{tenantId,jdbcType=VARCHAR},
       user_name = #{userName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
