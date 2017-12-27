@@ -18,6 +18,7 @@ import com.kittydaddy.facade.dto.system.UserDto;
 import com.kittydaddy.facade.dto.system.request.UserRequest;
 import com.kittydaddy.facade.dto.system.response.UserResponse;
 import com.kittydaddy.metadata.system.dao.UserMapper;
+import com.kittydaddy.metadata.system.domain.RoleEntity;
 import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.service.system.UserService;
 /**
@@ -26,11 +27,18 @@ import com.kittydaddy.service.system.UserService;
  */
 @Service
 public class UserServiceImpl implements UserService{
-	
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Override
+	public PageInfo<UserEntity> queryUserByPage(String name, String tenantId,Integer status, Integer pageIndex, Integer pageSize) {
+		PageHelper.startPage(pageIndex,pageSize, true, null, true);
+		List<UserEntity> list = userMapper.queryUsersByName(name, status, tenantId);
+		PageInfo<UserEntity> page = new PageInfo<UserEntity>(list);
+		return page;
+	}
 	
 	public UserResponse queryUserById(long userId) {
 		UserEntity userEntity = userMapper.queryUserById(userId);
@@ -55,10 +63,10 @@ public class UserServiceImpl implements UserService{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public PageInfo<UserDto> queryUsersByPage(String name,Integer status,Long tenantId,Integer pageIndex, Integer pageSize) {
 			PageHelper.startPage(pageIndex, pageSize, true, null, true);
-			List<UserEntity> userEntities = userMapper.queryUsersByName(name,status,tenantId);
-			PageInfo pageInfo = new PageInfo(userEntities);
-			List<UserDto> userDtos = UserConvert.convertEntity2Dto(userEntities);
-			pageInfo.setList(userDtos);
+//			List<UserEntity> userEntities = userMapper.queryUsersByName(name,status,tenantId);
+			PageInfo pageInfo =null;
+//			List<UserDto> userDtos = UserConvert.convertEntity2Dto(userEntities);
+//			pageInfo.setList(userDtos);
 			return pageInfo;
 	}
 
@@ -97,4 +105,5 @@ public class UserServiceImpl implements UserService{
 		entity.setStatus(oldStatus);
 		userMapper.updateByPrimaryKey(entity);
 	}
+
 }

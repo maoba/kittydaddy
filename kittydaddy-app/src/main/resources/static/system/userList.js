@@ -21,19 +21,21 @@ layui.config({
 	
 	//分页查询
     function pageQuery(queryParam) {
-        var queryUrl = '/role/roleList';
+        var queryUrl = '/user/userList';
+        debugger
         $.post(queryUrl, queryParam, function (data) {
+        	debugger
         	//渲染数据
         	renderData(data);
     		//分页
     		var nums = data.pageSize; //每页出现的数据量
     		laypage({
-    			cont : "role_page",
+    			cont : "user_page",
     			pages : data.pages,
     			curr: data.pageNum, //当前页  
     			jump : function(obj,first){
-    				$(".role_content").html(renderData(data));
-    				$('.role_list thead input[type="checkbox"]').prop("checked",false);
+    				$(".user_content").html(renderData(data));
+    				$('.user_list thead input[type="checkbox"]').prop("checked",false);
     				if(!first){
     					queryParam.pageIndex = obj.curr;
                         pageQuery();
@@ -51,15 +53,48 @@ layui.config({
 		var currData = data.list;
 		if(currData.length != 0){
 			for(var i=0;i<currData.length;i++){
+				var phoneNo = '',userName = '',tenantName = '',email = '',status='',sex='',createTime='';
+				if(currData[i].cellPhoneNum!=null){
+					phoneNo = currData[i].cellPhoneNum;
+				}
+				if(currData[i].userName!=null){
+					userName = currData[i].userName;
+				}
+				if(currData[i].tenantName!=null){
+					tenantName = currData[i].tenantName;
+				}
+				if(currData[i].email!=null){
+					email = currData[i].email;
+				}
+				if(currData[i].sex!=null){
+					if(currData[i].sex == 1){
+						sex = '女';
+					}else{
+						sex = '男';
+					}
+				}
+				if(currData[i].status!=null){
+					if(currData[i].status == 1){
+						status = '正常';
+					}else{
+						stauts = '已删除';
+					}
+				}
+				if(currData[i].createTime!=null){
+					createTime = moment(currData[i].createTime).format('YYYY/MM/DD HH:MM');
+				}
 				dataHtml += '<tr>'
 		    	+'<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>'
-		    	+'<td align="left">'+currData[i].roleName+'</td>'
-		    	+'<td>'+currData[i].roleCode+'</td>'
-		    	+'<td>'+currData[i].description+'</td>'
-		    	+'<td>'+moment(currData[i].createTime).format('YYYY/MM/DD HH:MM')+'</td>'
+		    	+'<td align="left">'+userName+'</td>'
+		    	+'<td>'+tenantName+'</td>'
+		    	+'<td>'+phoneNo+'</td>'
+		    	+'<td>'+email+'</td>'
+		    	+'<td>'+status+'</td>'
+		    	+'<td>'+sex+'</td>'
+		    	+'<td>'+createTime+'</td>'
 		    	+'<td>'
-				+  '<a class="layui-btn layui-btn-mini role_edit" data-id="'+currData[i].id+'"><i class="iconfont icon-edit"></i>编辑</a>'
-				+  '<a class="layui-btn layui-btn-danger layui-btn-mini role_del" data-id="'+currData[i].id+'"><i class="layui-icon">&#xe640;</i> 删除</a>'
+				+  '<a class="layui-btn layui-btn-mini user_edit" data-id="'+currData[i].id+'"><i class="iconfont icon-edit"></i>编辑</a>'
+				+  '<a class="layui-btn layui-btn-danger layui-btn-mini user_del" data-id="'+currData[i].id+'"><i class="layui-icon">&#xe640;</i> 删除</a>'
 		        +'</td>'
 		    	+'</tr>';
 			}
@@ -91,14 +126,14 @@ layui.config({
 	})
 
 	//添加角色
-	$(".roleAdd_btn").click(function(){
+	$(".userAdd_btn").click(function(){
 		var _this = $(this)
 		var index =  layui.layer.open({
 			title:false,
 			closeBtn : 0,
 			area: ['100%', '100%'],
 			type : 2,
-			content : '/role/roleAdd'
+			content : '/user/userAdd'
 		})
 		//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
 		$(window).resize(function(){

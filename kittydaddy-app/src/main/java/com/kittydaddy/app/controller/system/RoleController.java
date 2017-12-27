@@ -49,6 +49,16 @@ public class RoleController extends BaseController{
     	   return rolePage;
        }
        
+       @RequestMapping(method=RequestMethod.POST,value="saveRolePermission")
+       public String saveRolePermission(@RequestParam Map<String,Object> params){
+    	   try{
+    		   rolePermissionService.saveRolePermission(params);   
+    	   }catch(Exception e){
+    		   return RESULT_FAILURE;
+    	   }
+    	   return RESULT_SUCCESS;
+       }
+       
        @RequestMapping(method=RequestMethod.GET,value="roleEdit")
        public ModelAndView roleEdit(@RequestParam(value="roleId") String id){
     	   ModelAndView view = new ModelAndView();
@@ -87,66 +97,4 @@ public class RoleController extends BaseController{
     	   }
     	   return RESULT_SUCCESS;
        }
-       
-		/**
-		 * 获取当前租户之下的所有的角色
-		 * @param currentUserInfo
-		 * @return
-		 */
-//		@RequestMapping(method=RequestMethod.GET,value="/queryCurrentTenantRoles")
-//		@RequiresAuthentication
-//		public BaseResponse queryCurrentTenantRoles(@CurrentUser CurrentUserInfo currentUserInfo){
-//			 List<RoleDto> roleDtos = roleService.queryRolesByTenantId(currentUserInfo.getTenantId());
-//			 return BaseResponse.getSuccessResponse(new Date(), roleDtos);
-//		}
-	    
-		/**
-		 * 根据用户id查询绑定的角色
-		 * @param userId [用户Id]
-		 * @return
-		 */
-//		@RequestMapping(method=RequestMethod.GET,value="/queryBandingRoles")
-//		@RequiresAuthentication
-//		public BaseResponse queryBandingRoles(@RequestParam(value="userId") Long userId,@CurrentUser CurrentUserInfo currentUserInfo){
-//			 List<UserRoleDto> userRoleDtos = userRoleService.queryBandingRoles(userId,currentUserInfo.getTenantId());
-//			 return BaseResponse.getSuccessResponse(new Date(), userRoleDtos);
-//		}
-		
-		/**
-		 * 保存用户角色
-		 */
-//		@RequestMapping(method=RequestMethod.POST,value="/saveUserRole" )
-//		@RequiresAuthentication
-//		public BaseResponse saveUserRole(UserRoleRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
-//			request.setTenantId(currentUserInfo.getTenantId());
-//			userRoleService.saveUserRole(request);
-//			return BaseResponse.getSuccessResponse(new Date());
-//		}
-		
-		
-	   /**
-	    * 保存角色
-	    * @param request
-	    * @return
-	    */
-//	   @RequestMapping(method = RequestMethod.POST, value = "/save" )
-//	   @ResponseBody
-//	   public BaseResponse saveRole(RoleRequest request,@CurrentUser CurrentUserInfo currentUser){
-//		   //设置租户id
-//		   request.setTenantId(currentUser.getTenantId());
-//		   //保存角色
-//		   roleService.saveRole(request);
-//	   	   return BaseResponse.getSuccessResponse(new Date());
-//	   }
-	   
-	   /**
-	    * 更新角色信息
-	    * @param request
-	    * @return
-	    */
-//	   @RequestMapping(method = RequestMethod.POST, value = "/update")
-//	   public BaseResponse updateRole(RoleRequest request){
-//		    roleService.update(request);
-//		    return BaseResponse.getSuccessResponse(new Date());
-//	   }
 }

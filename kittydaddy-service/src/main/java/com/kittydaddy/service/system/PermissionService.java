@@ -93,5 +93,12 @@ public interface PermissionService {
 	 * @return
 	 */
 	List<LeftMenusDto> queryLeftMenus(String userId, String tenantId);
+    
+	/**
+	 * 根据租户的id查询树
+	 * @param tenantId
+	 * @return
+	 */
+	List<Map<String, Object>> queryPermissionTreeList(String tenantId);
 
 }

@@ -400,4 +400,28 @@ public class PermissionServiceImpl implements PermissionService{
 //   		  }
 //   	  }
 	}
+
+
+
+	@Override
+	public List<Map<String, Object>> queryPermissionTreeList(String tenantId) {
+		List<Map<String,Object>> permissionMaps = new ArrayList<Map<String,Object>>();
+		
+		List<PermissionEntity> permissionEntities = permissionMapper.queryPermissionByTenantId(tenantId);
+		if(CollectionUtils.isNotEmpty(permissionEntities)){
+			if(CollectionUtils.isEmpty(permissionEntities)) return permissionMaps;
+			for(PermissionEntity permissionEntity : permissionEntities){
+				Map<String,Object> map = new HashMap<String, Object>();
+				map.put("id", permissionEntity.getId());
+				map.put("pId", permissionEntity.getParentId()==null?"":permissionEntity.getParentId());
+				map.put("name", permissionEntity.getModuleName());
+				if(permissionEntity.getParentId()==null){
+					map.put("open", true);
+					map.put("isParent", true);
+				}
+				permissionMaps.add(map);
+			}
+		}
+		return permissionMaps;
+	}
 }

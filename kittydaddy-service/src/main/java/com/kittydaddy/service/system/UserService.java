@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.kittydaddy.facade.dto.system.UserDto;
 import com.kittydaddy.facade.dto.system.request.UserRequest;
 import com.kittydaddy.facade.dto.system.response.UserResponse;
+import com.kittydaddy.metadata.system.domain.UserEntity;
 /**
  * @author  maoba
  */
@@ -64,5 +65,15 @@ public interface UserService {
 	  * @param request
 	  */
 	 void updateApartUserInfo(UserRequest request);
+
+	 /**
+	  * 根据name查询用户
+	  * @param name
+	  * @param tenantId
+	  * @param pageIndex
+	  * @param pageSize
+	  * @return
+	  */
+	 PageInfo<UserEntity> queryUserByPage(String name, String tenantId,Integer status, Integer pageIndex, Integer pageSize);
      
 }

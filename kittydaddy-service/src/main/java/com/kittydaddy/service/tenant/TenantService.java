@@ -5,6 +5,7 @@ import java.util.Set;
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.facade.dto.tenant.TenantDto;
 import com.kittydaddy.facade.dto.tenant.requestdto.TenantRequest;
+import com.kittydaddy.metadata.tenant.domain.TenantEntity;
 
 public interface TenantService {
     
@@ -33,5 +34,15 @@ public interface TenantService {
 	 * @param request
 	 */
 	void update(TenantRequest request);
+    
+	/**
+	 * 分页查询租户
+	 * @param name
+	 * @param tenantId
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 */
+	PageInfo<TenantEntity> queryTenantsByPage(String name, String tenantId, Integer pageIndex, Integer pageSize);
      
 }

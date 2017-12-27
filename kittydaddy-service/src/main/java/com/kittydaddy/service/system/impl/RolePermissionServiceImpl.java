@@ -2,13 +2,15 @@ package com.kittydaddy.service.system.impl;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.kittydaddy.common.utils.IdSplitUtil;
+import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.facade.convert.system.RolePermissionConvert;
 import com.kittydaddy.facade.dto.system.RolePermissionDto;
 import com.kittydaddy.facade.dto.system.request.RolePermissionRequest;
@@ -76,11 +78,32 @@ public class RolePermissionServiceImpl implements RolePermissionService{
 		return rolePermissionEntities;
 	}
 
-
-
 	@Override
 	public void deleteByRoleId(String roleId) {
 		rolePermissionMapper.deleteByRoleId(roleId);
+	}
+
+	@Override
+	@Transactional
+	public void saveRolePermission(Map<String, Object> params) {
+		if(null != params.get("pmIds") && null!= params.get("roleId")){
+		     List<String> permissionIds = KStringUtils.splitString(params.get("pmIds").toString());
+		     String roleId = (String) params.get("roleId");
+		     RoleEntity roleEntity = roleMapper.selectByPrimaryKey(roleId);
+		     //根据roleId清除原本的角色权限之间的关系
+		     rolePermissionMapper.deleteByRoleId(roleId);
+		     //建立新的角色权限之间的关系
+		     for(String permissionId : permissionIds){
+		    	 RolePermissionEntity rolePermissionEntity = new RolePermissionEntity();
+		    	 rolePermissionEntity.setCreateTime(new Date());
+		    	 PermissionEntity entity = permissionMapper.selectByPrimaryKey(permissionId);
+		    	 rolePermissionEntity.setPermissionCode(entity.getPermissionCode());
+		    	 rolePermissionEntity.setPermissionId(permissionId);
+		    	 rolePermissionEntity.setRoleId(roleId);
+		    	 rolePermissionEntity.setRoleName(roleEntity.getRoleName());
+		    	 rolePermissionMapper.insert(rolePermissionEntity);
+		     }
+		}
 	}
 
 //	@Override

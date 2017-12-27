@@ -1,6 +1,6 @@
 package com.kittydaddy.app.controller.tenant;
 import java.util.Date;
-
+import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
-import com.kittydaddy.common.utils.IdSplitUtil;
+//import com.kittydaddy.common.utils.IdSplitUtil;
 import com.kittydaddy.facade.dto.tenant.TenantDto;
 import com.kittydaddy.facade.dto.tenant.requestdto.TenantRequest;
 import com.kittydaddy.facade.dto.tenant.responsedto.BaseResponse;
 import com.kittydaddy.facade.dto.tenant.responsedto.PageResponse;
+import com.kittydaddy.metadata.system.domain.RoleEntity;
+import com.kittydaddy.metadata.tenant.domain.TenantEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.tenant.TenantService;
@@ -25,34 +27,16 @@ import com.kittydaddy.service.tenant.TenantService;
  * 租户管理（提供给平台管理员）
  */
 @RestController
-@RequestMapping(value="/tenant/pc/tenant")
+@RequestMapping(value="/tenant")
 public class TenantController {
 	@Autowired
 	private TenantService tenantService;
 	
-	 /**
-     * 分页查询
-     * @param name 租户的名称
-     * @param pageIndex 当前页码
-     * @param pageSize 一页数量
-     * @param currentUser 
-     * @return
-     */
-    @SuppressWarnings("static-access")
-	@RequestMapping(method=RequestMethod.GET,value="/queryTenants")
-    @ResponseBody
-    public PageResponse queryTenantsByPage(
-		@RequestParam(value="name", required=false) String name,
-        @RequestParam(value="pageIndex", required=false,defaultValue="0") Integer pageIndex,
-        @RequestParam(value="pageSize", required=false,defaultValue="0") Integer pageSize,@CurrentUser CurrentUserInfo currentUser){
-    	PageResponse pageResponse = new PageResponse();
-    	Long tenantId = null;
-//    	if(currentUser.getTenantId() != 1){
-//    		tenantId = currentUser.getTenantId();
-//    	}
-    	//根据名称，租户的id查询角色
-    	PageInfo<TenantDto> tenantDtos = tenantService.queryTenantsByPage(tenantId,name,pageIndex,pageSize);
-	    return pageResponse.getSuccessPage(tenantDtos);
+	
+	@RequestMapping(method=RequestMethod.POST,value="roleList")
+    public PageInfo<TenantEntity> queryTenantList(String name,Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
+  	   PageInfo<TenantEntity> tenants = tenantService.queryTenantsByPage(name,currentUser.getTenantId(),pageIndex,pageSize);
+  	   return tenants;
     }
     
     /**
@@ -78,7 +62,7 @@ public class TenantController {
 	@RequiresAuthentication//表示删除
 	public BaseResponse delete(@RequestParam(value="ids") String ids){
 		 //删除租户的信息(逻辑删除)
-		tenantService.delete(IdSplitUtil.splitString2Long(ids));
+//		tenantService.delete(IdSplitUtil.splitString2Long(ids));
 		return BaseResponse.getSuccessResponse(new Date());
 	}
 	

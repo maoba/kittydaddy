@@ -2,13 +2,15 @@ package com.kittydaddy.app.controller.system;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.kittydaddy.common.utils.IdSplitUtil;
+import org.springframework.web.servlet.ModelAndView;
 import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.PermissionDto;
 import com.kittydaddy.facade.dto.system.request.RolePermissionRequest;
@@ -34,6 +36,30 @@ public class PermissionController {
     
     @Autowired
     private UserRoleService userRoleService;
+    
+    /**
+     * 跳转到树页面
+     * @param roleId
+     * @return
+     */
+    @RequestMapping(method=RequestMethod.GET,value="permissionTree")
+    public ModelAndView queryPermissionTree(@RequestParam String roleId){
+ 	    ModelAndView view = new ModelAndView();
+ 	    view.addObject("roleId",roleId);
+        view.setViewName("/page/system/permissionTree");
+        return view;
+    }
+    
+    /**
+     * 获取权限树列表
+     * @param currentUserInfo
+     * @return
+     */
+    @RequestMapping(method=RequestMethod.GET,value="permissionTreeList")
+    public List<Map<String,Object>> queryPermissionTreeList(@CurrentUser CurrentUserInfo currentUserInfo){
+    	List<Map<String,Object>> list = permissionService.queryPermissionTreeList(currentUserInfo.getTenantId());
+        return list;
+    }
     
     
 //    /**
@@ -186,7 +212,7 @@ public class PermissionController {
     @RequestMapping(method = RequestMethod.GET,value = "delete")
     public BaseResponse deletePermission(@RequestParam(value="ids") String ids){
     	//删除权限
-    	permissionService.delete(IdSplitUtil.splitString2Long(ids));
+//    	permissionService.delete(IdSplitUtil.splitString2Long(ids));
     	//删除角色权限关系
 //    	rolePermissionService.deleteByPermissionIds(IdSplitUtil.splitString2Long(ids));
     	

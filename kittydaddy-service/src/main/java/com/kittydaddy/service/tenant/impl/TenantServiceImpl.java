@@ -14,6 +14,7 @@ import com.kittydaddy.common.enums.StatusEnum;
 import com.kittydaddy.facade.convert.tenant.TenantConvert;
 import com.kittydaddy.facade.dto.tenant.TenantDto;
 import com.kittydaddy.facade.dto.tenant.requestdto.TenantRequest;
+import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.metadata.tenant.dao.TenantEntityMapper;
 import com.kittydaddy.metadata.tenant.domain.TenantEntity;
 import com.kittydaddy.service.tenant.TenantService;
@@ -76,6 +77,14 @@ public class TenantServiceImpl implements TenantService{
                   tenantMapper.updateByPrimaryKey(oldTenantEntity);
         	 }
          }		
+	}
+
+	@Override
+	public PageInfo<TenantEntity> queryTenantsByPage(String name, String tenantId, Integer pageIndex,Integer pageSize) {
+		PageHelper.startPage(pageIndex,pageSize, true, null, true);
+//		List<TenantEntity> list = tenantMapper.queryUsersByName(name, status, tenantId);
+//		PageInfo<TenantEntity> page = new PageInfo<TenantEntity>(list);
+		return null;
 	}
 
 }

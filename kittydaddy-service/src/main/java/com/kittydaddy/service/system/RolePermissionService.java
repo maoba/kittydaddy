@@ -1,5 +1,6 @@
 package com.kittydaddy.service.system;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import com.kittydaddy.metadata.system.domain.RolePermissionEntity;
 import com.kittydaddy.metadata.system.domain.UserRoleEntity;
@@ -25,6 +26,12 @@ public interface RolePermissionService {
 	 * @param roleId
 	 */
 	void deleteByRoleId(String roleId);
+
+	/**
+	 * 建立角色权限之间的关系
+	 * @param params
+	 */
+	void saveRolePermission(Map<String, Object> params);
     
 //	/**
 //	 * 查询某个角色已经绑定过的角色
