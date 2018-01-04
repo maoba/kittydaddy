@@ -22,9 +22,7 @@ layui.config({
 	//分页查询
     function pageQuery(queryParam) {
         var queryUrl = '/user/userList';
-        debugger
         $.post(queryUrl, queryParam, function (data) {
-        	debugger
         	//渲染数据
         	renderData(data);
     		//分页
@@ -93,7 +91,6 @@ layui.config({
 		    	+'<td>'+sex+'</td>'
 		    	+'<td>'+createTime+'</td>'
 		    	+'<td>'
-				+  '<a class="layui-btn layui-btn-mini user_edit" data-id="'+currData[i].id+'"><i class="iconfont icon-edit"></i>编辑</a>'
 				+  '<a class="layui-btn layui-btn-danger layui-btn-mini user_del" data-id="'+currData[i].id+'"><i class="layui-icon">&#xe640;</i> 删除</a>'
 		        +'</td>'
 		    	+'</tr>';
@@ -142,52 +139,52 @@ layui.config({
 		layui.layer.full(index);
 	})
 
-	//分配权限
-	$(".grant_permission").click(function(){
-		var $checkbox = $(".role_list").find('tbody input[type="checkbox"]:not([name="show"])');
-		var $checked = $('.role_list tbody input[type="checkbox"][name="checked"]:checked');
+	//分配角色
+	$(".grant_role").click(function(){
+		var $checkbox = $(".user_list").find('tbody input[type="checkbox"]:not([name="show"])');
+		var $checked = $('.user_list tbody input[type="checkbox"][name="checked"]:checked');
 		if($checkbox.is(":checked")&&($checked.length==1)){
-			var roleId = $checked.eq(0).parents("tr").find(".role_del").attr("data-id");
+			var userId = $checked.eq(0).parents("tr").find(".user_del").attr("data-id");
 			var index =  layui.layer.open({
-				title:"分配权限",
+				title:"分配角色",
 				closeBtn : 0,
 				fixed: true,
 				shadeClose: true,  
 			    move: false, 
 				scrollbar: false,
-				area: ['300px', '500px'],
+				area: ['900px', '150px'],
 				type : 2,
-				content : ['/permission/permissionTree?roleId=' + roleId,'no'],
+				content : ['/user/roleCheckList?checkUserId=' + userId,'no'],
 				btn: ['确认分配', '返回'],
 				yes: function(index, layero){
 					var iframeWin = window[layero.find('iframe')[0]['name']];
-			        var data = iframeWin.onCheck();
+			        var data = iframeWin.submitForm();
 			        if(data){
 			        	layer.alert('角色分配成功', {icon: 1});
 			        	form.render();
 			            location.reload();
 			        }else{
-			        	layer.alert('分配失败，请选择权限！', {icon: 2});
+			        	layer.alert('分配失败，请选择角色！', {icon: 2});
 			        }
 				}
 			})
 		}else{
-			layer.msg("请选择唯一一个分配的角色");
+			layer.msg("请选择唯一分配的角色");
 		}
 	})
 
 	//批量删除
 	$(".batchDel").click(function(){
-		var $checkbox = $('.role_list tbody input[type="checkbox"][name="checked"]');
-		var $checked = $('.role_list tbody input[type="checkbox"][name="checked"]:checked');
+		var $checkbox = $('.user_list tbody input[type="checkbox"][name="checked"]');
+		var $checked = $('.user_list tbody input[type="checkbox"][name="checked"]:checked');
 		if($checkbox.is(":checked")){
 			layer.confirm('确定删除选中的信息？',{icon:3, title:'提示信息'},function(index){
 				var index = layer.msg('删除中，请稍候',{icon: 16,time:false,shade:0.8});
 	            setTimeout(function(){
 	            	//删除数据
 	            	for(var j=0;j<$checked.length;j++){
-	            		var roleId = $checked.eq(j).parents("tr").find(".role_del").attr("data-id")
-	            		$.get('/role/deleteRole?roleId='+roleId,function(result){
+	            		var userId = $checked.eq(j).parents("tr").find(".user_del").attr("data-id")
+	            		$.get('/user/deleteUser?userId='+userId,function(result){
 							if('success' == result){
 								$('.role_list thead input[type="checkbox"]').prop("checked",false);
 				            	form.render();
@@ -202,7 +199,7 @@ layui.config({
 	            },500);
 	        })
 		}else{
-			layer.msg("请选择需要删除的角色");
+			layer.msg("请选择需要删除的用户");
 		}
 	})
 

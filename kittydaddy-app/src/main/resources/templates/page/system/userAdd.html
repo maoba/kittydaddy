@@ -18,20 +18,15 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">用户名称</label>
 	    <div class="layui-input-block">
-	      <input type="text" name="roleName"  required  lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+	      <input type="text" name="userName"  required  lay-verify="required" placeholder="请输入用户名称" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">所属租户</label>
 	    <div class="layui-input-block">
-	      <select name="tenantId" lay-verify="required">
+	      <select id="tenantNames" name="tenantId" lay-verify="required">
 	        <option value=""></option>
-	        <option value="0">北京</option>
-	        <option value="1">上海</option>
-	        <option value="2">广州</option>
-	        <option value="3">深圳</option>
-	        <option value="4">杭州</option>
 	      </select>
 	    </div>
       </div>
@@ -39,14 +34,14 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">手机号码</label>
 	    <div class="layui-input-block">
-	      <input type="text" name="roleCode"  required  lay-verify="required" placeholder="请输入角色编码" autocomplete="off" class="layui-input">
+	      <input type="text" name="mobile"  required  lay-verify="required" placeholder="请输入手机号码" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  
 	  <div class="layui-form-item">
-	    <label class="layui-form-label">邮箱地址</label>
+	    <label class="layui-form-label">默认密码</label>
 	    <div class="layui-input-block">
-	      <input type="text" name="roleCode"  required  lay-verify="required" placeholder="请输入角色编码" autocomplete="off" class="layui-input">
+	      <input type="text" name="userPwd"  required  lay-verify="required" value="123456"  autocomplete="off" class="layui-input" readonly="readonly">
 	    </div>
 	  </div>
 	  

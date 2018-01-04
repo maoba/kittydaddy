@@ -1,8 +1,8 @@
 package com.kittydaddy.app.controller.system;
 import com.kittydaddy.common.constant.TemplateConstants;
-import com.kittydaddy.common.enums.EncryptionEnum;
 import com.kittydaddy.common.enums.LoginTypeEnum;
 import com.kittydaddy.common.enums.TerminalTypeEnum;
+import com.kittydaddy.common.utils.KCryptogramUtil;
 import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.request.UserLoginRequest;
 import com.kittydaddy.facade.dto.system.request.UserRequest;
@@ -18,15 +18,13 @@ import com.kittydaddy.service.system.UserService;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.crypto.RandomNumberGenerator;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -50,24 +48,6 @@ public class BaseController {
 	 
 	 @Autowired
 	 private PermissionService permissionService;
-    /**
-     * 获取加密后的密码
-     * @param salt 盐
-     * @param password 明文密码
-     * @param telephone 手机号码
-     * @param email 邮箱
-     * @return
-     */
-    public String getEncryptPassword(String salt,String password,String telephone,String email){
-        if(StringUtils.isNotEmpty(telephone)){
-            return new SimpleHash(EncryptionEnum.ALGORITHMNAME.getValue(),password,
-                    ByteSource.Util.bytes(telephone + salt),Integer.parseInt(EncryptionEnum.HASHITERATIONS.getValue())).toHex();
-        }else if(StringUtils.isNotEmpty(email)){
-            return new SimpleHash(EncryptionEnum.ALGORITHMNAME.getValue(),password,
-                    ByteSource.Util.bytes(email +salt),Integer.parseInt(EncryptionEnum.HASHITERATIONS.getValue())).toHex();
-        }
-        return null;
-    }
 
     /**
      * 跳转到登陆页面
@@ -77,6 +57,18 @@ public class BaseController {
     public String login() {
         return TemplateConstants.LOGIN_TEMPLATES;
     }
+    
+    /**
+     * 登出
+     * @param currentUserInfo
+     * @return
+     */
+    @RequestMapping(value="/logout",method=RequestMethod.GET) 
+    @RequiresAuthentication
+    public String logout(){
+		securityService.logout();
+		return "redirect:/login.html";
+    } 
     
     /**
      * pc端后台进行登入
@@ -124,9 +116,7 @@ public class BaseController {
 	@ResponseBody
 	public BaseResponse saveUser(@RequestBody UserRequest request){
 		//获取相关的盐
-		RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
-		String salt = randomNumberGenerator.nextBytes().toHex();
-		request.setSalt(salt);
+		request.setSalt(KCryptogramUtil.getSalt());
 		request.setTerminalType(TerminalTypeEnum.TERMINAL_PC.getValue());
 
 		//设置租户 id
@@ -135,11 +125,11 @@ public class BaseController {
 
 		//邮箱方式注册设置加密密码
 		if(LoginTypeEnum.SYSTEM_EMAIL_LOGIN.getType() == loginType){
-			request.setUserPwd(this.getEncryptPassword(salt, request.getUserPwd(), null, request.getEmail()));
+			request.setUserPwd(KCryptogramUtil.getEncryptPassword(request.getSalt(),request.getUserPwd(), null, request.getEmail()));
 
 			//手机方式注册设置加密密码
 		}else if(LoginTypeEnum.SYSTEM_CELLPHONE_LOGIN.getType() == loginType){
-			request.setUserPwd(this.getEncryptPassword(salt, request.getUserPwd(), null, request.getCellPhoneNum()));
+			request.setUserPwd(KCryptogramUtil.getEncryptPassword(request.getSalt(),request.getUserPwd(), request.getCellPhoneNum(), null));
 		}
 
 		request.setCreateTime(new Date());
@@ -169,5 +159,19 @@ public class BaseController {
     	ModelAndView view = new ModelAndView();
     	view.setViewName("/main");
     	return view;
+    }
+    
+    
+    /**
+     * 跳转到修改密码的页面
+     * @return
+     */
+    @RequestMapping(method=RequestMethod.GET,value="modifyPassWord")
+    public ModelAndView modifyPassWord(@CurrentUser CurrentUserInfo currentUserInfo){
+ 	   ModelAndView view = new ModelAndView();
+ 	   view.addObject("currentUserName", currentUserInfo.getUserName());
+ 	   view.addObject("currentUserId",currentUserInfo.getUserId());
+ 	   view.setViewName("/page/system/changePwd");
+ 	   return view;
     }
 }

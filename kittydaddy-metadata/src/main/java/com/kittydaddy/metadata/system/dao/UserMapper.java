@@ -6,13 +6,13 @@ import org.apache.ibatis.annotations.Param;
 import com.kittydaddy.metadata.system.domain.UserEntity;
 
 public interface UserMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
     
     int insert(UserEntity record);
 
     int insertSelective(UserEntity record);
 
-    UserEntity selectByPrimaryKey(Long id);
+    UserEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(UserEntity record);
 
@@ -22,9 +22,9 @@ public interface UserMapper {
 
 	UserEntity queryUserById(@Param(value="id") long userId);
 
-	UserEntity queryUserByEmail(@Param(value="email") String email, @Param(value="terminalType") Integer terminalType);
+	UserEntity queryUserByEmail(@Param(value="email") String email);
 	
-	UserEntity queryUserByCellPhone(@Param(value="cellPhoneNum") String cellPhoneNum, @Param(value="terminalType") Integer terminalType);
+	UserEntity queryUserByCellPhone(@Param(value="cellPhoneNum") String cellPhoneNum);
 
 	List<UserEntity> queryUsersByName(@Param(value="name") String name,@Param(value="status") Integer status,@Param(value="tenantId") String tenantId);
 }

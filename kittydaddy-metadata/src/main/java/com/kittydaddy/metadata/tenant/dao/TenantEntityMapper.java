@@ -10,7 +10,7 @@ public interface TenantEntityMapper {
 
     int insertSelective(TenantEntity record);
 
-    TenantEntity selectByPrimaryKey(Long id);
+    TenantEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(TenantEntity record);
 

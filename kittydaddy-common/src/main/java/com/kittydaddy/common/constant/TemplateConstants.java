@@ -14,5 +14,9 @@ public class TemplateConstants {
 	 * 系统的主页面模板
 	 */
 	public static final String LAYOUT_TEMPLATES = "layout";
-
+	
+	/**
+	 * 修改密码
+	 */
+    public static final String CHANGE_PWD_TEMPLATES = "changePwd";
 }

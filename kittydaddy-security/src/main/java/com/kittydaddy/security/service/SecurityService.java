@@ -37,8 +37,8 @@ public class SecurityService {
 		if(StringUtils.isEmpty(request.getLoginName())) throw new ParamCheckException("用户名为空");
 		token = new SystemToken(request.getLoginName(), request.getPassword());
 		resp = (request.getLoginName().indexOf("@")!=-1)? 
-				userService.queryUserByEmail(request.getLoginName(), request.getTerminalType())//根据邮箱查询
-				:userService.queryUserByCellPhone(request.getLoginName(), request.getTerminalType());//根据手机号查询
+				userService.queryUserByEmail(request.getLoginName())//根据邮箱查询
+				:userService.queryUserByCellPhone(request.getLoginName());//根据手机号查询
 		token.setTerminalType(request.getTerminalType());
 		
 		/** 获取当前的subject **/

@@ -29,6 +29,12 @@ public interface UserRoleService {
 	 * @param roleId
 	 */
 	void deleteByRoleId(String roleId);
+     
+	/**
+	 * 根据用户id解除用户角色的关系
+	 * @param userId
+	 */
+	void deleteByUserId(String userId);
     
 //	/**
 //	 * 根据userId查询用户角色关系

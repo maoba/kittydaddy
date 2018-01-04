@@ -23,5 +23,5 @@ public interface UserRoleEntityMapper {
 
 	void deleteByRoleId(@Param(value="roleId") String roleId);
 
-	void deleteByUserId(@Param(value="userId") Long userId);
+	void deleteByUserId(@Param(value="userId") String userId);
 }

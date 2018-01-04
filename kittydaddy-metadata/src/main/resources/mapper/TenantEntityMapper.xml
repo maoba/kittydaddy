@@ -14,11 +14,11 @@
   <sql id="Base_Column_List" >
     id, name, description, location, detail_id, status, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tenant
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   
   <!--根据名字查询租户列表-->
@@ -30,9 +30,9 @@
      and status = 1
   </select>
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" >
     delete from tenant
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   
   <insert id="insert" parameterType="com.kittydaddy.metadata.tenant.domain.TenantEntity" >
@@ -42,8 +42,8 @@
     insert into tenant (id, name, description, 
       location, detail_id, status, 
       create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{location,jdbcType=VARCHAR}, #{detailId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{detailId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.kittydaddy.metadata.tenant.domain.TenantEntity" >

@@ -23,7 +23,7 @@
     id, user_name, user_pwd, tenant_id, tenant_name, cell_phone_num, email, salt, create_time, 
     update_time, avatar, position, status ,terminal_type, sex ,login_type
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from system_user
@@ -41,12 +41,12 @@
   
   <!--根据邮箱查询-->
   <select id="queryUserByEmail" resultMap="BaseResultMap">
-     select * from system_user where email = #{email,jdbcType=VARCHAR} and terminal_type = #{terminalType,jdbcType=INTEGER}
+     select * from system_user where email = #{email,jdbcType=VARCHAR} and status = 1
   </select>
   
   <!--根据手机号码查询-->
   <select id="queryUserByCellPhone" resultMap="BaseResultMap">
-    select * from system_user where cell_phone_num = #{cellPhoneNum,jdbcType=VARCHAR} and terminal_type = #{terminalType,jdbcType=INTEGER}
+     select * from system_user where cell_phone_num = #{cellPhoneNum,jdbcType=VARCHAR} and status = 1
   </select>
   
   <!--根据名称以及租户的Id进行查询-->
@@ -64,9 +64,8 @@
         and tenant_id = #{tenantId}
   </select>
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from system_user
-    where id = #{id,jdbcType=BIGINT}
+  <delete id="deleteByPrimaryKey">
+    delete from system_user where id = #{id}
   </delete>
   <insert id="insert" parameterType="com.kittydaddy.metadata.system.domain.UserEntity">
     <selectKey keyProperty="id" resultType="String" order="BEFORE">

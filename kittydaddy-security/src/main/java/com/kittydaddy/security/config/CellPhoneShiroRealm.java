@@ -82,10 +82,10 @@ public class CellPhoneShiroRealm extends AuthorizingRealm {
 	private UserResponse getUserResponse(String loginName,Integer terminalType) {
 		UserResponse response = null;
 		if (StringUtils.isNotEmpty(loginName) && (loginName.indexOf("@") != -1)) {// 表示邮箱登入
-			response = userService.queryUserByEmail(loginName,terminalType);
+			response = userService.queryUserByEmail(loginName);
 			
 		} else if (StringUtils.isNotEmpty(loginName)) {// 表示手机登入
-			response = userService.queryUserByCellPhone(loginName,terminalType);
+			response = userService.queryUserByCellPhone(loginName);
 			
 		} else {
 			throw new UnknownAccountException();

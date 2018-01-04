@@ -1,6 +1,5 @@
 package com.kittydaddy.app.controller.tenant;
 import java.util.Date;
-import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
+import com.kittydaddy.app.controller.system.BaseController;
 //import com.kittydaddy.common.utils.IdSplitUtil;
 import com.kittydaddy.facade.dto.tenant.TenantDto;
 import com.kittydaddy.facade.dto.tenant.requestdto.TenantRequest;
@@ -28,12 +28,12 @@ import com.kittydaddy.service.tenant.TenantService;
  */
 @RestController
 @RequestMapping(value="/tenant")
-public class TenantController {
+public class TenantController extends BaseController{
 	@Autowired
 	private TenantService tenantService;
 	
 	
-	@RequestMapping(method=RequestMethod.POST,value="roleList")
+	@RequestMapping(method=RequestMethod.POST,value="queryTenantList")
     public PageInfo<TenantEntity> queryTenantList(String name,Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
   	   PageInfo<TenantEntity> tenants = tenantService.queryTenantsByPage(name,currentUser.getTenantId(),pageIndex,pageSize);
   	   return tenants;

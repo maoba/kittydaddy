@@ -23,6 +23,8 @@ layui.config({
 		window.sessionStorage.setItem("lockcms",true);
 		lockPage();
 	})
+	
+	
 	// 判断是否显示锁屏
 	if(window.sessionStorage.getItem("lockcms") == "true"){
 		lockPage();
@@ -100,6 +102,25 @@ layui.config({
 	$(".showNotice").on("click",function(){
 		showNotice();
 	})
+	
+//	$("#modifyPassWord").on("click",function(){
+//		debugger
+//		var _this = $(this)
+//		var index =  layer.open({
+//			title:false,
+//			closeBtn : 0,
+//			id: 'LAY_layuiModify',
+//			area: ['100%', '100%'],
+//			type : 2,
+//			content : '/user/userAdd'
+//		})
+//		//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+//		$(window).resize(function(){
+//			debugger
+//			layer.full(index);
+//		})
+//		layer.full(index);
+//	})
 
 	//刷新后还原打开的窗口
 	if(window.sessionStorage.getItem("menu") != null){

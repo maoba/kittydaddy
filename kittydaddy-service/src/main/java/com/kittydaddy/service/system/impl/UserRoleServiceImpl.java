@@ -1,6 +1,5 @@
 package com.kittydaddy.service.system.impl;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -57,7 +56,7 @@ public class UserRoleServiceImpl implements UserRoleService{
 	public void deleteByUserId(Set<Long> ids) {
          if(CollectionUtils.isNotEmpty(ids)){
         	 for(Long id : ids){
-        		 userRoleMapper.deleteByUserId(id);
+//        		 userRoleMapper.deleteByUserId(id);
         	 }
          }		
 	}
@@ -65,6 +64,12 @@ public class UserRoleServiceImpl implements UserRoleService{
 	@Override
 	public void deleteByRoleId(String roleId) {
 		userRoleMapper.deleteByRoleId(roleId);
+	}
+
+	@Override
+	@Transactional
+	public void deleteByUserId(String userId) {
+		userRoleMapper.deleteByUserId(userId);
 	}
 
 //	@Override
