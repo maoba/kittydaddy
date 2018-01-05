@@ -24,7 +24,6 @@ layui.config({
 		lockPage();
 	})
 	
-	
 	// 判断是否显示锁屏
 	if(window.sessionStorage.getItem("lockcms") == "true"){
 		lockPage();
@@ -34,13 +33,21 @@ layui.config({
 		if($(this).siblings(".admin-header-lock-input").val() == ''){
 			layer.msg("请输入解锁密码！");
 		}else{
-			if($(this).siblings(".admin-header-lock-input").val() == "123456"){
-				window.sessionStorage.setItem("lockcms",false);
-				$(this).siblings(".admin-header-lock-input").val('');
-				layer.closeAll("page");
-			}else{
-				layer.msg("密码错误，请重新输入！");
-			}
+			$.ajax({ 
+                type : "get", 
+                url : "/user/checkPassword", 
+                data : "oldPassword=" + $(this).siblings(".admin-header-lock-input").val(), 
+                async : false, 
+                success : function(data){ 
+                   if('success'!= data){
+                	   layer.msg("密码错误，请重新输入！");
+                   }else{
+                	   window.sessionStorage.setItem("lockcms",false);
+       				   $(this).siblings(".admin-header-lock-input").val('');
+       				   layer.closeAll("page");
+                   }
+                } 
+            });
 		}
 	});
 	$(document).on('keydown', function() {
@@ -78,7 +85,7 @@ layui.config({
 	        id: 'LAY_layuipro', //设定一个id，防止重复弹出
 	        btn: ['火速围观'],
 	        moveType: 1, //拖拽模式，0或者1
-	        content: '<div style="padding:15px 20px; text-align:justify; line-height: 22px; text-indent:2em;border-bottom:1px solid #e2e2e2;"><p>最近偶然发现贤心大神的layui框架，瞬间被他的完美样式所吸引，虽然功能不算强大，但毕竟是一个刚刚出现的框架，后面会慢慢完善的。很早之前就想做一套后台模版，但是感觉bootstrop代码的冗余太大，不是非常喜欢，自己写又太累，所以一直闲置了下来。直到遇到了layui我才又燃起了制作一套后台模版的斗志。由于本人只是纯前端，所以页面只是单纯的实现了效果，没有做服务器端的一些处理，可能后期技术跟上了会更新的，如果有什么问题欢迎大家指导。谢谢大家。</p><p>在此特别感谢Beginner和Paco，他们写的框架给了我很好的启发和借鉴。希望有时间可以多多请教。</p></div>',
+	        content: '<div style="padding:15px 20px; text-align:justify; line-height: 22px; text-indent:2em;border-bottom:1px solid #e2e2e2;"><p>该系统目前实现相关权限功能。</p><p>在此特别感谢Beginner和Paco，他们写的框架给了我很好的启发和借鉴。希望有时间可以多多请教。</p></div>',
 	        success: function(layero){
 				var btn = layero.find('.layui-layer-btn');
 				btn.css('text-align', 'center');
@@ -103,25 +110,6 @@ layui.config({
 		showNotice();
 	})
 	
-//	$("#modifyPassWord").on("click",function(){
-//		debugger
-//		var _this = $(this)
-//		var index =  layer.open({
-//			title:false,
-//			closeBtn : 0,
-//			id: 'LAY_layuiModify',
-//			area: ['100%', '100%'],
-//			type : 2,
-//			content : '/user/userAdd'
-//		})
-//		//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
-//		$(window).resize(function(){
-//			debugger
-//			layer.full(index);
-//		})
-//		layer.full(index);
-//	})
-
 	//刷新后还原打开的窗口
 	if(window.sessionStorage.getItem("menu") != null){
 		menu = JSON.parse(window.sessionStorage.getItem("menu"));

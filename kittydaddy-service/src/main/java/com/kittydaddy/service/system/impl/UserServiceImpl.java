@@ -3,9 +3,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ import com.github.pagehelper.PageInfo;
 import com.kittydaddy.common.enums.LoginTypeEnum;
 import com.kittydaddy.common.enums.StatusEnum;
 import com.kittydaddy.common.utils.KCryptogramUtil;
+import com.kittydaddy.common.utils.KDateUtils;
+import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.facade.convert.system.UserConvert;
 import com.kittydaddy.facade.dto.system.UserDto;
 import com.kittydaddy.facade.dto.system.request.UserRequest;
@@ -56,11 +59,9 @@ public class UserServiceImpl implements UserService{
 		return page;
 	}
 	
-	public UserResponse queryUserById(long userId) {
-		UserEntity userEntity = userMapper.queryUserById(userId);
-		UserResponse response = new UserResponse();
-		BeanUtils.copyProperties(userEntity, response);
-		return response;
+	public UserEntity queryUserById(String userId) {
+		UserEntity userEntity = userMapper.selectByPrimaryKey(userId);
+		return userEntity;
 	}
 
 	public UserResponse queryUserByEmail(String email) {
@@ -127,16 +128,23 @@ public class UserServiceImpl implements UserService{
 	public void saveUpdateUser(Map<String, Object> params) {
 		 String salt = KCryptogramUtil.getSalt();
   	     String tenantId = params.get("tenantId")==null?"":params.get("tenantId").toString();
+  	     String tenantName = params.get("tenantName")==null?"":params.get("tenantName").toString();
          String userName = params.get("userName")==null?"":params.get("userName").toString();
          String mobile = params.get("mobile")==null?"":params.get("mobile").toString();
          Integer sex = params.get("sex")==null?0:Integer.parseInt(params.get("sex").toString());
          String userPwd = params.get("userPwd")==null?"":params.get("userPwd").toString();
          String encodePwd = KCryptogramUtil.getEncryptPassword(salt,userPwd, mobile, null);
-         String tenantName = null;
-         TenantEntity tenantEntity = tenantMapper.selectByPrimaryKey(tenantId);
-         if(tenantEntity!=null) tenantName = tenantEntity.getName();
+         String realName = params.get("realName")==null?"":params.get("realName").toString();
+         String birthday = params.get("birthday")==null?"":params.get("birthday").toString();
+         String province = params.get("province")==null?"":params.get("province").toString();
+         String city = params.get("city")==null?"":params.get("city").toString();
+         String area = params.get("area")==null?"":params.get("area").toString();
+         String email = params.get("email") == null?"":params.get("email").toString();
+         String hobby = params.get("hobby") == null?"":params.get("hobby").toString();
          
          if(params.get("id") == null){//表示新增
+        	 TenantEntity tenantEntity = tenantMapper.selectByPrimaryKey(tenantId);
+             if(tenantEntity!=null) tenantName = tenantEntity.getName();
         	 UserEntity userEntity = new UserEntity();
         	 userEntity.setCellPhoneNum(mobile);
         	 userEntity.setCreateTime(new Date());
@@ -154,7 +162,23 @@ public class UserServiceImpl implements UserService{
         	 UserEntity oldUserEntity = userMapper.selectByPrimaryKey(params.get("id").toString());
         	 if(oldUserEntity == null) logger.error(String.format("用户Id%s对应的数据为空",params.get("id").toString()));
         	 oldUserEntity.setUpdateTime(new Date());
-        	 oldUserEntity.setUserPwd(KCryptogramUtil.getEncryptPassword(oldUserEntity.getSalt(), userPwd, oldUserEntity.getCellPhoneNum(), oldUserEntity.getEmail()));
+        	 if(KStringUtils.isNotEmpty(realName)) oldUserEntity.setRealName(realName);
+        	 if(KStringUtils.isNotEmpty(tenantName)) oldUserEntity.setTenantName(tenantName);
+        	 if(params.get("sex") !=null) oldUserEntity.setSex(sex);
+        	 if(KStringUtils.isNotEmpty(mobile)) oldUserEntity.setCellPhoneNum(mobile);
+        	 if(KStringUtils.isNotEmpty(birthday)) oldUserEntity.setBirthday(KDateUtils.parseDate(birthday, "yyyy-MM-dd"));
+        	 if(KStringUtils.isNotEmpty(province)) oldUserEntity.setProvince(province);
+        	 if(KStringUtils.isNotEmpty(city)) oldUserEntity.setCity(city);
+        	 if(KStringUtils.isNotEmpty(area)) oldUserEntity.setArea(area);
+        	 if(KStringUtils.isNotEmpty(email)) oldUserEntity.setEmail(email);
+        	 if(KStringUtils.isNotEmpty(hobby)) oldUserEntity.setHobby(hobby);
+        	 
+        	 TenantEntity tenantEntity = tenantMapper.selectByPrimaryKey(tenantId);
+        	 if(tenantEntity!=null && params.get("tenantName")!=null) {
+        		 tenantEntity.setName(tenantName);
+        		 tenantMapper.updateByPrimaryKey(tenantEntity);
+        	 }
+        	 if(KStringUtils.isNotEmpty(userPwd)) oldUserEntity.setUserPwd(KCryptogramUtil.getEncryptPassword(oldUserEntity.getSalt(), userPwd, oldUserEntity.getCellPhoneNum(), oldUserEntity.getEmail()));
         	 userMapper.updateByPrimaryKey(oldUserEntity);
          }	
 	}

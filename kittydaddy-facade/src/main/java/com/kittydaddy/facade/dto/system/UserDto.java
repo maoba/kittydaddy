@@ -7,11 +7,12 @@ import java.util.Date;
  * 用户dto
  */
 public class UserDto {
+    
 	/**
-	 * 主键id
+	 * 主键
 	 */
-	private Long id;
-	
+    private String id;
+
     /**
      * 用户名称
      */
@@ -25,7 +26,7 @@ public class UserDto {
     /**
      * 租户id
      */
-    private Long tenantId;
+    private String tenantId;
 
    /**
     * 租户名称 
@@ -68,21 +69,106 @@ public class UserDto {
     private String position;
 
    /**
-    * 状态  -1:表示删除 0：表示失效  1：表示正常状态  2：表示锁定状态
+    * 状态  -1:表示删除 0：表示失效  1：表示正常状态
     */
     private Integer status;
     
     /**
-     * 登录方式
+     * 终端类型
+     */
+    private Integer terminalType;
+    
+    /**
+     * 性别 0-男 1-女
+     */
+    private Integer sex;
+    
+    /**
+     * 登入方式
+     *  0：表示手机登入
+     *  1：表示邮箱登入
      */
     private Integer loginType;
     
     /**
-     * 性别    
+     * 省份
      */
-    private Integer sex;
+    private String province;
     
-    public Integer getLoginType() {
+    /**
+     * 市
+     */
+    private String city;
+
+    /**
+     * 区
+     */
+    private String area;
+    
+    /**
+     * 爱好
+     */
+    private String hobby;
+    
+    /**
+     * 出生日期
+     */
+    private String birthday;
+    
+    /**
+     * 真实姓名
+     */
+    private String realName;
+    
+    public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getHobby() {
+		return hobby;
+	}
+
+	public void setHobby(String hobby) {
+		this.hobby = hobby;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public Integer getLoginType() {
 		return loginType;
 	}
 
@@ -98,13 +184,21 @@ public class UserDto {
 		this.sex = sex;
 	}
 
-	public Long getId() {
-	    return id;
-    }
+	public Integer getTerminalType() {
+		return terminalType;
+	}
 
-    public void setId(Long id) {
-	    this.id = id;
-    }
+	public void setTerminalType(Integer terminalType) {
+		this.terminalType = terminalType;
+	}
+
+    public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getUserName() {
         return userName;
@@ -122,15 +216,15 @@ public class UserDto {
         this.userPwd = userPwd == null ? null : userPwd.trim();
     }
 
-    public Long getTenantId() {
-        return tenantId;
-    }
+    public String getTenantId() {
+		return tenantId;
+	}
 
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
 
-    public String getTenantName() {
+	public String getTenantName() {
         return tenantName;
     }
 

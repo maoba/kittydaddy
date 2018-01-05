@@ -1,22 +1,12 @@
 package com.kittydaddy.service.system;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.github.pagehelper.PageInfo;
-import com.kittydaddy.facade.dto.system.RoleDto;
-import com.kittydaddy.facade.dto.system.request.RoleRequest;
 import com.kittydaddy.metadata.system.domain.RoleEntity;
 
 public interface RoleService {
      
-	/**
-	 * 保存角色
-	 * @param request
-	 */
-	void saveRole(RoleRequest request);
-    
 	/**
 	 * 分页查询
 	 * @param name 角色名称
@@ -27,19 +17,6 @@ public interface RoleService {
 	 */
 	PageInfo<RoleEntity> queryRolesByPage(String name, String tenantId, Integer pageIndex, Integer pageSize);
 
-	/**
-	 * 更新角色
-	 * @param request
-	 */
-	void update(RoleRequest request);
-    
-	/**
-	 * 根据租户的id查询租户的信息
-	 * @param tenantId [租户id]
-	 * @return
-	 */
-	List<RoleDto> queryRolesByTenantId(Long tenantId);
-    
 	/**
 	 * 
 	 * @param object

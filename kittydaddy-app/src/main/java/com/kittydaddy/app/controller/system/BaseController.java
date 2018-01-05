@@ -3,10 +3,11 @@ import com.kittydaddy.common.constant.TemplateConstants;
 import com.kittydaddy.common.enums.LoginTypeEnum;
 import com.kittydaddy.common.enums.TerminalTypeEnum;
 import com.kittydaddy.common.utils.KCryptogramUtil;
-import com.kittydaddy.facade.dto.system.LeftMenusDto;
+import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.facade.dto.system.request.UserLoginRequest;
 import com.kittydaddy.facade.dto.system.request.UserRequest;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
+import com.kittydaddy.metadata.util.RedisUtil;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.security.service.SecurityService;
@@ -16,9 +17,8 @@ import com.kittydaddy.service.system.PermissionService;
 import com.kittydaddy.service.system.UserService;
 
 import java.util.Date;
-import java.util.List;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,16 +46,15 @@ public class BaseController {
 	 @Autowired
 	 private SecurityService securityService;
 	 
-	 @Autowired
-	 private PermissionService permissionService;
-
     /**
      * 跳转到登陆页面
      * @return
      */
     @RequestMapping(value = "/login.html",method = RequestMethod.GET)
-    public String login() {
-        return TemplateConstants.LOGIN_TEMPLATES;
+    public ModelAndView login() {
+    	ModelAndView modelAndView = new ModelAndView();
+    	modelAndView.setViewName("login");
+        return modelAndView;
     }
     
     /**
@@ -84,28 +83,30 @@ public class BaseController {
 //		String password = RSAUtils.decryptStringByJs(pass); 
 //		if(StringUtils.isNotEmpty(RSAUtils.decryptStringByJs(pass))) request.setPassword(password);
 		//进行Pc端登入
-		String sessionId = securityService.login(request);
-		if(StringUtils.isEmpty(sessionId)){
+	    Session session = securityService.login(request);
+		if(session==null || KStringUtils.isEmpty(session.getId().toString())){
 			mav.addObject("errorMessage","用户名或密码错误");
             mav.setViewName("login");
             return mav;
 		}
+		mav.addObject("currentUserName", session.getAttribute("userName"));
 		mav.setViewName("index");
 		return mav;
 	} 
     
-	 /**
-     * 跳转到主页面
-     * @param map
-     * @return
-     */
-    @RequestMapping(value="/index.do",method = RequestMethod.GET)
-    public ModelAndView layoutPage(@CurrentUser CurrentUserInfo currentUserInfo){
-    	ModelAndView view = new ModelAndView();
-    	List<LeftMenusDto> leftMenus = permissionService.queryLeftMenus(currentUserInfo.getUserId(),currentUserInfo.getTenantId());
-        view.addObject("leftMenus",leftMenus);
-        return view;
-    }
+//	 /**
+//     * 跳转到主页面
+//     * @param map
+//     * @return
+//     */
+//    @RequestMapping(value="/index.do",method = RequestMethod.GET)
+//    public ModelAndView layoutPage(@CurrentUser CurrentUserInfo currentUserInfo){
+//    	ModelAndView view = new ModelAndView();
+//    	List<LeftMenusDto> leftMenus = permissionService.queryLeftMenus(currentUserInfo.getUserId(),currentUserInfo.getTenantId());
+//        view.addObject("leftMenus",leftMenus);
+//        view.addObject("currentUserName",currentUserInfo.getUserName());
+//        return view;
+//    }
     
     /**
 	 * 保存用户

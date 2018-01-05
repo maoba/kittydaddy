@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kittydaddy.common.utils.KStringUtils;
-import com.kittydaddy.facade.convert.system.RolePermissionConvert;
 import com.kittydaddy.facade.dto.system.RolePermissionDto;
 import com.kittydaddy.facade.dto.system.request.RolePermissionRequest;
 import com.kittydaddy.metadata.system.dao.PermissionEntityMapper;

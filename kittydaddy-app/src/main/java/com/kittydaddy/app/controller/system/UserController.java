@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import com.kittydaddy.facade.convert.system.UserConvert;
+import com.kittydaddy.facade.dto.system.UserDto;
 import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
@@ -35,6 +36,16 @@ public class UserController extends BaseController{
         view.setViewName("/page/system/userList");
         return view;
     }
+	
+	@RequestMapping(method=RequestMethod.GET,value="editUserInfo")
+	public ModelAndView editUserInfo(@CurrentUser CurrentUserInfo currentUserInfo){
+	    ModelAndView view = new ModelAndView();
+	    UserEntity userEntity = userService.queryUserById(currentUserInfo.getUserId());
+	    UserDto userDto = UserConvert.convertEntity2Dto(userEntity);
+	    view.addObject("currentUser",userDto);
+	    view.setViewName("/page/system/userInfo");
+	    return view;
+	}	
 	
 	 /**
      * 校验密码是否正确

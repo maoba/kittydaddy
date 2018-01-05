@@ -14,7 +14,7 @@ public interface UserService {
       * @param userId
       * @return
       */
-	 UserResponse queryUserById(long userId);
+	 UserEntity queryUserById(String userId);
      
 	 /**
 	  * 根据email地址以及终端类型进行查询

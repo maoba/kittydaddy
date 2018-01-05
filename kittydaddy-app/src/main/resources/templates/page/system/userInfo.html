@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>个人资料--layui后台管理模板</title>
+	<meta name="renderer" content="webkit">
+	<#assign path="${request.getContextPath()}">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="${path}/static/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="${path}/static/css/user.css" media="all" />
+</head>
+<body class="childrenBody">
+	<form class="layui-form">
+		<div class="user_left">
+			<div class="layui-form-item">
+			    <label class="layui-form-label">用户名</label>
+			    <div class="layui-input-block">
+			    	<input type="text" name="userName" value="${currentUser.userName!}" disabled class="layui-input layui-disabled"/>
+			    	<input type="hidden" name="id" value="${currentUser.id}"/>
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">租户组</label>
+			    <div class="layui-input-block">
+			    	<input type="text" name="tenantName" value="${currentUser.tenantName!}" disabled class="layui-input layui-disabled">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">真实姓名</label>
+			    <div class="layui-input-block">
+			    	<input type="text" name="realName" value="${currentUser.realName!}" placeholder="请输入真实姓名" lay-verify="required" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item" pane="">
+			    <label class="layui-form-label">性别</label>
+			    <div class="layui-input-block">
+			        <#if currentUser.sex = 0 >
+				    	<input type="radio" name="sex" value="0" title="男" checked="checked">
+				    	<input type="radio" name="sex" value="1" title="女">
+		     			<input type="radio" name="sex" value="" title="保密">
+			    	<#elseif currentUser.sex = 1>
+			    	    <input type="radio" name="sex" value="0" title="男">
+				    	<input type="radio" name="sex" value="1" title="女"  checked="checked">
+		     			<input type="radio" name="sex" value="" title="保密">
+			    	<#else>
+			    	    <input type="radio" name="sex" value="0" title="男">
+				    	<input type="radio" name="sex" value="1" title="女">
+		     			<input type="radio" name="sex" value="" title="保密"  checked="checked">
+			    	</#if>
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">手机号码</label>
+			    <div class="layui-input-block">
+			    	<input type="tel" name="mobile" value="${currentUser.cellPhoneNum!}" disabled placeholder="请输入手机号码" lay-verify="required|phone" class="layui-input layui-disabled">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">出生年月</label>
+			    <div class="layui-input-block">
+			    	<input type="text" name="birthday" value="${currentUser.birthday!}" placeholder="请输入出生年月" lay-verify="required|date" onclick="layui.laydate({elem: this,max: laydate.now()})" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">家庭住址</label>
+			    <div class="layui-input-inline">
+	                <select name="province" lay-filter="province">
+	                      <option value="${currentUser.province!}"  selected="selected">${currentUser.province!}</option> 
+	                </select>
+	            </div>
+	            <div class="layui-input-inline">
+	                <select name="city" lay-filter="city">
+	                    <option value="${currentUser.city!}"  selected="selected">${currentUser.city!}</option> 
+	                </select>
+	            </div>
+	            <div class="layui-input-inline">
+	                <select name="area" lay-filter="area">
+	                     <option value="${currentUser.area!}" selected="selected">${currentUser.area!}</option> 
+	                </select>
+	            </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">邮箱</label>
+			    <div class="layui-input-block">
+			    	<input type="text" name="email" value="${currentUser.email!}" placeholder="请输入邮箱" lay-verify="required|email" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">兴趣爱好</label>
+			    <div class="layui-input-block">
+			    	<textarea placeholder="输入兴趣爱好" name="hobby" class="layui-textarea">${currentUser.hobby!}</textarea>
+			    </div>
+			</div>
+		</div>
+		<div class="user_right">
+			<input type="file" name="dddd" class="layui-upload-file" lay-title="掐指一算，我要换一个头像了">
+			<img src="http://c.hiphotos.baidu.com/image/pic/item/267f9e2f07082838adcbb409b299a9014d08f1ed.jpg" class="layui-circle" id="userFace">
+		</div>
+		<div class="layui-form-item" style="margin-left: 5%;">
+		    <div class="layui-input-block">
+		    	<button class="layui-btn" lay-submit="" lay-filter="changeUser">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		    </div>
+		</div>
+	</form>
+	<script type="text/javascript" src="${path}/static/layui/layui.js"></script>
+	<script type="text/javascript" src="${path}/static/system/address.js"></script>
+	<script type="text/javascript" src="${path}/static/system/changePwd.js"></script>
+</body>
+</html>

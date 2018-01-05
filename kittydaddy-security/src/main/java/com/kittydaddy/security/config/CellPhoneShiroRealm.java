@@ -69,7 +69,7 @@ public class CellPhoneShiroRealm extends AuthorizingRealm {
 		Long tenantId = (Long) session.getAttribute("tenantId");
 		/**权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission**/
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		info.setRoles(this.getRoleCode(userId, tenantId));
+//		info.setRoles(this.getRoleCode(userId, tenantId));
 //		info.setStringPermissions(this.getPermissions(userId, tenantId));
 		return info;
 	}
@@ -115,29 +115,6 @@ public class CellPhoneShiroRealm extends AuthorizingRealm {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * 获取相关的权限的名字
-	 * @param userId
-	 * @return
-	 */
-	private Set<String> getPermissions(long userId, long tenantId) {
-//		Set<String> permissions = new HashSet<String>();
-//		List<UserRoleEntity> userRoles = userRoleService.queryUserRole(userId, tenantId);
-//		permissions = rolePermissionService.queryRolePermission(userRoles);
-//		return permissions;
-		return null;
-	}
-
-	/**
-	 * 根据user
-	 * @param userId
-	 * @return
-	 */
-	private Set<String> getRoleCode(long userId, long tenantId) {
-		Set<String> roleCodes = userRoleService.queryRoleCodes(userId,tenantId);
-		return roleCodes;
 	}
 
 	@Override

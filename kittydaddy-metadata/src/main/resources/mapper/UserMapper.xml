@@ -12,6 +12,14 @@
     <result column="salt" jdbcType="VARCHAR" property="salt" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    
+    <result column="province" jdbcType="VARCHAR" property="province"/>
+    <result column="city" jdbcType="VARCHAR" property="city"/>
+    <result column="area_" jdbcType="VARCHAR" property="area"/>
+    <result column="hobby" jdbcType="VARCHAR" property="hobby"/>
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+    <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+    
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="position" jdbcType="VARCHAR" property="position" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -21,7 +29,7 @@
   </resultMap> 
   <sql id="Base_Column_List">
     id, user_name, user_pwd, tenant_id, tenant_name, cell_phone_num, email, salt, create_time, 
-    update_time, avatar, position, status ,terminal_type, sex ,login_type
+    update_time, province,city,area_,hobby,birthday,real_name,avatar, position, status ,terminal_type, sex ,login_type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
@@ -33,11 +41,6 @@
   <select id="findByName" resultMap="BaseResultMap">
      select * from system_user where user_name=#{name}
   </select>
-  
-  <select id="queryUserById" resultMap="BaseResultMap">
-     select * from system_user where id = #{id}
-  </select>
-  
   
   <!--根据邮箱查询-->
   <select id="queryUserByEmail" resultMap="BaseResultMap">
@@ -74,12 +77,14 @@
     insert into system_user (id, user_name, user_pwd, 
       tenant_id, tenant_name, cell_phone_num, 
       email, salt, create_time, 
-      update_time, avatar, position, 
+      update_time, province,city,area_,hobby,birthday,real_name,avatar, position, 
       status,terminal_type,sex,login_type)
     values (#{id,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{tenantId,jdbcType=BIGINT}, #{tenantName,jdbcType=VARCHAR}, #{cellPhoneNum,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{avatar,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+      #{area,jdbcType=VARCHAR},#{hobby,jdbcType=VARCHAR},#{birthday,jdbcType=TIMESTAMP},#{realName,jdbcType=VARCHAR},
+      #{avatar,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{terminalType,jdbcType=INTEGER},#{sex,jdbcType=TINYINT},
       #{loginType,jdbcType=INTEGER})
   </insert>
@@ -115,6 +120,24 @@
       </if>
       <if test="updateTime != null">
         update_time,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="area != null">
+        area_,
+      </if>
+      <if test="hobby != null">
+        hobby,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="realName !=null">
+       real_name,
       </if>
       <if test="avatar != null">
         avatar,
@@ -166,6 +189,24 @@
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+         #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+         #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="hobby != null">
+         #{hobby,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+         #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realName !=null">
+         #{realName,jdbcType=VARCHAR},
+      </if>
       <if test="avatar != null">
         #{avatar,jdbcType=VARCHAR},
       </if>
@@ -216,6 +257,24 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+       <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        area_= #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="hobby != null">
+         hobby = #{hobby,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+         birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realName !=null">
+         real_name #{realName,jdbcType=VARCHAR},
+      </if>
       <if test="avatar != null">
         avatar = #{avatar,jdbcType=VARCHAR},
       </if>
@@ -248,6 +307,12 @@
       salt = #{salt,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area_= #{area,jdbcType=VARCHAR},
+      hobby = #{hobby,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      real_name = #{realName,jdbcType=VARCHAR},
       avatar = #{avatar,jdbcType=VARCHAR},
       position = #{position,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},

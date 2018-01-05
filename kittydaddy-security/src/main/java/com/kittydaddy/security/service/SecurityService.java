@@ -31,7 +31,7 @@ public class SecurityService {
 	 * @param request
 	 * @return
 	 */
-	public String login(UserLoginRequest request) {
+	public Session login(UserLoginRequest request) {
 		SystemToken token = null;
 		UserResponse resp = null;
 		if(StringUtils.isEmpty(request.getLoginName())) throw new ParamCheckException("用户名为空");
@@ -58,7 +58,7 @@ public class SecurityService {
 					session.setAttribute("loginName", request.getLoginName());
 					session.setAttribute("sessionId", session.getId().toString());
 				}
-				return session.getId().toString();
+				return session;
 			}
 			
 		} catch (UnknownAccountException uae) {

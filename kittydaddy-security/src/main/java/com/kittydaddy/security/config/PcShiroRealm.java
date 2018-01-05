@@ -1,6 +1,4 @@
 package com.kittydaddy.security.config;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kittydaddy.common.enums.StatusEnum;
 import com.kittydaddy.facade.dto.system.response.UserResponse;
-import com.kittydaddy.metadata.system.domain.UserRoleEntity;
 import com.kittydaddy.service.system.RolePermissionService;
 import com.kittydaddy.service.system.UserRoleService;
 import com.kittydaddy.service.system.UserService;
@@ -70,8 +67,8 @@ public class PcShiroRealm extends AuthorizingRealm {
 		long tenantId = (long) session.getAttribute("tenantId");
 		/**权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission**/
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		info.setRoles(this.getRoleCode(userId, tenantId));
-		info.setStringPermissions(this.getPermissions(userId, tenantId));
+//		info.setRoles(this.getRoleCode(userId, tenantId));
+//		info.setStringPermissions(this.getPermissions(userId, tenantId));
 		return info;
 	}
 
@@ -131,15 +128,6 @@ public class PcShiroRealm extends AuthorizingRealm {
 		return null;
 	}
 
-	/**
-	 * 根据user
-	 * @param userId
-	 * @return
-	 */
-	private Set<String> getRoleCode(long userId, long tenantId) {
-		Set<String> roleCodes = userRoleService.queryRoleCodes(userId,tenantId);
-		return roleCodes;
-	}
 
 	@Override
 	public void clearCachedAuthorizationInfo(PrincipalCollection principals) {

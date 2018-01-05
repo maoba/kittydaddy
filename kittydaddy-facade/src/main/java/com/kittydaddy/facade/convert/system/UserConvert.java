@@ -6,6 +6,9 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
+import com.kittydaddy.common.utils.KBeanUtil;
+import com.kittydaddy.common.utils.KDateUtils;
+import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.facade.dto.system.UserDto;
 import com.kittydaddy.facade.dto.system.request.UserRequest;
 import com.kittydaddy.facade.dto.system.response.UserResponse;
@@ -85,5 +88,21 @@ public class UserConvert {
 	public static UserEntity convertApartInfo2Entity(UserRequest request,UserEntity oldEntity) {
 		BeanUtils.copyProperties(request, oldEntity);
 		return oldEntity;
+	}
+    
+	/**
+	 * 将用户实体类转换成前端所需要的dto类型
+	 * @param userEntity
+	 * @return
+	 */
+	public static UserDto convertEntity2Dto(UserEntity userEntity) {
+		UserDto userDto = new UserDto();
+		KBeanUtil.copy(userEntity, userDto);
+		userDto.setBirthday(KDateUtils.format(userEntity.getBirthday(), "yyyy-MM-dd"));
+		String province = userEntity.getProvince();
+		String city = userEntity.getCity();
+		if(KStringUtils.isNotEmpty(province)) userDto.setProvince(province.split("_")[0]);
+		if(KStringUtils.isNotEmpty(city))userDto.setCity(city.split("_")[0]);
+		return userDto;
 	}
 }

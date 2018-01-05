@@ -13,20 +13,18 @@
         <link rel="stylesheet" href="${path}/static/login/css/supersized.css">
         <link rel="stylesheet" href="${path}/static/login/css/style.css">
         <link rel="stylesheet" href="${path}/static/layer/theme/default/layer.css">
-        <script src="${path}/assets/js/html5.js"></script>
     </head>
     <body>
 
         <div class="page-container">
             <h1>登录(Login)</h1>
         <form action="/login.do" class="layui-form" method="post">
-            <input type="text" id="userName" name="loginName"  class="username" placeholder="请输入您的用户名！">
-            <input type="password" id="password" name="password" class="password" placeholder="请输入您的用户密码！">
+             <input type="text" id="userName" name="loginName"  class="username" placeholder="请输入您的用户名！">
+             <input type="password" id="password" name="password" class="password" placeholder="请输入您的用户密码！"><strong style="font-size:8px;float: left;color: red;">${errorMessage!}</strong>
             <input type="hidden" name="terminalType" value="0"/>
             <!-- <input type="Captcha" class="Captcha" name="Captcha" placeholder="请输入验证码！"> -->
             <button type="submit" id="loginButton" class="submit_button">登录</button>
        </form>     
-            <div id="passwordSpan" class="error"><span>+</span></div>
         </div>
 		
         <!-- Javascript -->
@@ -36,6 +34,7 @@
         <script src="${path}/static/login/js/scripts.js"></script>
         <script src="${path}/static/login/js/security.js"></script>
         <script src="${path}/static/layer/layer.js"></script>
+        <script src="${path}/static/login/js/html5.js"></script>
     </body>
     <div style="text-align:center;"></div>
 </html>

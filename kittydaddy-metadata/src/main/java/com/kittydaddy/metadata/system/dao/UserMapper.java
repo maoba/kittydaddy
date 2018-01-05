@@ -20,8 +20,6 @@ public interface UserMapper {
 
 	UserEntity findByName(@Param(value="name") String name);
 
-	UserEntity queryUserById(@Param(value="id") long userId);
-
 	UserEntity queryUserByEmail(@Param(value="email") String email);
 	
 	UserEntity queryUserByCellPhone(@Param(value="cellPhoneNum") String cellPhoneNum);

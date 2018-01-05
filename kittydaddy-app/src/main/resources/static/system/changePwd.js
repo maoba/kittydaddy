@@ -54,15 +54,24 @@ layui.config({
         if(window.sessionStorage.getItem('userFace')){
         	$("#userFace").attr("src",window.sessionStorage.getItem('userFace'));
         }else{
-        	$("#userFace").attr("src","../../images/face.jpg");
+        	$("#userFace").attr("src","http://c.hiphotos.baidu.com/image/pic/item/267f9e2f07082838adcbb409b299a9014d08f1ed.jpg");
         }
 
         //提交个人资料
         form.on("submit(changeUser)",function(data){
         	var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
             setTimeout(function(){
-                layer.close(index);
-                layer.msg("提交成功！");
+            	$.post('/user/saveUpdateUser',data.field,function(result){
+         	    	if('success' == result){
+         	    		 layer.alert('个人资料更新成功！', {icon: 1}, function(index){
+         	    			 layer.close(index);
+         	    		 });
+         	    		 return true;
+         	    	}else{
+         	    		layer.alert('个人资料更新失败', {icon: 2});
+         	    		return false;
+         	    	}
+         	    })
             },500);
         	return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         })
@@ -93,8 +102,9 @@ layui.config({
  //加载省数据
 function loadProvince() {
     var proHtml = '';
+    
     for (var i = 0; i < areaData.length; i++) {
-        proHtml += '<option value="' + areaData[i].provinceCode + '_' + areaData[i].mallCityList.length + '_' + i + '">' + areaData[i].provinceName + '</option>';
+        proHtml += '<option value="' + areaData[i].provinceName + '_' + areaData[i].mallCityList.length + '_' + i + '">' + areaData[i].provinceName + '</option>';
     }
     //初始化省数据
     $form.find('select[name=province]').append(proHtml);
@@ -117,7 +127,7 @@ function loadProvince() {
 function loadCity(citys) {
     var cityHtml = '<option value="">请选择市</option>';
     for (var i = 0; i < citys.length; i++) {
-        cityHtml += '<option value="' + citys[i].cityCode + '_' + citys[i].mallAreaList.length + '_' + i + '">' + citys[i].cityName + '</option>';
+        cityHtml += '<option value="' + citys[i].cityName + '_' + citys[i].mallAreaList.length + '_' + i + '">' + citys[i].cityName + '</option>';
     }
     $form.find('select[name=city]').html(cityHtml).removeAttr("disabled");
     form.render();
@@ -138,7 +148,7 @@ function loadCity(citys) {
 function loadArea(areas) {
     var areaHtml = '<option value="">请选择县/区</option>';
     for (var i = 0; i < areas.length; i++) {
-        areaHtml += '<option value="' + areas[i].areaCode + '">' + areas[i].areaName + '</option>';
+        areaHtml += '<option value="' + areas[i].areaName + '">' + areas[i].areaName + '</option>';
     }
     $form.find('select[name=area]').html(areaHtml).removeAttr("disabled");
     form.render();
