@@ -1,5 +1,4 @@
 package com.kittydaddy.app.controller.system;
-import com.kittydaddy.common.constant.TemplateConstants;
 import com.kittydaddy.common.enums.LoginTypeEnum;
 import com.kittydaddy.common.enums.TerminalTypeEnum;
 import com.kittydaddy.common.utils.KCryptogramUtil;
@@ -7,13 +6,11 @@ import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.facade.dto.system.request.UserLoginRequest;
 import com.kittydaddy.facade.dto.system.request.UserRequest;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
-import com.kittydaddy.metadata.util.RedisUtil;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.security.service.SecurityService;
 import com.kittydaddy.security.util.PublicKeyMap;
 import com.kittydaddy.security.util.RSAUtils;
-import com.kittydaddy.service.system.PermissionService;
 import com.kittydaddy.service.system.UserService;
 
 import java.util.Date;
@@ -24,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,19 +90,6 @@ public class BaseController {
 		return mav;
 	} 
     
-//	 /**
-//     * 跳转到主页面
-//     * @param map
-//     * @return
-//     */
-//    @RequestMapping(value="/index.do",method = RequestMethod.GET)
-//    public ModelAndView layoutPage(@CurrentUser CurrentUserInfo currentUserInfo){
-//    	ModelAndView view = new ModelAndView();
-//    	List<LeftMenusDto> leftMenus = permissionService.queryLeftMenus(currentUserInfo.getUserId(),currentUserInfo.getTenantId());
-//        view.addObject("leftMenus",leftMenus);
-//        view.addObject("currentUserName",currentUserInfo.getUserName());
-//        return view;
-//    }
     
     /**
 	 * 保存用户
