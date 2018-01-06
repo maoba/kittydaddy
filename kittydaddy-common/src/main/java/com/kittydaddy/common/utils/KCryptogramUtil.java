@@ -41,4 +41,17 @@ public class KCryptogramUtil {
 	        }
 	        return null;
 	    }
+	    
+	    /**
+	     * 获取通过用户名加密之后的密码
+	     * @param salt 盐
+	     * @param password 密码
+	     * @param userName 用户名
+	     * @return
+	     */
+	    public static String getEncryptPassword(String salt,String password,String userName){
+	    	return new SimpleHash(EncryptionEnum.ALGORITHMNAME.getValue(),password,
+                    ByteSource.Util.bytes(userName + salt),Integer.parseInt(EncryptionEnum.HASHITERATIONS.getValue())).toHex();
+	    }
+	    
 }

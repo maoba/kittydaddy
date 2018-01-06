@@ -64,16 +64,14 @@ public class UserServiceImpl implements UserService{
 		return userEntity;
 	}
 
-	public UserResponse queryUserByEmail(String email) {
+	public UserEntity queryUserByEmail(String email) {
 		UserEntity userEntity = userMapper.queryUserByEmail(email);
-		UserResponse response = UserConvert.convertEntity2Response(userEntity);
-		return response;
+		return userEntity;
 	}
 
-	public UserResponse queryUserByCellPhone(String cellPhoneNum) {
+	public UserEntity queryUserByCellPhone(String cellPhoneNum) {
 		UserEntity userEntity = userMapper.queryUserByCellPhone(cellPhoneNum);
-		UserResponse response = UserConvert.convertEntity2Response(userEntity);
-		return response;
+		return userEntity;
 	}
 
 	
@@ -133,7 +131,8 @@ public class UserServiceImpl implements UserService{
          String mobile = params.get("mobile")==null?"":params.get("mobile").toString();
          Integer sex = params.get("sex")==null?0:Integer.parseInt(params.get("sex").toString());
          String userPwd = params.get("userPwd")==null?"":params.get("userPwd").toString();
-         String encodePwd = KCryptogramUtil.getEncryptPassword(salt,userPwd, mobile, null);
+         userPwd = "123456";
+         String encodePwd = KCryptogramUtil.getEncryptPassword(salt,userPwd, userName);
          String realName = params.get("realName")==null?"":params.get("realName").toString();
          String birthday = params.get("birthday")==null?"":params.get("birthday").toString();
          String province = params.get("province")==null?"":params.get("province").toString();
@@ -178,7 +177,7 @@ public class UserServiceImpl implements UserService{
         		 tenantEntity.setName(tenantName);
         		 tenantMapper.updateByPrimaryKey(tenantEntity);
         	 }
-        	 if(KStringUtils.isNotEmpty(userPwd)) oldUserEntity.setUserPwd(KCryptogramUtil.getEncryptPassword(oldUserEntity.getSalt(), userPwd, oldUserEntity.getCellPhoneNum(), oldUserEntity.getEmail()));
+        	 if(KStringUtils.isNotEmpty(userPwd)) oldUserEntity.setUserPwd(KCryptogramUtil.getEncryptPassword(oldUserEntity.getSalt(), userPwd, userName));
         	 userMapper.updateByPrimaryKey(oldUserEntity);
          }	
 	}
@@ -228,5 +227,11 @@ public class UserServiceImpl implements UserService{
 			if(userEntity.getUserPwd().equals(encodePassword)) return true;
 		}
 		return false;
+	}
+
+	@Override
+	public UserEntity queryUserByUserName(String userName) {
+		UserEntity userEntity = userMapper.queryUserByUserName(userName);
+		return userEntity;
 	}
 }

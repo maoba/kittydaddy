@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kittydaddy.common.exception.ParamCheckException;
 import com.kittydaddy.facade.dto.system.request.UserLoginRequest;
-import com.kittydaddy.facade.dto.system.response.UserResponse;
+import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.security.config.SystemToken;
 import com.kittydaddy.service.system.UserService;
 /**
@@ -32,13 +32,14 @@ public class SecurityService {
 	 * @return
 	 */
 	public Session login(UserLoginRequest request) {
-		SystemToken token = null;
-		UserResponse resp = null;
+		UserEntity userEntity = null;
 		if(StringUtils.isEmpty(request.getLoginName())) throw new ParamCheckException("用户名为空");
-		token = new SystemToken(request.getLoginName(), request.getPassword());
-		resp = (request.getLoginName().indexOf("@")!=-1)? 
+		userEntity = (request.getLoginName().indexOf("@")!=-1)? 
 				userService.queryUserByEmail(request.getLoginName())//根据邮箱查询
 				:userService.queryUserByCellPhone(request.getLoginName());//根据手机号查询
+		if(userEntity == null) userEntity = userService.queryUserByUserName(request.getLoginName());//根据用户名进行查询
+		
+		SystemToken token = new SystemToken(userEntity.getUserName(), request.getPassword());		
 		token.setTerminalType(request.getTerminalType());
 		
 		/** 获取当前的subject **/
@@ -49,12 +50,12 @@ public class SecurityService {
 			if(currentUser.isAuthenticated()){
 				//获取session
 				session = currentUser.getSession();
-				if(resp!=null){
+				if(userEntity!=null){
 					//设置session中内容
-					session.setAttribute("userName", resp.getUserName());
-					session.setAttribute("userId", resp.getId());
-					session.setAttribute("tenantId", resp.getTenantId());
-					session.setAttribute("tenantName", resp.getTenantName());
+					session.setAttribute("userName", userEntity.getUserName());
+					session.setAttribute("userId", userEntity.getId());
+					session.setAttribute("tenantId", userEntity.getTenantId());
+					session.setAttribute("tenantName", userEntity.getTenantName());
 					session.setAttribute("loginName", request.getLoginName());
 					session.setAttribute("sessionId", session.getId().toString());
 				}

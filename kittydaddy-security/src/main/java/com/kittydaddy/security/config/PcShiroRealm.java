@@ -19,7 +19,9 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kittydaddy.common.enums.StatusEnum;
+import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.facade.dto.system.response.UserResponse;
+import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.service.system.RolePermissionService;
 import com.kittydaddy.service.system.UserRoleService;
 import com.kittydaddy.service.system.UserService;
@@ -77,18 +79,14 @@ public class PcShiroRealm extends AuthorizingRealm {
 	 * @param loginName
 	 * @return
 	 */
-	private UserResponse getUserResponse(String loginName,Integer terminalType) {
-		UserResponse response = null;
-		if (StringUtils.isNotEmpty(loginName) && (loginName.indexOf("@") != -1)) {// 表示邮箱登入
-			response = userService.queryUserByEmail(loginName);
-			
-		} else if (StringUtils.isNotEmpty(loginName)) {// 表示手机登入
-			response = userService.queryUserByCellPhone(loginName);
-			
-		} else {
-			throw new UnknownAccountException();
+	private UserEntity getUserResponse(String loginName,Integer terminalType) {
+		UserEntity userEntity = null;
+		if(KStringUtils.isNotEmpty(loginName)){
+			userEntity = loginName.indexOf("@") != -1?userService.queryUserByEmail(loginName)://邮箱方式进行登录
+				                                          userService.queryUserByCellPhone(loginName);
 		}
-		return response;
+		if(userEntity == null) userEntity = userService.queryUserByUserName(loginName);
+		return userEntity;
 	}
 
 	/**
@@ -101,18 +99,18 @@ public class PcShiroRealm extends AuthorizingRealm {
 		String loginName = token.getUsername();
 		//获取终端类型
 		Integer terminalType = token.getTerminalType();
-		UserResponse response = this.getUserResponse(loginName,terminalType);
-		if(response != null){
-			if((StatusEnum.LOCKED.getValue() == response.getStatus())){
+		UserEntity userEntity = this.getUserResponse(loginName,terminalType);
+		if(userEntity != null){
+			if((StatusEnum.LOCKED.getValue() == userEntity.getStatus())){
 				throw new LockedAccountException(); // 帐号锁定
 			}else{
 				SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(loginName,
-						response.getUserPwd(), getName());
-				authenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(loginName + response.getSalt()));
+						userEntity.getUserPwd(), getName());
+				authenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(loginName + userEntity.getSalt()));
 				return authenticationInfo;
 			}
 		}
-		return null;
+		throw new UnknownAccountException();
 	}
 
 	/**

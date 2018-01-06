@@ -52,6 +52,11 @@
      select * from system_user where cell_phone_num = #{cellPhoneNum,jdbcType=VARCHAR} and status = 1
   </select>
   
+  <!--根据用户名进行查询-->
+  <select id="queryUserByUserName" resultMap="BaseResultMap">
+     select * from system_user where user_name = #{userName,jdbcType=VARCHAR} and status = 1
+  </select>
+  
   <!--根据名称以及租户的Id进行查询-->
   <select id="queryUsersByName" resultMap="BaseResultMap">
     select * from system_user where 1=1

@@ -21,14 +21,14 @@ public interface UserService {
 	  * @param email 邮箱地址
 	  * @return
 	  */
-	 UserResponse queryUserByEmail(String email);
+	 UserEntity queryUserByEmail(String email);
      
 	 /**
 	  * 根据手机号码以及终端类型进行查询
 	  * @param cellPhoneNum 手机号码
 	  * @return
 	  */
-	 UserResponse queryUserByCellPhone(String cellPhoneNum);
+	 UserEntity queryUserByCellPhone(String cellPhoneNum);
      
 	 /**
 	  * 分页查询用户
@@ -93,4 +93,12 @@ public interface UserService {
 	  * @return
 	  */
 	 boolean checkPassword(String oldPassword, String userId);
+      
+	 /**
+	  * 根据用户名称进行查询
+	  * @param userName
+	  * @return
+	  */
+	 UserEntity queryUserByUserName(String userName);
+     
 }

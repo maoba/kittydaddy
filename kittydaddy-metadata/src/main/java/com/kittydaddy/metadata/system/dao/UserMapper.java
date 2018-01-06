@@ -25,4 +25,6 @@ public interface UserMapper {
 	UserEntity queryUserByCellPhone(@Param(value="cellPhoneNum") String cellPhoneNum);
 
 	List<UserEntity> queryUsersByName(@Param(value="name") String name,@Param(value="status") Integer status,@Param(value="tenantId") String tenantId);
+
+	UserEntity queryUserByUserName(@Param(value="userName")String userName);
 }

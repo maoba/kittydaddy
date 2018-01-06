@@ -35,6 +35,7 @@ public class KDateUtils {
       * @return
       */
      public static String format(Date date,String pattern){
+    	 if(date == null) return null;
     	 SimpleDateFormat sdf = new SimpleDateFormat(pattern);
     	 return sdf.format(date);
      }

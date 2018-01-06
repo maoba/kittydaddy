@@ -1,8 +1,4 @@
 package com.kittydaddy.security.config;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -19,10 +15,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.kittydaddy.common.enums.StatusEnum;
-import com.kittydaddy.facade.dto.system.response.UserResponse;
-import com.kittydaddy.metadata.system.domain.UserRoleEntity;
+import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.service.system.RolePermissionService;
 import com.kittydaddy.service.system.UserRoleService;
 import com.kittydaddy.service.system.UserService;
@@ -79,8 +73,8 @@ public class CellPhoneShiroRealm extends AuthorizingRealm {
 	 * @param loginName
 	 * @return
 	 */
-	private UserResponse getUserResponse(String loginName,Integer terminalType) {
-		UserResponse response = null;
+	private UserEntity getUserResponse(String loginName,Integer terminalType) {
+		UserEntity response = null;
 		if (StringUtils.isNotEmpty(loginName) && (loginName.indexOf("@") != -1)) {// 表示邮箱登入
 			response = userService.queryUserByEmail(loginName);
 			
@@ -103,7 +97,7 @@ public class CellPhoneShiroRealm extends AuthorizingRealm {
 		String loginName = token.getUsername();
 		//获取终端类型
 		Integer terminalType = token.getTerminalType();
-		UserResponse response = this.getUserResponse(loginName,terminalType);
+		UserEntity response = this.getUserResponse(loginName,terminalType);
 		if(response != null){
 			if((StatusEnum.LOCKED.getValue() == response.getStatus())){
 				throw new LockedAccountException(); // 帐号锁定
