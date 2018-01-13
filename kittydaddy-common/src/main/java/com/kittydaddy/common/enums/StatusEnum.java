@@ -5,8 +5,8 @@ package com.kittydaddy.common.enums;
  * 用户状态枚举值
  */
 public enum StatusEnum {
-     NORMAL(1,"正常状态"),
-     ABNORMAL(0,"异常状态"),
+     VALID(1,"正常状态"),
+     INVALID(0,"失效状态"),
      DELETE(-1,"删除状态"),
      LOCKED(2,"锁定状态");
      

@@ -116,6 +116,98 @@ CREATE TABLE `tenant` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='租户表';
 
 
+--内容metadata(视频内容基本信息)
+DROP TABLE IF EXISTS `k_video_content`;
+CREATE TABLE `k_video_content` (
+  `id` VARCHAR(64) NOT NULL  COMMENT '主键',
+  `sub_origin_id` VARCHAR(32) DEFAULT NULL COMMENT '第三标识id',
+  `origin_id` VARCHAR(32) COLLATE utf8_bin DEFAULT NULL COMMENT '原始Id标识',
+  `source` VARCHAR(32) COLLATE utf8_bin DEFAULT NULL COMMENT '来源',
+  `title` VARCHAR(64) COLLATE utf8_bin DEFAULT NULL COMMENT '标题',
+  `subtitle` VARCHAR(64) COLLATE utf8_bin DEFAULT NULL COMMENT '二级标题',
+  `rate` VARCHAR(16) COLLATE utf8_bin DEFAULT NULL COMMENT '评分',
+  `tags` VARCHAR(256) COLLATE utf8_bin DEFAULT NULL COMMENT '标签',
+  `channel` VARCHAR(64) COLLATE utf8_bin DEFAULT NULL COMMENT '视频类别',
+  `short_flag` INT(2) DEFAULT 0 COMMENT '0:表示长视频 1:表示短视频',
+  `episode_count` INT(16) DEFAULT 0 COMMENT '总剧集数',
+  `directors` VARCHAR(256) DEFAULT NULL COMMENT '导演',
+  `actors` VARCHAR(256) DEFAULT NULL COMMENT '演员',
+  `year` VARCHAR(32) DEFAULT NULL COMMENT '年份',
+  `last_sn` INT(8) DEFAULT 0 COMMENT '最近更新集数',
+  `duration` INT(32) DEFAULT 0 COMMENT '时长',
+  `area` VARCHAR(64) DEFAULT NULL COMMENT '地区',
+  `origin_pub_time` VARCHAR(32) DEFAULT NULL COMMENT '影视发布时间',
+  `language` VARCHAR(32) DEFAULT NULL COMMENT '影片语言',
+  `genres` VARCHAR(32) DEFAULT NULL COMMENT '风格,体裁',
+  `yester_play_count` INT(16) DEFAULT 0 COMMENT '年播放次数',
+  `weekly_play_count` INT(16) DEFAULT 0 COMMENT '周播放次数',
+  `total_play_count`  INT(16) DEFAULT 0 COMMENT '总播放次数',  
+  `img_small_url` VARCHAR(256) DEFAULT NULL COMMENT '视频封面小图片地址',
+  `img_medium_url` VARCHAR(256) DEFAULT NULL COMMENT '视频封面中等图片地址',
+  `img_large_url` VARCHAR(256) DEFAULT NULL COMMENT '视频封面大图片地址',
+  `status` INT(4) DEFAULT '1' COMMENT '-1：删除 0：失效 1：生效',
+  `is_publish` INT(4) DEFAULT 0 COMMENT '0:未发布 1:已发布',
+  `summary` VARCHAR(2048) DEFAULT NULL COMMENT '影片描述信息',
+  `is_free` INT(4)  DEFAULT 0 COMMENT '1:表示免费  2:表示收费',  
+  `create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+  `update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+  `publish_time` DATETIME DEFAULT NULL COMMENT '发布时间',
+  `operate_id` VARCHAR(64) DEFAULT NULL COMMENT '操作人id',
+  PRIMARY KEY (`id`),
+  KEY `origin_id` (`origin_id`),
+  KEY `title`(`title`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='视频内容信息表';
+
+--内容剧集表
+DROP TABLE IF EXISTS `k_video_content_item`;
+CREATE TABLE `k_video_content_item` (
+  `id` varchar(64) NOT NULL  COMMENT '主键',
+  `item_channel` varchar(64) default null comment '剧集类别，例如：电视剧、综艺、动漫',
+  `item_title` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '剧集名称',
+  `item_sn` int(16) COLLATE utf8_bin DEFAULT 0 COMMENT '当前集数',
+  `item_period` varchar(64) default null comment '阶段',
+  `item_summary` varchar(512) COLLATE utf8_bin DEFAULT NULL COMMENT '剧集描述',
+  `status` int(4) DEFAULT '1' COMMENT '-1：删除 0：失效 1：生效',
+  `content_id` varchar(64) default null comment '关联内容id',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='视频剧集内容信息表';
+
+
+--地址表
+DROP TABLE IF EXISTS `k_video_content_source`;
+CREATE TABLE `k_video_content_source` (
+  `id` varchar(64) NOT NULL  COMMENT '主键',
+  `play_url` varchar(256) COLLATE utf8_bin DEFAULT NULL COMMENT '剧集名称',
+  `source_id` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '来源id',
+  `source` varchar(32) COLLATE utf8_bin DEFAULT null COMMENT '来源名称',
+  `is_free` INT(4)  DEFAULT 0 COMMENT '1:表示免费  2:表示收费',  
+  `relative_id` varchar(128)  default null comment '关联id',  
+  `relative_type` varchar(32) default null comment '关联类型',
+  `image_url` varchar(256) default null comment '剧集照片',
+  `status` int(4) DEFAULT '1' COMMENT '-1:删除 0：失效 1：生效',
+  `duration` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '剧集时长',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `relative_id` (`relative_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='视频内容源表';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

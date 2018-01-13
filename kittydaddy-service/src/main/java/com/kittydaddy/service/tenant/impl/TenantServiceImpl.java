@@ -47,7 +47,7 @@ public class TenantServiceImpl implements TenantService{
 	@Override
 	public void saveTenant(TenantRequest request) {
 		TenantEntity tenantEntity = TenantConvert.convertRequest2Entity(request);
-		tenantEntity.setStatus(StatusEnum.NORMAL.getValue());
+//		tenantEntity.setStatus(StatusEnum.NORMAL.getValue());
 		tenantEntity.setCreateTime(new Date());
 		tenantMapper.insert(tenantEntity);
 	}

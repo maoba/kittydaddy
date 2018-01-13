@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kittydaddy.metadata.vcontent.dao.KVContentSourceEntityMapper">
+  <resultMap id="BaseResultMap" type="com.kittydaddy.metadata.vcontent.domain.KVContentSourceEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="play_url" jdbcType="VARCHAR" property="playUrl" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="is_free" jdbcType="INTEGER" property="isFree" />
+    <result column="relative_id" jdbcType="VARCHAR" property="relativeId" />
+    <result column="relative_type" jdbcType="VARCHAR" property="relativeType" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="duration" jdbcType="VARCHAR" property="duration" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, play_url, source_id, source, is_free, relative_id, relative_type, image_url, 
+    status, duration, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from k_video_content_source
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from k_video_content_source
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kittydaddy.metadata.vcontent.domain.KVContentSourceEntity"  useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+       SELECT UUID() FROM dual
+    </selectKey>
+    insert into k_video_content_source (id, play_url, source_id, 
+      source, is_free, relative_id, 
+      relative_type, image_url, status, 
+      duration, create_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{playUrl,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
+      #{source,jdbcType=VARCHAR}, #{isFree,jdbcType=INTEGER}, #{relativeId,jdbcType=VARCHAR}, 
+      #{relativeType,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{duration,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kittydaddy.metadata.vcontent.domain.KVContentSourceEntity">
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+       SELECT UUID() FROM dual
+    </selectKey>
+    insert into k_video_content_source
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="playUrl != null">
+        play_url,
+      </if>
+      <if test="sourceId != null">
+        source_id,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="isFree != null">
+        is_free,
+      </if>
+      <if test="relativeId != null">
+        relative_id,
+      </if>
+      <if test="relativeType != null">
+        relative_type,
+      </if>
+      <if test="imageUrl != null">
+        image_url,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="duration != null">
+        duration,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="playUrl != null">
+        #{playUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceId != null">
+        #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="isFree != null">
+        #{isFree,jdbcType=INTEGER},
+      </if>
+      <if test="relativeId != null">
+        #{relativeId,jdbcType=VARCHAR},
+      </if>
+      <if test="relativeType != null">
+        #{relativeType,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kittydaddy.metadata.vcontent.domain.KVContentSourceEntity">
+    update k_video_content_source
+    <set>
+      <if test="playUrl != null">
+        play_url = #{playUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceId != null">
+        source_id = #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="isFree != null">
+        is_free = #{isFree,jdbcType=INTEGER},
+      </if>
+      <if test="relativeId != null">
+        relative_id = #{relativeId,jdbcType=VARCHAR},
+      </if>
+      <if test="relativeType != null">
+        relative_type = #{relativeType,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="duration != null">
+        duration = #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kittydaddy.metadata.vcontent.domain.KVContentSourceEntity">
+    update k_video_content_source
+    set play_url = #{playUrl,jdbcType=VARCHAR},
+      source_id = #{sourceId,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      is_free = #{isFree,jdbcType=INTEGER},
+      relative_id = #{relativeId,jdbcType=VARCHAR},
+      relative_type = #{relativeType,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      duration = #{duration,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

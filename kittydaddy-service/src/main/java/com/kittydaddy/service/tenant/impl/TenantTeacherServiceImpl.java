@@ -45,7 +45,7 @@ public class TenantTeacherServiceImpl implements TenantTeacherService{
 	public void saveTeacher(TeacherRequest request) {
 		TenantTeacherEntity entity = TenantTeacherConvert.convertRequest2Entity(request);
 		//教师默认在职状态
-		entity.setStatus(StatusEnum.NORMAL.getValue());
+//		entity.setStatus(StatusEnum.NORMAL.getValue());
 		entity.setCreateTime(new Date());
         teacherMapper.insert(entity);	
 	}

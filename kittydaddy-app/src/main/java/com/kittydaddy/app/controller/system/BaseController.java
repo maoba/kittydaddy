@@ -1,24 +1,15 @@
 package com.kittydaddy.app.controller.system;
-import com.kittydaddy.common.enums.LoginTypeEnum;
-import com.kittydaddy.common.enums.TerminalTypeEnum;
-import com.kittydaddy.common.utils.KCryptogramUtil;
 import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.facade.dto.system.request.UserLoginRequest;
-import com.kittydaddy.facade.dto.system.request.UserRequest;
-import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.security.service.SecurityService;
 import com.kittydaddy.security.util.PublicKeyMap;
 import com.kittydaddy.security.util.RSAUtils;
-import com.kittydaddy.service.system.UserService;
-
-import java.util.Date;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,9 +27,6 @@ public class BaseController {
 	 
 	 public static String RESULT_FAILURE = "failure";
 	 
-	 @Autowired
-	 private UserService userService;
-	
 	 @Autowired
 	 private SecurityService securityService;
 	 
@@ -91,36 +79,36 @@ public class BaseController {
 	} 
     
     
-    /**
-	 * 保存用户
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/save", consumes = "application/json")
-	@ResponseBody
-	public BaseResponse saveUser(@RequestBody UserRequest request){
-		//获取相关的盐
-		request.setSalt(KCryptogramUtil.getSalt());
-		request.setTerminalType(TerminalTypeEnum.TERMINAL_PC.getValue());
-
-		//设置租户 id
-		request.setTenantId(request.getTenantId());
-		Integer loginType = request.getLoginType();
-
-		//邮箱方式注册设置加密密码
-		if(LoginTypeEnum.SYSTEM_EMAIL_LOGIN.getType() == loginType){
-			request.setUserPwd(KCryptogramUtil.getEncryptPassword(request.getSalt(),request.getUserPwd(), null, request.getEmail()));
-
-			//手机方式注册设置加密密码
-		}else if(LoginTypeEnum.SYSTEM_CELLPHONE_LOGIN.getType() == loginType){
-			request.setUserPwd(KCryptogramUtil.getEncryptPassword(request.getSalt(),request.getUserPwd(), request.getCellPhoneNum(), null));
-		}
-
-		request.setCreateTime(new Date());
-		//保存入库
-		userService.saveUser(request);
-		return BaseResponse.getSuccessResponse(new Date());
-	}
+//    /**
+//	 * 保存用户
+//	 * @param request
+//	 * @return
+//	 */
+//	@RequestMapping(method = RequestMethod.POST, value = "/save", consumes = "application/json")
+//	@ResponseBody
+//	public BaseResponse saveUser(@RequestBody UserRequest request){
+//		//获取相关的盐
+//		request.setSalt(KCryptogramUtil.getSalt());
+//		request.setTerminalType(TerminalTypeEnum.TERMINAL_PC.getValue());
+//
+//		//设置租户 id
+//		request.setTenantId(request.getTenantId());
+//		Integer loginType = request.getLoginType();
+//
+//		//邮箱方式注册设置加密密码
+//		if(LoginTypeEnum.SYSTEM_EMAIL_LOGIN.getType() == loginType){
+//			request.setUserPwd(KCryptogramUtil.getEncryptPassword(request.getSalt(),request.getUserPwd(), null, request.getEmail()));
+//
+//			//手机方式注册设置加密密码
+//		}else if(LoginTypeEnum.SYSTEM_CELLPHONE_LOGIN.getType() == loginType){
+//			request.setUserPwd(KCryptogramUtil.getEncryptPassword(request.getSalt(),request.getUserPwd(), request.getCellPhoneNum(), null));
+//		}
+//
+//		request.setCreateTime(new Date());
+//		//保存入库
+////		userService.saveUser(request);
+//		return BaseResponse.getSuccessResponse(new Date());
+//	}
 	
     /**
      * RSA加密[由服务器生成相关的私钥]

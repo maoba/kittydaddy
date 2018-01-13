@@ -170,7 +170,7 @@
 		</snapshotRepository>
 	</distributionManagement> 
    <build> 
-	<!--<pluginManagement> 
+	<pluginManagement> 
 	<plugins> 
 	<plugin> 
 	<groupId>org.mybatis.generator</groupId> 
@@ -195,7 +195,7 @@
 		</dependency>
 		 </dependencies> 
 		 </plugin> </plugins>
-		  </pluginManagement> -->
+		  </pluginManagement>
 		  <plugins>
 		    <plugin> 
 	           <groupId>org.apache.maven.plugins</groupId> 
@@ -204,6 +204,7 @@
 	           <configuration> 
 	             <source>1.8</source> 
 	             <target>1.8</target> 
+	             <encoding>utf8</encoding>   
 	            </configuration> 
 	          </plugin> 
 		  </plugins>

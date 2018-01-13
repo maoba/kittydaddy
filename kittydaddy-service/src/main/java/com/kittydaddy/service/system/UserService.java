@@ -1,9 +1,6 @@
 package com.kittydaddy.service.system;
 import java.util.Map;
 import com.github.pagehelper.PageInfo;
-import com.kittydaddy.facade.dto.system.UserDto;
-import com.kittydaddy.facade.dto.system.request.UserRequest;
-import com.kittydaddy.facade.dto.system.response.UserResponse;
 import com.kittydaddy.metadata.system.domain.UserEntity;
 /**
  * @author  maoba
@@ -30,32 +27,6 @@ public interface UserService {
 	  */
 	 UserEntity queryUserByCellPhone(String cellPhoneNum);
      
-	 /**
-	  * 分页查询用户
-	  * @param name
-	  * @param pageIndex
-	  * @param pageSize
-	  * @return
-	  */
-	 PageInfo<UserDto> queryUsersByPage(String name,Integer status,Long tenantId, Integer pageIndex,Integer pageSize);
-
-	 /**
-	  * 保存用户信息
-	  * @param request
-	  */
-	 void saveUser(UserRequest request);
-     
-	 /**
-	  * 更新用户
-	  * @param response
-	  */
-	 void updateUser(UserResponse response);
-     
-	 /**
-	  * 更新部分用户的信息
-	  * @param request
-	  */
-	 void updateApartUserInfo(UserRequest request);
 
 	 /**
 	  * 根据name查询用户
