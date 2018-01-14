@@ -16,4 +16,10 @@ public interface KVContentService {
 	
 	boolean executeCollectSingleVideoService(String subOriginId);
     
+	/**
+	 * 采集短视频内容
+	 * @param map
+	 */
+	void executeCollectShortVideoJobService(Map<String, Object> map);
+    
 }

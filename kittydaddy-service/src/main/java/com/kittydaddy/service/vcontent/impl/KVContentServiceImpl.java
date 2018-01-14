@@ -2,11 +2,14 @@ package com.kittydaddy.service.vcontent.impl;
 
 import java.util.Date;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -14,6 +17,8 @@ import com.kittydaddy.common.constant.RedisKeyConstant;
 import com.kittydaddy.common.enums.IsFreeEnum;
 import com.kittydaddy.common.enums.PublishStatusEnum;
 import com.kittydaddy.common.enums.ShortFlagEnum;
+import com.kittydaddy.common.enums.ShortGenresEnum;
+import com.kittydaddy.common.enums.SourceEnum;
 import com.kittydaddy.common.enums.StatusEnum;
 import com.kittydaddy.common.utils.KCollectionUtils;
 import com.kittydaddy.common.utils.KHttpClientUtil;
@@ -46,8 +51,14 @@ public class KVContentServiceImpl implements KVContentService{
 	@Value("${kitty.video.content.item.source}")
 	private String itemSourceUrl;
 	
+	@Value("${kitty.video.short.content.list}")
+	private String shortListUrl;
+	
 	@Autowired
 	private RedisUtil redisUtil;
+	
+	//设置起始页
+	private Integer start = 0;
 
 	@Override
 	public void executeCollectVideoJobService(Map<String, Object> map) {
@@ -74,6 +85,7 @@ public class KVContentServiceImpl implements KVContentService{
 	}
 
 	@Override
+	@Transactional
 	public boolean executeCollectSingleVideoService(String subOriginId) {
 		try{
     		String respDetailContent = KHttpClientUtil.doGet(achieveDetailRequestUrl(detailUrl,subOriginId.toString()));
@@ -207,4 +219,98 @@ public class KVContentServiceImpl implements KVContentService{
     	}
 		return true;
 	}
+
+	@Override
+	public void executeCollectShortVideoJobService(Map<String, Object> map) {
+		 while(start >= 0){
+   		  if(execute()){ 
+   			  start += 100;
+             }else{
+           	  break;
+           }
+   	  }
+	}
+	
+	 //获取最终列表请求的url
+		private String achieveShortListReqeustUrl(String requestUrl,String genre,String source) {
+			StringBuffer sb = new StringBuffer();
+			String finalRequestUrl = sb.append(requestUrl)
+					.append("?genres="+genre+"&size=100&")
+					.append("start="+start+"")
+					.append("&source="+source)
+					.append("&order=3").toString();
+			return finalRequestUrl;
+		}
+		
+		
+		private boolean execute(){
+			for(SourceEnum sourceEnum : SourceEnum.values()){
+				for(ShortGenresEnum shortGenresEnum : ShortGenresEnum.values()){
+					try{
+						String requestUrl = this.achieveShortListReqeustUrl(shortListUrl, shortGenresEnum.getValue(), sourceEnum.getValue());
+						String jsonContent = KHttpClientUtil.doGet(requestUrl);
+						JSONObject shortJsonObject = JSON.parseObject(jsonContent);
+						JSONArray shortList = shortJsonObject.getJSONObject("data").getJSONArray("short_list");
+						if(KCollectionUtils.isEmpty(shortList)) continue;
+						
+						for(int i = 0;i<shortList.size();i++){
+							JSONObject jsonObject = shortList.getJSONObject(i);
+							String id = jsonObject.getString("id");
+							Object obj = redisUtil.get(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX+id);
+							String srcId = jsonObject.getString("src_id");
+							String source = jsonObject.getString("source");
+							String title = jsonObject.getString("title");
+							logger.info("********短视频：《"+title+"》开始入库***********");
+							if(obj!=null){
+								logger.info("****短视频:"+title+"已经存在****");
+								continue;
+							}
+							Integer duration = jsonObject.getInteger("duration");
+							String originId = jsonObject.getString("origin_id");
+							String tags = jsonObject.getString("tags");
+							String genres = jsonObject.getString("genres");
+							String playUrl = jsonObject.getString("play_url");
+							String imgUrl = jsonObject.getString("img_url");
+							
+							//设置短视频的基本信息
+							KVContentEntity content = new KVContentEntity();
+							content.setIsFree(IsFreeEnum.YES.getValue());
+							content.setOriginId(originId);
+							content.setSource(source);
+							content.setShortFlag(ShortFlagEnum.SHORT.getValue());
+							content.setSubOriginId(id);
+							content.setCreateTime(new Date());
+							content.setTitle(title);
+							content.setDuration(duration);
+							content.setTags(tags);
+							content.setGenres(genres);
+							content.setStatus(StatusEnum.VALID.getValue());
+							kvContentMapper.insert(content);
+							
+							//设置短时内容源
+							KVContentSourceEntity contentSource = new KVContentSourceEntity();
+							contentSource.setCreateTime(new Date());
+							contentSource.setDuration(duration==null?"":duration.toString());
+							contentSource.setSourceId(srcId);
+							contentSource.setSource(source);
+							contentSource.setPlayUrl(playUrl);
+							contentSource.setImageUrl(imgUrl);
+							contentSource.setRelativeId(content.getId());
+							contentSource.setRelativeType("k_video_content");
+							contentSource.setIsFree(IsFreeEnum.YES.getValue());
+							contentSource.setStatus(StatusEnum.VALID.getValue());
+							kvContentSourceMapper.insert(contentSource);
+							
+							redisUtil.set(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX+id, id);
+							logger.info("********短视频：《"+title+"》入库成功***********");
+						}
+					}catch(Exception e){
+						e.printStackTrace();
+						logger.info("****出现未知异常****");
+						continue;
+					}
+				}
+			}	
+			return true;
+		}
 }
