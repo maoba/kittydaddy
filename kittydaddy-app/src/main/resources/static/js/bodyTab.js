@@ -19,15 +19,12 @@ layui.define(["element","jquery"],function(exports){
 
 	//显示左侧菜单
 	if($(".navBar").html() == ''){
-		$.get('/permission/queryLeftMenus',function(data){
 			var _this = this;
-			$(".navBar").html(navBar(data)).height($(window).height()-230);
+			$(".navBar").html(navBar()).height($(window).height()-230);
 			element.init();  //初始化页面元素
 			$(window).resize(function(){
 				$(".navBar").height($(window).height()-230);
 			})
-		})
-		
 	}
 
 	//参数设置
@@ -60,6 +57,7 @@ layui.define(["element","jquery"],function(exports){
 	//右侧内容tab操作
 	var tabIdIndex = 0;
 	Tab.prototype.tabAdd = function(_this){
+		debugger;
 		if(window.sessionStorage.getItem("menu")){
 			menu = JSON.parse(window.sessionStorage.getItem("menu"));
 		}

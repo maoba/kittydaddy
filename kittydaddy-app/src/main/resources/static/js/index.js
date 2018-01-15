@@ -70,6 +70,7 @@ layui.config({
 
 	// 添加新窗口
 	$(".layui-nav .layui-nav-item a").on("click",function(){
+		debugger
 		addTab($(this));
 		$(this).parent("li").siblings().removeClass("layui-nav-itemed");
 	})
