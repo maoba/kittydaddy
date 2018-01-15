@@ -57,7 +57,6 @@ layui.define(["element","jquery"],function(exports){
 	//右侧内容tab操作
 	var tabIdIndex = 0;
 	Tab.prototype.tabAdd = function(_this){
-		debugger;
 		if(window.sessionStorage.getItem("menu")){
 			menu = JSON.parse(window.sessionStorage.getItem("menu"));
 		}
