@@ -47,11 +47,14 @@
      select * from system_permission where status = 1 and tenant_id = #{tenantId}
   </select>
   
-  <!--分页查询-->
+  <!--分页查询权限-->
   <select id="queryPermissionByPage" resultMap="BaseResultMap">
-      select * from system_permission where 1 = 1
+      select * from system_permission where 1 = 1 and status = 1
       <if test="moduleName !=null  and moduleName !=''">
           and module_name = #{moduleName}
+      </if>
+      <if test="permissionType !=null and permissionType !=''">
+          and permission_type = #{permissionType}
       </if>
       and tenant_id = #{tenantId}
   </select>

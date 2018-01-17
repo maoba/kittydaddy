@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService{
 		UserEntity userEntity = userMapper.selectByPrimaryKey(userId);
 		if(null!= userEntity){
 			String originSalt = userEntity.getSalt();
-			String encodePassword = KCryptogramUtil.getEncryptPassword(originSalt, oldPassword, userEntity.getCellPhoneNum(), userEntity.getEmail());
+			String encodePassword = KCryptogramUtil.getEncryptPassword(originSalt, oldPassword, userEntity.getUserName());
 			if(userEntity.getUserPwd().equals(encodePassword)) return true;
 		}
 		return false;

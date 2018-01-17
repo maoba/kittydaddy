@@ -21,7 +21,7 @@ public interface PermissionEntityMapper {
     
 	List<PermissionEntity> queryPermissionByParentId(@Param(value="parentId") String id);
 
-	List<PermissionEntity> queryPermissionByPage(@Param(value="moduleName") String name,@Param(value="tenantId") Long tenantId);
+	List<PermissionEntity> queryPermissionByPage(@Param(value="moduleName") String name,@Param(value="tenantId") String tenantId,@Param(value="permissionType")String permissionType);
 
 	List<PermissionEntity> queryCatalogPermission();
 
