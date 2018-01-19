@@ -16,24 +16,25 @@
 <body class="childrenBody">
 	<form  class="layui-form layui-form-pane">
 	  <input type="hidden" name="terminalType" value="0"/>
+	  <input type="hidden" name="id" value="${permission.id}"/>
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">权限名称</label>
 	    <div class="layui-input-block">
-	      <input type="text" name="moduleName"  required  lay-verify="required" placeholder="请输入权限名称" autocomplete="off" class="layui-input">
+	      <input type="text" name="moduleName"  value="${permission.moduleName}" required  lay-verify="required" placeholder="请输入权限名称" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">权限编码</label>
 	    <div class="layui-input-block">
-	      <input type="text" name="permissionCode"  required  lay-verify="required" placeholder="请输入权限编码" autocomplete="off" class="layui-input">
+	      <input type="text" name="permissionCode" value="${permission.permissionCode}" required  lay-verify="required" placeholder="请输入权限编码" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">权限路径</label>
 	    <div class="layui-input-block">
-	      <input type="text" name="permissionUrl"  placeholder="请输入权限路径" autocomplete="off" class="layui-input">
+	      <input type="text" name="permissionUrl" value="${permission.permissionUrl}"  placeholder="请输入权限路径" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  
@@ -41,25 +42,27 @@
 	   <label class="layui-form-label">权限类型</label>
 	   <div class="layui-input-inline">
           <select name="permissionType" lay-verify="permissionType">
-               <option value="" >--请选择--</option>
-               <option value="0" >目录</option> 
-               <option value="1" >资源</option> 
+                <#if permission.permissionType = 0 >
+			    	   <option value="0" checked>目录</option> 
+                       <option value="1" >资源</option> 
+		    	<#elseif permission.permissionType = 1>
+		    	      <option value="0" >目录</option> 
+                      <option value="1" checked>资源</option> 
+		    	<#else>
+		    	      <option value="" >--请选择--</option>
+		    	      <option value="0" >目录</option> 
+                      <option value="1" >资源</option> 
+		    	</#if>
           </select>
        </div>       
-	  </div>
-	  
-	   <div class="layui-form-item">
-	    <label class="layui-form-label">图标</label>
-	    <div class="layui-input-inline">
-	      <input type="text" name="permissionICO"  required  lay-verify="required" placeholder="请选择所需的layui图标" autocomplete="off" class="layui-input">
-	    </div>
 	  </div>
 	  
 	  <div class="layui-form-item">
 	   <label class="layui-form-label">租户组</label>
 	   <div class="layui-input-inline">
          <select id="tenantNames" name="tenantId" lay-verify="required">
-	        <option value=""></option>
+	        <option value="">--请选择--</option>
+	        <option value="${permission.tenantId!}"  selected="selected">${permission.tenantName!}</option> 
 	     </select>
        </div>       
 	  </div>
@@ -69,7 +72,8 @@
 	   <label class="layui-form-label">父类菜单</label>
 	   <div class="layui-input-inline">
           <select name="parentId" id="parentIds" lay-verify="permissionType">
-               <option value="" >--请选择--</option>
+               <option value="" >--请选择--</option> 
+               <option value="${permission.parentId!}"  selected="selected">${permission.parentName!}</option> 
           </select>
        </div>       
 	  </div>
@@ -77,12 +81,12 @@
 	  
 	  <div class="layui-form-item">
 	    <div class="layui-input-block">
-	      <button class="layui-btn" lay-submit lay-filter="addPermission">立即提交</button>
+	      <button class="layui-btn" lay-submit lay-filter="editPermission">立即提交</button>
 	      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 	      <button class="layui-btn layui-btn-normal" id="back">返回</button>
 	    </div>
 	  </div> 
 	</form>
 	<script type="text/javascript" src="${path}/static/layui/layui.js"></script>
-	<script type="text/javascript" src="${path}/static/system/permissionAdd.js"></script>
+	<script type="text/javascript" src="${path}/static/system/permissionEdit.js"></script>
 </body> 

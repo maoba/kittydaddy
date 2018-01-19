@@ -59,9 +59,9 @@
       and tenant_id = #{tenantId}
   </select>
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey"  >
     delete from system_permission
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   
   <insert id="insert" parameterType="com.kittydaddy.metadata.system.domain.PermissionEntity" useGeneratedKeys="true" keyProperty="id">

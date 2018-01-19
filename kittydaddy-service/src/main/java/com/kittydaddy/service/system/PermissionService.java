@@ -48,4 +48,17 @@ public interface PermissionService {
      */
 	void saveUpdatePermission(Map<String, Object> params);
 
+    /**
+     * 根据权限id进行删除
+     * @param permissionId
+     */
+	void deleteRelativeEntityById(String permissionId);
+
+    /**
+     * 根据id查询权限
+     * @param permissionId
+     * @return
+     */
+	PermissionEntity queryPermissionById(String permissionId);
+
 }

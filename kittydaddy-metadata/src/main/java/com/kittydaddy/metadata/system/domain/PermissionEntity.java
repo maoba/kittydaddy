@@ -1,6 +1,8 @@
 package com.kittydaddy.metadata.system.domain;
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Transient;
 /**
  * @author kitty daddy
  * 权限实体类
@@ -81,9 +83,22 @@ public class PermissionEntity implements Serializable{
      * 更新时间
      */
     private Date updateTime;
-
+   
+    /**
+     * 租户的名称
+     */
+    @Transient
+    private String tenantName;
     
-    public String getParentName() {
+    public String getTenantName() {
+		return tenantName;
+	}
+
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+
+	public String getParentName() {
 		return parentName;
 	}
 

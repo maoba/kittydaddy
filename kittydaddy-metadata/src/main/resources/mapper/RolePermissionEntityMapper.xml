@@ -27,12 +27,12 @@
   
   <!--根据roleId删除角色权限关系-->
   <delete id="deleteByRoleId"  >
-     delete from system_role_permission where role_id = #{roleId,jdbcType=BIGINT}
+     delete from system_role_permission where role_id = #{roleId,jdbcType=VARCHAR}
   </delete>
   
   <!--根据权限id进行删除-->
   <delete id="deleteByPermissionId"  >
-     delete from system_role_permission where permission_id = #{permissionId,jdbcType=BIGINT}
+     delete from system_role_permission where permission_id = #{permissionId,jdbcType=VARCHAR}
   </delete>
   
   <delete id="deleteByPrimaryKey"  >

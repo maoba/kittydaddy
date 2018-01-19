@@ -7,23 +7,26 @@ layui.config({
 		laydate = layui.laydate,
 		$ = layui.jquery;
 	
+	
 	//监听提交
-    form.on('submit(addPermission)', function(data){
+    form.on('submit(editPermission)', function(data){
+    	debugger
+    	alert(JSON.stringify(data));
 	    $.post('/permission/saveUpdatePermission',data.field,function(result){
 	    	if('success' == result){
-	    		 layer.alert('新增权限成功', {icon: 1}, function(index){
+	    		 layer.alert('权限更新成功', {icon: 1}, function(index){
 	    			 parent.location.reload(); //刷新父页面
 	    		     layer.close(index);
 	    		 });
 	    		 return true;
 	    	}else{
-	    		layer.alert('新增权限失败', {icon: 2});
+	    		layer.alert('权限更新失败', {icon: 2});
 	    	}
 	    })
 	    return false;
 	});
     
-    //查询加载后台的租户数据
+  //查询加载后台的租户数据
 	$.post('/tenant/queryTenantList',{pageIndex:0,pageSize:0},function(data){
     	 $.each(data.list,function(index,item){
     		$('#tenantNames').append("<option value='"+item.id+"'>"+item.name+"</option>");
@@ -40,8 +43,7 @@ layui.config({
 	     //重新进行渲染
 	     form.render();
 	})
-	
-	
+    
     //返回父类
     $("body").on("click","#back",function(){ 
     	parent.location.reload(); //刷新父页面

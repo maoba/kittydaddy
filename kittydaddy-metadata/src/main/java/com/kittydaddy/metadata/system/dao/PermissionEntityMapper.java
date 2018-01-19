@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.kittydaddy.metadata.system.domain.PermissionEntity;
 
 public interface PermissionEntityMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     int insert(PermissionEntity record);
 

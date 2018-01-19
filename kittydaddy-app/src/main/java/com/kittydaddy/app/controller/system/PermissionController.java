@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageInfo;
+import com.kittydaddy.facade.convert.system.UserConvert;
 import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.PermissionDto;
+import com.kittydaddy.facade.dto.system.UserDto;
 import com.kittydaddy.facade.dto.system.request.RolePermissionRequest;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.system.domain.PermissionEntity;
+import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.system.PermissionService;
@@ -99,14 +102,36 @@ public class PermissionController extends BaseController{
      * @return
      */
     @RequestMapping(method=RequestMethod.POST,value="saveUpdatePermission")
-    public String saveUpdatePermission(Map<String,Object> params){
+    public String saveUpdatePermission(@RequestParam Map<String,Object> params,@CurrentUser CurrentUserInfo currentUserInfo){
     try{
+    	   params.put("tenantId", currentUserInfo.getTenantId());
  		   permissionService.saveUpdatePermission(params);   
  	   }catch(Exception e){
  		   return RESULT_FAILURE;
  	   }
  	   return RESULT_SUCCESS;
     }
+    
+    @RequestMapping(method=RequestMethod.GET,value="deletePermission")
+    public String deletePermission(@RequestParam String permissionId){
+    	try{
+    		//根据id删除权限
+    		permissionService.deleteRelativeEntityById(permissionId);
+    		
+    	}catch(Exception e){
+    		return RESULT_FAILURE;
+    	}
+    	return RESULT_SUCCESS;
+    }
+    
+    @RequestMapping(method=RequestMethod.GET,value="permissionEdit")
+	public ModelAndView editPermission(@CurrentUser CurrentUserInfo currentUserInfo,@RequestParam String permissionId){
+	    ModelAndView view = new ModelAndView();
+	    PermissionEntity permissionEntity = permissionService.queryPermissionById(permissionId);
+	    view.addObject("permission",permissionEntity);
+	    view.setViewName("/page/system/permissionEdit");
+	    return view;
+	}	
     
     /**
      * 获取左侧的菜单
@@ -142,24 +167,6 @@ public class PermissionController extends BaseController{
 //    	rolePermissionService.saveRolePermission(request);
     	return BaseResponse.getSuccessResponse(new Date());
     }
-    
-    
-    /**
-     * 删除
-     * @param ids
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET,value = "delete")
-    public BaseResponse deletePermission(@RequestParam(value="ids") String ids){
-    	//删除权限
-//    	permissionService.delete(IdSplitUtil.splitString2Long(ids));
-    	//删除角色权限关系
-//    	rolePermissionService.deleteByPermissionIds(IdSplitUtil.splitString2Long(ids));
-    	
-    	return BaseResponse.getSuccessResponse(new Date());
-    }
-    
-    
     
     
     /**

@@ -1,5 +1,6 @@
 package com.kittydaddy.service.system.impl;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,24 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.kittydaddy.common.enums.StatusEnum;
 import com.kittydaddy.facade.convert.system.PermissionConvert;
 import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.PermissionDto;
-import com.kittydaddy.facade.dto.system.PermissionTreeDto;
-import com.kittydaddy.facade.dto.system.request.PermissionRequest;
-import com.kittydaddy.facade.dto.tenant.requestdto.TenantPermissionRequest;
 import com.kittydaddy.metadata.system.dao.PermissionEntityMapper;
-import com.kittydaddy.metadata.system.dao.RoleEntityMapper;
 import com.kittydaddy.metadata.system.dao.RolePermissionEntityMapper;
 import com.kittydaddy.metadata.system.dao.UserRoleEntityMapper;
 import com.kittydaddy.metadata.system.domain.PermissionEntity;
-import com.kittydaddy.metadata.system.domain.RoleEntity;
 import com.kittydaddy.metadata.system.domain.RolePermissionEntity;
 import com.kittydaddy.metadata.system.domain.UserRoleEntity;
-import com.kittydaddy.metadata.util.RedisUtil;
+import com.kittydaddy.metadata.tenant.dao.TenantEntityMapper;
+import com.kittydaddy.metadata.tenant.domain.TenantEntity;
 import com.kittydaddy.service.system.PermissionService;
 import com.kittydaddy.service.system.RolePermissionService;
-import com.kittydaddy.service.system.UserRoleService;
 /**
  * @author kitty daddy
  * 权限服务
@@ -40,30 +37,19 @@ public class PermissionServiceImpl implements PermissionService{
     private PermissionEntityMapper permissionMapper;
 	
 	@Autowired
-	private RoleEntityMapper roleEntityMapper;
-	
-	@Autowired
 	private UserRoleEntityMapper userRoleMapper;
 	
 	@Autowired
 	private RolePermissionEntityMapper rolePermissionMapper;
 	
-	/**
-	 * 用户角色服务
-	 */
 	@Autowired
-	private UserRoleService userRoleService;
+	private TenantEntityMapper tenantMapper;
 	
 	/**
 	 * 角色权限服务
 	 */
 	@Autowired
 	private RolePermissionService rolePermissionService;
-	
-	
-	@Autowired
-	private RedisUtil redisUtil;
-
 	
 	/**
 	 * 查询左侧的菜单项
@@ -116,7 +102,7 @@ public class PermissionServiceImpl implements PermissionService{
 		return list;
 	}
 
-    
+	
 	@Override
 	public PageInfo<PermissionEntity> queryPermissionsByPage(String name,String permissionType, String tenantId, Integer pageIndex,Integer pageSize) {
 		PageHelper.startPage(pageIndex,pageSize, true, null, true);
@@ -131,8 +117,6 @@ public class PermissionServiceImpl implements PermissionService{
 		List<PermissionDto> permissionDtos = PermissionConvert.convertEntitys2Dtos(entitys);
 		return permissionDtos;
 	}
-
-
 
 	@Override
 	public List<Map<String, Object>> queryPermissionTreeList(String tenantId) {
@@ -158,7 +142,78 @@ public class PermissionServiceImpl implements PermissionService{
 
 	@Override
 	public void saveUpdatePermission(Map<String, Object> params) {
-        System.out.println(params);		
+		String moduleName = params.get("moduleName")==null?"":params.get("moduleName").toString();
+		String permissionCode = params.get("permissionCode")==null?"": params.get("permissionCode").toString();
+		String permissionUrl = "";
+		if(params.containsKey("permissionUrl")) {
+			permissionUrl = params.get("permissionUrl")==null?"": params.get("permissionUrl").toString();
+		}
+		
+		Integer permissionType = 0;
+		if(params.containsKey("permissionType")){
+			permissionType = params.get("permissionType") == null?0:Integer.parseInt(params.get("permissionType").toString());
+		}
+		
+		String permissionICO = params.get("permissionICO") == null?"":params.get("permissionICO").toString();
+		String tenantId = params.get("tenantId")==null?"":params.get("tenantId").toString();
+		String parentId = params.get("parentId")==null?"":params.get("parentId").toString();
+		Integer terminalType = Integer.parseInt(params.get("terminalType").toString());
+		String parentName = "";
+		if(StringUtils.isNoneEmpty(parentId)){
+			PermissionEntity parentPermission = permissionMapper.selectByPrimaryKey(parentId);
+			parentName = parentPermission.getModuleName();
+		}
+		if(params.get("id")==null){//新增
+			PermissionEntity permissionEntity = new PermissionEntity();
+			permissionEntity.setCreateTime(new Date());
+			permissionEntity.setModuleCode(permissionCode);
+			permissionEntity.setModuleName(moduleName);
+			permissionEntity.setParentId(parentId);
+			permissionEntity.setParentName(parentName);
+			permissionEntity.setPermissionCode(permissionCode);
+			permissionEntity.setPermissionICO(permissionICO);
+			permissionEntity.setPermissionType(permissionType);
+			permissionEntity.setPermissionUrl(permissionUrl);
+			permissionEntity.setStatus(StatusEnum.VALID.getValue());
+			permissionEntity.setTerminalType(terminalType);
+			permissionEntity.setTenantId(tenantId);
+			permissionMapper.insert(permissionEntity);
+			
+		}else{//更新
+			PermissionEntity oldPermission = permissionMapper.selectByPrimaryKey(params.get("id").toString());
+			oldPermission.setModuleCode(permissionCode);
+			oldPermission.setModuleName(moduleName);
+			oldPermission.setParentId(parentId);
+			oldPermission.setParentName(parentName);
+			oldPermission.setPermissionCode(permissionCode);
+			oldPermission.setPermissionType(permissionType);
+			oldPermission.setPermissionUrl(permissionUrl);
+			oldPermission.setStatus(StatusEnum.VALID.getValue());
+			oldPermission.setTerminalType(terminalType);
+			oldPermission.setTenantId(tenantId);
+			oldPermission.setUpdateTime(new Date());
+			permissionMapper.updateByPrimaryKey(oldPermission);
+		}
+	}///kvcontent/kvcontentList.html
+
+	@Override
+	public void deleteRelativeEntityById(String permissionId) {
+		//根据id删除权限的实体类
+		permissionMapper.deleteByPrimaryKey(permissionId);
+		//根据id删除角色权限关系数据
+		rolePermissionMapper.deleteByPermissionId(permissionId);
 	}
 
+	@Override
+	public PermissionEntity queryPermissionById(String permissionId) {
+		PermissionEntity entity = permissionMapper.selectByPrimaryKey(permissionId);
+		if(null!=entity){
+			TenantEntity tenant = tenantMapper.selectByPrimaryKey(entity.getTenantId());
+			if(null!=tenant){
+				entity.setTenantName(tenant.getName());
+			}
+		}
+		return entity;
+	}
+	
 }

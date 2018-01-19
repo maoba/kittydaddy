@@ -23,5 +23,5 @@ public interface RolePermissionEntityMapper {
 
 	void deleteByRoleId(@Param(value="roleId") String roleId);
   
-	void deleteByPermissionId(@Param(value="permissionId")Long permissionId);
+	void deleteByPermissionId(@Param(value="permissionId") String permissionId);
 }
