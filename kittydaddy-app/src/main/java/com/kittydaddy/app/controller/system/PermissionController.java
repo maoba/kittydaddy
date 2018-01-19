@@ -1,9 +1,6 @@
 package com.kittydaddy.app.controller.system;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,21 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.github.pagehelper.PageInfo;
-import com.kittydaddy.facade.convert.system.UserConvert;
 import com.kittydaddy.facade.dto.system.LeftMenusDto;
-import com.kittydaddy.facade.dto.system.PermissionDto;
-import com.kittydaddy.facade.dto.system.UserDto;
-import com.kittydaddy.facade.dto.system.request.RolePermissionRequest;
-import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.system.domain.PermissionEntity;
-import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.system.PermissionService;
-import com.kittydaddy.service.system.RolePermissionService;
-import com.kittydaddy.service.system.UserRoleService;
 /**
  * @author kitty daddy
  * 权限控制
@@ -35,12 +23,6 @@ import com.kittydaddy.service.system.UserRoleService;
 public class PermissionController extends BaseController{
     @Autowired
     private PermissionService permissionService;
-    
-    @Autowired
-    private RolePermissionService rolePermissionService;
-    
-    @Autowired
-    private UserRoleService userRoleService;
     
     /**
      * 跳转到树页面
@@ -126,14 +108,14 @@ public class PermissionController extends BaseController{
     
     @RequestMapping(method=RequestMethod.GET,value="deletePermission")
     public String deletePermission(@RequestParam String permissionId){
-    	try{
+    	 try{
     		//根据id删除权限
     		permissionService.deleteRelativeEntityById(permissionId);
     		
-    	}catch(Exception e){
+    	 }catch(Exception e){
     		return RESULT_FAILURE;
-    	}
-    	return RESULT_SUCCESS;
+    	 }
+    	    return RESULT_SUCCESS;
     }
     
     @RequestMapping(method=RequestMethod.GET,value="permissionEdit")
@@ -156,49 +138,5 @@ public class PermissionController extends BaseController{
     	List<LeftMenusDto> leftMenus = permissionService.queryLeftMenus(currentUser.getUserId(),currentUser.getTenantId());
     	return leftMenus;
     }
-    
-    /**
-     * 查找所有的目录
-     * @return
-     */
-    @RequestMapping(method=RequestMethod.GET,value="/queryNormalCatalogs")
-    @ResponseBody
-    public BaseResponse queryNormalCatalogs(){
-    	List<PermissionDto> catalogPermissionDtos = permissionService.queryCatalogPermissions();
-    	return BaseResponse.getSuccessResponse(new Date(), catalogPermissionDtos);
-    }
-    
-    /**
-     * 保存角色权限关系
-     * @param request
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.POST,value="/saveRolePermission")
-    @ResponseBody
-    public BaseResponse saveRolePermission(RolePermissionRequest request){
-//    	rolePermissionService.saveRolePermission(request);
-    	return BaseResponse.getSuccessResponse(new Date());
-    }
-    
-    
-    /**
-     * 查询某个角色已经绑定过的角色
-     * @param roleId
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET,value = "/queryBandingPermissions",produces = "application/json")
-    @ResponseBody
-    public BaseResponse queryBandingPermissions(@RequestParam(value="roleId") Long roleId){
-//    	List<RolePermissionDto> rolePermissionDtos = rolePermissionService.queryRolePermissionByRoleId(roleId);
-    	List<Long> ids = new ArrayList<Long>();
-//    	if(CollectionUtils.isNotEmpty(rolePermissionDtos)){
-//    		for(RolePermissionDto dto : rolePermissionDtos){
-//    			ids.add(dto.getPermissionId());
-//    		}
-//    	}
-    	return BaseResponse.getSuccessResponse(new Date(), ids);
-    }
-    
-    
     
 }

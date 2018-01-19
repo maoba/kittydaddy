@@ -1,6 +1,7 @@
 package com.kittydaddy.service.vcontent.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kittydaddy.common.constant.RedisKeyConstant;
 import com.kittydaddy.common.enums.IsFreeEnum;
 import com.kittydaddy.common.enums.PublishStatusEnum;
@@ -24,6 +27,7 @@ import com.kittydaddy.common.utils.KCollectionUtils;
 import com.kittydaddy.common.utils.KHttpClientUtil;
 import com.kittydaddy.common.utils.KJSONPParser;
 import com.kittydaddy.common.utils.KStringUtils;
+import com.kittydaddy.metadata.system.domain.PermissionEntity;
 import com.kittydaddy.metadata.util.RedisUtil;
 import com.kittydaddy.metadata.vcontent.dao.KVContentEntityMapper;
 import com.kittydaddy.metadata.vcontent.dao.KVContentItemEntityMapper;
@@ -312,5 +316,14 @@ public class KVContentServiceImpl implements KVContentService{
 				}
 			}	
 			return true;
+		}
+
+		@Override
+		public PageInfo<KVContentEntity> queryKvContentByPage(Integer shortFlag,String id, String title, Integer status,
+				Integer pageIndex, Integer pageSize) {
+			PageHelper.startPage(pageIndex,pageSize, true, null, true);
+			List<KVContentEntity> entitys = kvContentMapper.queryKvContentByPage(shortFlag,id,title,status);
+			PageInfo<KVContentEntity> page = new PageInfo<KVContentEntity>(entitys);
+			return page;
 		}
 }

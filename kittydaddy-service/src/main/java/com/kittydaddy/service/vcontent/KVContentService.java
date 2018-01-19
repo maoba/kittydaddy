@@ -2,6 +2,9 @@ package com.kittydaddy.service.vcontent;
 
 import java.util.Map;
 
+import com.github.pagehelper.PageInfo;
+import com.kittydaddy.metadata.vcontent.domain.KVContentEntity;
+
 /**
  * @author kitty daddy
  * 影视内容基本信息
@@ -21,5 +24,16 @@ public interface KVContentService {
 	 * @param map
 	 */
 	void executeCollectShortVideoJobService(Map<String, Object> map);
+    
+	/**
+	 * 根绝id以及名称进行查询
+	 * @param id
+	 * @param name
+	 * @param status
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 */
+	PageInfo<KVContentEntity> queryKvContentByPage(Integer shortFlag,String id, String name, Integer status,Integer pageIndex, Integer pageSize);
     
 }

@@ -57,6 +57,21 @@
      select * from k_video_content where sub_origin_id = #{subOriginId,jdbcType=VARCHAR} and status = 1
   </select>
   
+  <!--分页查询状态内容-->
+  <select id="queryKvContentByPage" resultMap="BaseResultMap">
+     select * from k_video_content where 1=1
+     <if test="id!=null and id!=''">
+        and id=#{id,jdbcType=VARCHAR}
+     </if>
+     <if test="title !=null and title !=''">
+        and title like '%#{title,jdbcType=VARCHAR}%'
+     </if>
+     <if test="status !=null and status !=''">
+        and status = #{status,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from k_video_content
     where id = #{id,jdbcType=VARCHAR}
