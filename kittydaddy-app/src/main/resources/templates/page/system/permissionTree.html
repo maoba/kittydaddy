@@ -61,11 +61,39 @@
 	            }
 	        };
            
+	        
+	        
 	        $.get('/permission/permissionTreeList',function(data){
    		        $(document).ready(function(){
    		            $.fn.zTree.init($("#permissionTree"), setting, data);
+ 	                var zTreeObj = $.fn.zTree.getZTreeObj("permissionTree")  
+ 	                var zTree = zTreeObj.getCheckedNodes(false);  
+ 	                
+ 	                //如果之前的权限已经分配，那么进行回显
+ 	                $.ajax({
+ 	                	type : "get", 
+ 	                    url : "/permission/permissionTreeCheckedList", 
+ 	                    async : false, 
+ 	                    success : function(data){
+ 	                    	var permissionIds = new Array();
+ 	                    	$.each(data,function(index,item){
+ 	                    		permissionIds.push(item.id)
+ 	 	                	})
+ 	 	                	
+ 	 	                	for (var i = 0; i < zTree.length; i++) {  
+ 	 	                	   if(permissionIds!=null && permissionIds.length>0){
+ 	 	                		   if($.inArray(zTree[i].id,permissionIds)!=-1){
+ 	 	                			   zTreeObj.expandNode(zTree[i], true); //展开选中的  
+ 	 	 	                           zTreeObj.checkNode(zTree[i], true);      
+ 	 	                		   }
+ 	 	                	   }	
+ 	 	                    }  
+ 	                    }
+ 	                })
    		        });
 	        })
+	        
+	        
 	        
 	         var onCheck = function(e,treeId,treeNode){
 	            var treeObj=$.fn.zTree.getZTreeObj("permissionTree"),nodes=treeObj.getCheckedNodes(true);

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.common.enums.StatusEnum;
+import com.kittydaddy.common.utils.KCollectionUtils;
 import com.kittydaddy.facade.convert.system.PermissionConvert;
 import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.PermissionDto;
@@ -20,6 +21,7 @@ import com.kittydaddy.metadata.system.dao.PermissionEntityMapper;
 import com.kittydaddy.metadata.system.dao.RolePermissionEntityMapper;
 import com.kittydaddy.metadata.system.dao.UserRoleEntityMapper;
 import com.kittydaddy.metadata.system.domain.PermissionEntity;
+import com.kittydaddy.metadata.system.domain.RoleEntity;
 import com.kittydaddy.metadata.system.domain.RolePermissionEntity;
 import com.kittydaddy.metadata.system.domain.UserRoleEntity;
 import com.kittydaddy.metadata.tenant.dao.TenantEntityMapper;
@@ -194,7 +196,7 @@ public class PermissionServiceImpl implements PermissionService{
 			oldPermission.setUpdateTime(new Date());
 			permissionMapper.updateByPrimaryKey(oldPermission);
 		}
-	}///kvcontent/kvcontentList.html
+	}
 
 	@Override
 	public void deleteRelativeEntityById(String permissionId) {
@@ -215,5 +217,30 @@ public class PermissionServiceImpl implements PermissionService{
 		}
 		return entity;
 	}
-	
+
+	@Override
+	public List<Map<String, Object>> permissionTreeCheckedList(String tenantId,String userId) {
+        List<Map<String,Object>> permissionMaps = new ArrayList<Map<String,Object>>();
+		List<UserRoleEntity> userRoles = userRoleMapper.queryRole(userId, tenantId);
+		if(KCollectionUtils.isEmpty(userRoles))return permissionMaps;
+		
+		for(UserRoleEntity userRole : userRoles){
+			List<RolePermissionEntity> rolePermissions = rolePermissionMapper.queryRolePermissionByRoleId(userRole.getRoleId());
+			if(KCollectionUtils.isEmpty(rolePermissions)) continue;
+			for(RolePermissionEntity rolePermission : rolePermissions){
+				PermissionEntity permissionEntity = permissionMapper.selectByPrimaryKey(rolePermission.getPermissionId());
+				if(permissionEntity == null) continue;
+				Map<String,Object> map = new LinkedHashMap<String, Object>();
+				map.put("id", permissionEntity.getId());
+				map.put("pId", permissionEntity.getParentId()==null?"":permissionEntity.getParentId());
+				map.put("name", permissionEntity.getModuleName());
+				if(permissionEntity.getParentId()==null){
+					map.put("open", true);
+					map.put("isParent", true);
+				}
+				permissionMaps.add(map);
+			}
+		}
+		return permissionMaps;
+	}
 }

@@ -67,6 +67,18 @@ public class PermissionController extends BaseController{
     }
     
     /**
+     * 获取当前用户已经拥有的权限
+     * @param currentUserInfo
+     * @return
+     */
+    @RequestMapping(method=RequestMethod.GET,value="permissionTreeCheckedList")
+    public List<Map<String,Object>> permissionTreeCheckedList(@CurrentUser CurrentUserInfo currentUserInfo){
+    	List<Map<String,Object>> list = permissionService.permissionTreeCheckedList(currentUserInfo.getTenantId(),currentUserInfo.getUserId());
+        return list;
+    }
+    
+    
+    /**
      * 跳转到权限页面
      * @return
      */
