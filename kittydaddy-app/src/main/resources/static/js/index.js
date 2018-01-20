@@ -2,11 +2,11 @@ var $,tab,skyconsWeather;
 layui.config({
 	base : "/static/js/"
 }).use(['bodyTab','form','element','layer','jquery'],function(){
-	var form = layui.form(),
+	var form = layui.form,
 		layer = layui.layer,
-		element = layui.element();
+		element = layui.element;
 		$ = layui.jquery;
-		tab = layui.bodyTab();
+		tab = layui.bodyTab;
 
 	//锁屏
 	function lockPage(){

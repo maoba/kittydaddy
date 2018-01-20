@@ -1,84 +1,62 @@
 package com.kittydaddy.facade.dto.system.response;
-import java.util.Date;
+
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @author kitty daddy
  *  基本返回dto
  */
 public class BaseResponse {
-	/**
-	 * 返回状态
-	 */
-    private String status;
+	//返回码
+	private Integer code;
 	
-    /**
-     * 返回时间
-     */
-	private Date cacheDate = new Date();
-	
-	/**
-	 * 返回结果码
-	 */
-	private String resultCode;
-	
-	/**
-	 * 返回信息
-	 */
+	//返回信息
 	private String msg;
 	
+	//返回总数量
+	private Long count;
+	
+	//返回总数据
+	private Collection<?> data;
+	
+	
+	public BaseResponse(Integer code, String msg, Long count, Collection<?> data) {
+		super();
+		this.code = code;
+		this.msg = msg;
+		this.count = count;
+		this.data = data;
+	}
+
 	/**
-	 * 返回数据
+	 * 返回成功
+	 * @param msg
+	 * @param data
+	 * @return
 	 */
-	private Object data;
-	
-	private Object filter;
-
-	public static BaseResponse getSuccessResponse() {
-		return getSuccessResponse(new Date(),null);
+	public static BaseResponse getSuccessResp(String msg,Long count,Collection<?> data){
+		BaseResponse resp = new BaseResponse(0, msg, count, data);
+		return resp;
 	}
 	
-	public static BaseResponse getSuccessResponse(Object data) {
-		return getSuccessResponse(new Date(),data);
+	/**
+	 * 返回异常
+	 * @param msg
+	 * @param data
+	 * @return
+	 */
+	public static BaseResponse getFailureResp(String msg,Long count,Collection<?> data){
+		BaseResponse resp = new BaseResponse(-200, msg, count, data);
+		return resp;
 	}
 	
-	public static BaseResponse getSuccessResponse(Date cacheDate, Object data){
-		BaseResponse response = new BaseResponse();
-		response.setStatus("200");
-		response.setResultCode("success");
-		response.setMsg("成功");
-		response.setData(data);
-		return response;
-	}
-	
-	public static BaseResponse getFailResponse(String status, String msg) {
-		BaseResponse response = new BaseResponse();
-		response.setStatus(status);
-		response.setResultCode("fail");
-		response.setMsg(msg);
-		return response;
-	}
-	
-	public String getStatus() {
-		return status;
+	public Integer getCode() {
+		return code;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Date getCacheDate() {
-		return cacheDate;
-	}
-
-	public void setCacheDate(Date cacheDate) {
-		this.cacheDate = cacheDate;
-	}
-
-	public String getResultCode() {
-		return resultCode;
-	}
-
-	public void setResultCode(String resultCode) {
-		this.resultCode = resultCode;
+	public void setCode(Integer code) {
+		this.code = code;
 	}
 
 	public String getMsg() {
@@ -89,19 +67,19 @@ public class BaseResponse {
 		this.msg = msg;
 	}
 
-	public Object getData() {
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+	public Collection<?> getData() {
 		return data;
 	}
 
-	public void setData(Object data) {
+	public void setData(Collection<?> data) {
 		this.data = data;
-	}
-
-	public Object getFilter() {
-		return filter;
-	}
-
-	public void setFilter(Object filter) {
-		this.filter = filter;
 	}
 }

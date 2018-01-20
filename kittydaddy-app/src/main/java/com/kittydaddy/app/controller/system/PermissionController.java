@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.facade.dto.system.LeftMenusDto;
+import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.system.domain.PermissionEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
@@ -76,6 +77,15 @@ public class PermissionController extends BaseController{
     public PageInfo<PermissionEntity> queryPermissionList(String name,String permissionType, Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
  	   PageInfo<PermissionEntity> permissionPage = permissionService.queryPermissionsByPage(name==null?"":name.trim(),permissionType,currentUser.getTenantId(),pageIndex,pageSize);
  	   return permissionPage;
+    }
+    
+    
+    @RequestMapping(method=RequestMethod.GET,value="queryPermissionDemoList")
+    public BaseResponse queryPermissionDemoList(String name,String permissionType, Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
+    	pageIndex = 1;
+    	pageSize = 10;
+ 	   PageInfo<PermissionEntity> permissionPage = permissionService.queryPermissionsByPage(name==null?"":name.trim(),permissionType,currentUser.getTenantId(),pageIndex,pageSize);
+ 	  return BaseResponse.getSuccessResp("查询成功",permissionPage.getTotal(),permissionPage.getList());
     }
     
     

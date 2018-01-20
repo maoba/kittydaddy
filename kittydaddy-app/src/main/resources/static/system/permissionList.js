@@ -1,7 +1,7 @@
 layui.config({
 	base : "/static/js/system"
 }).use(['form','layer','jquery','laypage','laydate'],function(){
-	var form = layui.form(),
+	var form = layui.form,
 		layer = parent.layer === undefined ? layui.layer : parent.layer,
 		laypage = layui.laypage,
 		laydate = layui.laydate,
@@ -23,6 +23,7 @@ layui.config({
     function pageQuery(queryParam) {
         var queryUrl = '/permission/permissionList';
         $.post(queryUrl, queryParam, function (data) {
+        	//alert(JSON.stringify(data));
         	//渲染数据
         	renderData(data);
     		//分页
