@@ -24,13 +24,18 @@ layui.config({
 	    return false;
 	});
     
-    $.post('/tenant/queryTenantList',{pageIndex:0,pageSize:0},function(data){
-    	$.each(data.list,function(index,item){
-    		$('#tenantNames').append("<option value='"+item.id+"'>"+item.name+"</option>");
-    	})
-    	//重新进行渲染
-    	form.render();
-    })
+    $.ajax({ 
+        type : "get", 
+        url : "/tenant/queryTenantList?pageIndex=0&pageSize=0", 
+        async : false, 
+        success : function(data){ 
+        	$.each(data.data,function(index,item){
+        		$('#tenantNames').append("<option value='"+item.id+"'>"+item.name+"</option>");
+       	    })
+       	  //重新进行渲染
+		   form.render();
+        }
+	 })
     
     
     //返回父类

@@ -35,34 +35,13 @@
 		</div> -->
 	</blockquote>
 	<div class="layui-form permission_list">
-	  	<table class="layui-table">
-		    <colgroup>
-				<col width="10">
-				<col>
-				<col width="10%">
-				<!-- <col width="9%"> -->
-				<col width="20%">
-				<col width="10%">
-				<col width="10%">
-				<col width="10%">
-				<col width="20%">
-		    </colgroup>
-		    <thead>
-				<tr>
-					<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose" id="allChoose"></th>
-					<th style="text-align:left;">权限名称</th>
-					<th>权限编码</th>
-					<th>请求地址</th> 
-					<th>权限类型</th>
-					<th>父名称</th>
-					<th>创建时间</th>
-					<th>操作</th>
-				</tr> 
-		    </thead>
-		    <tbody class="permission_content"></tbody>
-		</table>
+	    <table id="permissionList" lay-filter="permissionList" lay-data="{id:'permissionId'}"></table>
+        <div id="laypage"></div>  
 	</div>
-	<div id="permission_page"></div>
+	<script type="text/html" id="permissionBar">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
 	<script type="text/javascript" src="${path}/static/layui/layui.js"></script>
 	<script type="text/javascript" src="${path}/static/system/permissionList.js"></script>
 	<script type="text/javascript" src="${path}/static/js/moment.js"></script>

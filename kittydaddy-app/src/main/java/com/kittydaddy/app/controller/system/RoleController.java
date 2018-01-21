@@ -1,12 +1,15 @@
 package com.kittydaddy.app.controller.system;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.github.pagehelper.PageInfo;
+import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.system.domain.RoleEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
@@ -43,10 +46,10 @@ public class RoleController extends BaseController{
            return view;
        }
        
-       @RequestMapping(method=RequestMethod.POST,value="roleList")
-       public PageInfo<RoleEntity> queryRolesList(String name,Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
+       @RequestMapping(method=RequestMethod.GET,value="roleList")
+       public BaseResponse queryRolesList(String name,Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
     	   PageInfo<RoleEntity> rolePage = roleService.queryRolesByPage(name,currentUser.getTenantId(),pageIndex,pageSize);
-    	   return rolePage;
+    	   return BaseResponse.getSuccessResp("查询成功",rolePage.getTotal(),rolePage.getList());
        }
        
        @RequestMapping(method=RequestMethod.POST,value="saveRolePermission")

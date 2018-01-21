@@ -8,7 +8,7 @@ layui.config({
 		table = layui.table,
 		$ = layui.jquery;
 	
-	var curnum = 1,limitcount=20;
+	  var curnum = 1,limitcount=20;
 	  //初始化搜索
 	  kvUserSearch('',curnum,limitcount);
 	  
@@ -25,8 +25,8 @@ layui.config({
 		      {field: 'userName', title: '用户名称', width:200},
 		      {field: 'tenantName', title: '从属租户', width:200},
 		      {field: 'cellPhoneNum', title: '手机号码', width:200, sort: true},
-		      {field: 'email', title: '邮箱地址', width:200}, 
-		      {field: 'status', title: '状态', width: 200,
+		      {field: 'email', title: '邮箱地址', width:210}, 
+		      {field: 'status', title: '状态', width: 210,
 		    	  templet:function(d){
 		    	    	if(d.status==0){
 		    	    		return "失效"

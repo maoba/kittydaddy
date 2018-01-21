@@ -72,7 +72,7 @@
  	                //如果之前的权限已经分配，那么进行回显
  	                $.ajax({
  	                	type : "get", 
- 	                    url : "/permission/permissionTreeCheckedList", 
+ 	                    url : "/permission/permissionTreeCheckedList?roleId="+$('#roleId').val(), 
  	                    async : false, 
  	                    success : function(data){
  	                    	var permissionIds = new Array();

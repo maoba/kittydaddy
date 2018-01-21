@@ -1,6 +1,7 @@
 package com.kittydaddy.app.controller.system;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.system.domain.PermissionEntity;
+import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.system.PermissionService;
@@ -55,8 +58,8 @@ public class PermissionController extends BaseController{
      * @return
      */
     @RequestMapping(method=RequestMethod.GET,value="permissionTreeCheckedList")
-    public List<Map<String,Object>> permissionTreeCheckedList(@CurrentUser CurrentUserInfo currentUserInfo){
-    	List<Map<String,Object>> list = permissionService.permissionTreeCheckedList(currentUserInfo.getTenantId(),currentUserInfo.getUserId());
+    public List<Map<String,Object>> permissionTreeCheckedList(@RequestParam String roleId){
+    	List<Map<String,Object>> list = permissionService.permissionTreeCheckedList(roleId);
         return list;
     }
     
@@ -72,20 +75,19 @@ public class PermissionController extends BaseController{
         return view;
     }
     
-    
-    @RequestMapping(method=RequestMethod.POST,value="permissionList")
-    public PageInfo<PermissionEntity> queryPermissionList(String name,String permissionType, Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
+    /**
+     * 查询列表
+     * @param name
+     * @param permissionType
+     * @param pageIndex
+     * @param pageSize
+     * @param currentUser
+     * @return
+     */
+    @RequestMapping(method=RequestMethod.GET,value="permissionList")
+    public BaseResponse queryPermissionList(String name,String permissionType, Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
  	   PageInfo<PermissionEntity> permissionPage = permissionService.queryPermissionsByPage(name==null?"":name.trim(),permissionType,currentUser.getTenantId(),pageIndex,pageSize);
- 	   return permissionPage;
-    }
-    
-    
-    @RequestMapping(method=RequestMethod.GET,value="queryPermissionDemoList")
-    public BaseResponse queryPermissionDemoList(String name,String permissionType, Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
-    	pageIndex = 1;
-    	pageSize = 10;
- 	   PageInfo<PermissionEntity> permissionPage = permissionService.queryPermissionsByPage(name==null?"":name.trim(),permissionType,currentUser.getTenantId(),pageIndex,pageSize);
- 	  return BaseResponse.getSuccessResp("查询成功",permissionPage.getTotal(),permissionPage.getList());
+ 	   return BaseResponse.getSuccessResp("查询成功",permissionPage.getTotal(),permissionPage.getList());
     }
     
     

@@ -62,6 +62,6 @@ public interface PermissionService {
 	PermissionEntity queryPermissionById(String permissionId);
 
 
-	List<Map<String, Object>> permissionTreeCheckedList(String tenantId,String userId);
+	List<Map<String, Object>> permissionTreeCheckedList(String roleId);
 
 }

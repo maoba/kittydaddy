@@ -39,31 +39,13 @@
 		</div> -->
 	</blockquote>
 	<div class="layui-form role_list">
-	  	<table class="layui-table">
-		    <colgroup>
-				<col width="20">
-				<col>
-				<col width="20%">
-				<!-- <col width="9%"> -->
-				<col width="20%">
-				<col width="20%">
-				<col width="20%">
-		    </colgroup>
-		    <thead>
-				<tr>
-					<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose" id="allChoose"></th>
-					<th style="text-align:left;">角色名称</th>
-					<th>角色编码</th>
-					<th>描述信息</th>
-					<!-- <th>是否展示</th> -->
-					<th>创建时间</th>
-					<th>操作</th>
-				</tr> 
-		    </thead>
-		    <tbody class="role_content"></tbody>
-		</table>
+		<table id="roleList" lay-filter="roleList" lay-data="{id:'roleId'}"></table>
+	    <div id="laypage"></div>  
 	</div>
-	<div id="role_page"></div>
+	<script type="text/html" id="roleBar">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
 	<script type="text/javascript" src="${path}/static/layui/layui.js"></script>
 	<script type="text/javascript" src="${path}/static/system/roleList.js"></script>
 	<script type="text/javascript" src="${path}/static/js/moment.js"></script>

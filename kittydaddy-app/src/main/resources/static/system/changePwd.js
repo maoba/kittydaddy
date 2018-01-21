@@ -11,15 +11,15 @@ layui.config({
 		$form = $('form');
 		laydate = layui.laydate;
         loadProvince();
-        layui.upload({
-        	url : "../../json/userface.json",
-        	success: function(res){
-        		var num = parseInt(4*Math.random());  //生成0-4的随机数
-        		//随机显示一个头像信息
-		    	userFace.src = res.data[num].src;
-		    	window.sessionStorage.setItem('userFace',res.data[num].src);
-		    }
-        });
+//        layui.upload({
+//        	url : "../../json/userface.json",
+//        	success: function(res){
+//        		var num = parseInt(4*Math.random());  //生成0-4的随机数
+//        		//随机显示一个头像信息
+//		    	userFace.src = res.data[num].src;
+//		    	window.sessionStorage.setItem('userFace',res.data[num].src);
+//		    }
+//        });
 
         //添加验证规则
         form.verify({
@@ -80,6 +80,7 @@ layui.config({
         //修改密码
         form.on("submit(changePwd)",function(data){
         	var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+        	debugger
             setTimeout(function(){
             	 $.post('/user/saveUpdateUser',data.field,function(result){
          	    	if('success' == result){

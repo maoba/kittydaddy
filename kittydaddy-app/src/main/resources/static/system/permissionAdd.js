@@ -23,28 +23,35 @@ layui.config({
 	    return false;
 	});
     
-    //查询加载后台的租户数据
-	$.post('/tenant/queryTenantList',{pageIndex:0,pageSize:0},function(data){
-    	 $.each(data.list,function(index,item){
-    		$('#tenantNames').append("<option value='"+item.id+"'>"+item.name+"</option>");
-    	 })
-	     //重新进行渲染
-	     form.render();
-	})
+	$.ajax({ 
+	        type : "get", 
+	        url : "/tenant/queryTenantList?pageIndex=0&pageSize=0", 
+	        async : false, 
+	        success : function(data){ 
+	        	$.each(data.data,function(index,item){
+	        		$('#tenantNames').append("<option value='"+item.id+"'>"+item.name+"</option>");
+	       	    })
+	       	  //重新进行渲染
+			   form.render();
+	        }
+		 })
 	
-	//查询加载后台的目录资源
-	$.post('/permission/permissionList',{pageIndex:0,pageSize:0,permissionType:0},function(data){
-    	 $.each(data.list,function(index,item){
-    		$('#parentIds').append("<option value='"+item.id+"'>"+item.moduleName+"</option>");
-    	 })
-	     //重新进行渲染
-	     form.render();
-	})
 	
+	$.ajax({ 
+	        type : "get", 
+	        url : "/permission/permissionList?pageIndex=0&pageSize=0&permissionType=0", 
+	        async : false, 
+	        success : function(data){ 
+	        	$.each(data.data,function(index,item){
+	       		   $('#parentIds').append("<option value='"+item.id+"'>"+item.moduleName+"</option>");
+	       	    })
+		         //重新进行渲染
+		   	   form.render();
+	        }
+		 })
 	
     //返回父类
     $("body").on("click","#back",function(){ 
-    	parent.location.reload(); //刷新父页面
     	var index = parent.layer.getFrameIndex(window.name); 
         parent.layer.close(index);
 	})

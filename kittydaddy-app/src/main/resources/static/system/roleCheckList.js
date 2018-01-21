@@ -8,11 +8,16 @@ layui.config({
 		$ = layui.jquery;
 	
 	
-    $.post('/role/roleList',{pageIndex:0,pageSize:0},function(data){
-    	$.each(data.list,function(index,item){
-    		$('#roleId').append(" <input type='checkbox' name='roleId["+item.id+"]' value="+item.id+" title="+item.roleName+">");
-    	})
-    	//重新进行渲染
-    	form.render();
-    })
+     $.ajax({ 
+        type : "get", 
+        url : "/role/roleList?pageIndex=0&pageSize=0", 
+        async : false, 
+        success : function(data){ 
+        	$.each(data.data,function(index,item){
+        		$('#roleId').append(" <input type='checkbox' name='roleId["+item.id+"]' value="+item.id+" title="+item.roleName+">");
+        	})
+        	//重新进行渲染
+        	form.render();
+        }
+	 })
 })

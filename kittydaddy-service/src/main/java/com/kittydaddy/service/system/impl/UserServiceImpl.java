@@ -80,7 +80,6 @@ public class UserServiceImpl implements UserService{
          String mobile = params.get("mobile")==null?"":params.get("mobile").toString();
          Integer sex = params.get("sex")==null?0:Integer.parseInt(params.get("sex").toString());
          String userPwd = params.get("userPwd")==null?"":params.get("userPwd").toString();
-         userPwd = "123456";
          String encodePwd = KCryptogramUtil.getEncryptPassword(salt,userPwd, userName);
          String realName = params.get("realName")==null?"":params.get("realName").toString();
          String birthday = params.get("birthday")==null?"":params.get("birthday").toString();
@@ -125,6 +124,9 @@ public class UserServiceImpl implements UserService{
         	 if(tenantEntity!=null && params.get("tenantName")!=null) {
         		 tenantEntity.setName(tenantName);
         		 tenantMapper.updateByPrimaryKey(tenantEntity);
+        	 }
+        	 if(params.get("userName")==null){
+        		 userName = oldUserEntity.getUserName();
         	 }
         	 if(KStringUtils.isNotEmpty(userPwd)) oldUserEntity.setUserPwd(KCryptogramUtil.getEncryptPassword(oldUserEntity.getSalt(), userPwd, userName));
         	 userMapper.updateByPrimaryKey(oldUserEntity);
