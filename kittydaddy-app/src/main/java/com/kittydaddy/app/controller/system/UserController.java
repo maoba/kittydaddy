@@ -2,15 +2,19 @@ package com.kittydaddy.app.controller.system;
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.service.system.UserRoleService;
 import com.kittydaddy.service.system.UserService;
+
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.kittydaddy.facade.convert.system.UserConvert;
 import com.kittydaddy.facade.dto.system.UserDto;
+import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
@@ -68,13 +72,12 @@ public class UserController extends BaseController{
 	 * @param currentUser
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.POST,value="userList")
-    public PageInfo<UserEntity> queryUsersList(String name,Integer status,Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
+	@RequestMapping(method=RequestMethod.GET,value="userList")
+    public BaseResponse queryUsersList(String name,Integer status,Integer pageIndex,Integer pageSize, @CurrentUser CurrentUserInfo currentUser){
   	   PageInfo<UserEntity> userListPage = userService.queryUserByPage(name,currentUser.getTenantId(),status,pageIndex,pageSize);
-  	   return userListPage;
+  	  return BaseResponse.getSuccessResp("查询成功",userListPage.getTotal(),userListPage.getList());
     }
 
-	
 	@RequestMapping(method=RequestMethod.GET,value="userAdd")
     public ModelAndView roleAdd(){
  	   ModelAndView view = new ModelAndView();

@@ -39,24 +39,21 @@
 	</div>
 	<script type="text/javascript" src="${path}/static/layui/layui.js"></script>
 	<script>
-	var limitcount = 10;  
-    var curnum = 1;  
-	kvContentSearch(curnum,limitcount);
-	function kvContentSearch(pageIndex,pageSize){
+	 
 		layui.use(['table','laypage','laydate'], function(){
 		  var table = layui.table,  
           laydate=layui.laydate,  
           laypage = layui.laypage;  
           
-		  debugger
-		  
-		  //function kvContentSearch(pageIndex,pageSize){
+		  var curnum = 1,limitcount=20;
+		  kvContentSearch(curnum,limitcount);
+		  function kvContentSearch(pageIndex,pageSize){
 			  //第一个实例
 			  table.render({
 			     elem: '#demo',
-			     height: 315,
+			     height:'full-153',
 			     url: '/kvcontent/queryContentDemoList?pageIndex='+pageIndex+'&pageSize='+pageSize, //数据接口
-			     page: true, //开启分页
+			     page: false, //开启分页
 			     cols: [[ //表头
 			      {type:'checkbox'}       
 			      ,{field: 'source', title: '来源', width:80}
@@ -66,15 +63,13 @@
 			      ,{field: 'area', title: '地域', width: 80, sort: true}
 			    ]],
 			     done: function(res, curr, count){
-			    	debugger
 			    	laypage.render({ 
-			    		    //elem:'laypage',
+			    		    elem:'laypage',
 			    		    count:count, 
-	                        curr:curnum, 
-	                        limit:limitcount , 
-	                        //layout: ['prev', 'page', 'next', 'skip','count','limit'],  
+	                        curr:pageIndex, 
+	                        limit:res.data.length, 
+	                        layout: ['prev', 'page', 'next', 'skip','count','limit'],  
 					    	jump:function (obj,first) {  
-					    		debugger
 			                    if(!first){  
 			                        curnum = obj.curr;  
 			                        limitcount = obj.limit;  
@@ -85,10 +80,9 @@
 			    	})
 			      }
 			  });
-		  //}
+		  }
 		 
 		});
-	}
 	</script>	
 </body>
 </html>

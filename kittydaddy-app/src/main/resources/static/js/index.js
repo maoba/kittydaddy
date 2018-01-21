@@ -6,7 +6,7 @@ layui.config({
 		layer = layui.layer,
 		element = layui.element;
 		$ = layui.jquery;
-		tab = layui.bodyTab;
+		tab = layui.bodyTab();
 
 	//锁屏
 	function lockPage(){

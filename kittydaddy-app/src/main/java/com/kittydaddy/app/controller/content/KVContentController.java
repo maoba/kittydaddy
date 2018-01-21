@@ -43,13 +43,7 @@ public class KVContentController extends BaseController{
 	 * @param currentUser
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.POST,value="kvcontentList")
-    public PageInfo<KVContentEntity> queryKvContentList(Integer shortFlag,String title,String id,Integer status,Integer pageIndex,Integer pageSize){
-  	   PageInfo<KVContentEntity> kvcontentList = kVContentService.queryKvContentByPage(shortFlag,id,title,status,pageIndex,pageSize);
-  	   return kvcontentList;
-    }
-	
-	@RequestMapping(method=RequestMethod.GET,value="queryContentDemoList")
+	@RequestMapping(method=RequestMethod.GET,value="kvcontentList")
     public BaseResponse queryPermissionDemoList(Integer shortFlag,String title,String id,Integer status,Integer pageIndex,Integer pageSize){
        PageInfo<KVContentEntity> kvcontentList = kVContentService.queryKvContentByPage(shortFlag,id,title,status,pageIndex,pageSize);
  	   return BaseResponse.getSuccessResp("查询成功",kvcontentList.getTotal(),kvcontentList.getList());
