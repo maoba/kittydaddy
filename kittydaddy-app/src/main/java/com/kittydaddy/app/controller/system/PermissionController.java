@@ -14,7 +14,6 @@ import com.github.pagehelper.PageInfo;
 import com.kittydaddy.facade.dto.system.LeftMenusDto;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.system.domain.PermissionEntity;
-import com.kittydaddy.metadata.system.domain.UserEntity;
 import com.kittydaddy.security.annotation.CurrentUser;
 import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.system.PermissionService;

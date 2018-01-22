@@ -1,7 +1,5 @@
 package com.kittydaddy.facade.dto.system.response;
-
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author kitty daddy

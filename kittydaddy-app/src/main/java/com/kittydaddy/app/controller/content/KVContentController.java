@@ -7,10 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.app.controller.system.BaseController;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
-import com.kittydaddy.metadata.system.domain.PermissionEntity;
 import com.kittydaddy.metadata.vcontent.domain.KVContentEntity;
-import com.kittydaddy.security.annotation.CurrentUser;
-import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.vcontent.KVContentService;
 
 @RestController
