@@ -49,6 +49,17 @@ public class BaseResponse {
 		return resp;
 	}
 	
+	/**
+	 * 返回异常
+	 * @param msg
+	 * @param data
+	 * @return
+	 */
+	public static BaseResponse getFailureResp(String msg,Long count){
+		BaseResponse resp = new BaseResponse(-200, msg, count, null);
+		return resp;
+	}
+	
 	public Integer getCode() {
 		return code;
 	}

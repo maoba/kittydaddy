@@ -3,19 +3,18 @@ package com.kittydaddy.service.vcontent.impl;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.kittydaddy.common.constant.Constants;
 import com.kittydaddy.common.constant.RedisKeyConstant;
 import com.kittydaddy.common.enums.IsFreeEnum;
 import com.kittydaddy.common.enums.PublishStatusEnum;
@@ -27,7 +26,6 @@ import com.kittydaddy.common.utils.KCollectionUtils;
 import com.kittydaddy.common.utils.KHttpClientUtil;
 import com.kittydaddy.common.utils.KJSONPParser;
 import com.kittydaddy.common.utils.KStringUtils;
-import com.kittydaddy.metadata.system.domain.PermissionEntity;
 import com.kittydaddy.metadata.util.RedisUtil;
 import com.kittydaddy.metadata.vcontent.dao.KVContentEntityMapper;
 import com.kittydaddy.metadata.vcontent.dao.KVContentItemEntityMapper;
@@ -325,5 +323,29 @@ public class KVContentServiceImpl implements KVContentService{
 			List<KVContentEntity> entitys = kvContentMapper.queryKvContentByPage(shortFlag,id,title,status);
 			PageInfo<KVContentEntity> page = new PageInfo<KVContentEntity>(entitys);
 			return page;
+		}
+
+		@Override
+		public KVContentEntity querykvContentById(String contentId) {
+			KVContentEntity kvContentEntity = kvContentMapper.selectByPrimaryKey(contentId);
+			if(kvContentEntity == null) logger.error(String.format("根据内容id：s%没有查询出对应的内容实体类", kvContentEntity));
+			if(ShortFlagEnum.LONG.getValue() ==kvContentEntity.getShortFlag()){//设置长视频播放剧集以及地址
+				List<KVContentItemEntity> kvContentItemEntities = kvContentItemMapper.queryItemByContentId(kvContentEntity.getId());
+				if(KCollectionUtils.isEmpty(kvContentItemEntities)) logger.info(String.format("%s没有找到相关的剧集以及播放地址", kvContentEntity.getTitle()));
+				
+				for(KVContentItemEntity kvContentItemEntity : kvContentItemEntities){
+					List<KVContentSourceEntity> kvContentSources = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_ITEM, kvContentItemEntity.getId());
+					kvContentItemEntity.setContentSourceList(kvContentSources);
+				}
+				//设置剧集内容
+				kvContentEntity.setListContentItems(kvContentItemEntities);
+				
+			} else if (ShortFlagEnum.SHORT.getValue() ==kvContentEntity.getShortFlag()){//设置短视频播放地址
+				
+				List<KVContentSourceEntity> contentSourceEntities = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_CONTENT,kvContentEntity.getId());
+				//设置播放地址
+				kvContentEntity.setListContentSources(contentSourceEntities);
+			}
+			return kvContentEntity;
 		}
 }

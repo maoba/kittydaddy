@@ -25,6 +25,12 @@
     from k_video_content_source
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  
+  <!--根据relativeType以及relativeId查询数据-->
+  <select id="findByRelativeTypeAndRelativeId" resultMap="BaseResultMap">
+      select * from k_video_content_source where relative_type = #{relativeType} and relative_id = #{relativeId}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from k_video_content_source
     where id = #{id,jdbcType=VARCHAR}

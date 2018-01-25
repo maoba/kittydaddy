@@ -4,58 +4,43 @@ layui.use(['table','laypage','laydate','jquery'], function(){
           laypage = layui.laypage,
           $ = layui.jquery;
           
-		  var curnum = 1,limitcount=20;
+		  var contentId = $('#contentId').val();
+		  var shortFlag = $('#shortFlag').val();
+		  var curnum = 1,limitcount=10;
 		  //初始化搜索
-		  kvContentSearch(curnum,limitcount);
+		  kvContentItemSourceSearch(shortFlag,contentId,curnum,limitcount);
 		  
-		  function kvContentSearch(pageIndex,pageSize){
+		  function kvContentItemSourceSearch(shortFlag,contentId,pageIndex,pageSize){
+			  debugger
 			  //第一个实例
 			  table.render({
-			     elem: '#kvcontentList',
-			     height:'full-153',
-			     url: '/kvcontent/kvcontentList?pageIndex='+pageIndex+'&pageSize='+pageSize, //数据接口
+			     elem: '#kvcontentItemSourceList',
+			     height:'250',
+			     url: '/kvcontentItemSource/kvcontentItemSourceList?shortFlag='+shortFlag+'&relativeId='+contentId+'&pageIndex='+pageIndex+'&pageSize='+pageSize, //数据接口
 			     page: false, //开启分页
 			     cols: [[ //表头
 			      {type:'checkbox'},      
-			      {field: 'id', title: '内容编号', width:80},
-			      {field: 'title', title: '标题', width:120},
-			      {field: 'subtitle', title: '副标题', width:80, sort: true},
-			      {field: 'rate', title: '评分', width:80}, 
-			      {field: 'tags', title: '标签', width: 177},
-			      {field: 'channel', title: '类别', width: 90, sort: true},
-			      {field: 'shortFlag', title: '长短视频', width: 80, sort: true,
-			    	  templet: function(d){
-			    		    if(d.shortFlag==0){
-			    		    	return "长视频";
-			    		    }else if(d.shortFlag==1){
-			    		    	return "短视频";
-			    		    }else{
-			    		    	return "";
-			    		    }
-			    	  }  
+			      {field: 'source', title: '源', width:200},
+			      {field: 'playUrl', title: '播放地址', width:300},
+			      {field: 'imageUrl', title: '剧照', width:300, sort: true},
+			      {field: 'duration', title: '时长', width: 200, sort: true},
+			      {field: 'isFree',title:'收费状态',width:200,sort:true,
+			    	    templet:function(d){
+			    	    	if(d.isFree == 1){
+			    	    		return "免费";
+			    	    	}else if(d.isFree == 2){
+			    	    		return "收费";
+			    	    	}else{
+			    	    		return "未知";
+			    	    	}
+			    	    }  
 			      },
-			      {field: 'directors', title: '导演', width: 80, sort: true},
-			      {field: 'actors', title: '演员', width: 80, sort: true},
-			      {field: 'year', title: '年份', width: 80, sort: true},
-			      {field: 'lastSn', title: '更新', width: 120,
-			    	  templet: function(d){
-			    		    var lastSn = 0;
-			    		    if(d.lastSn ==null) {lastSn=1}else{lastSn=d.lastSn};
-			    		    return "<span style='color:red'>更新:"+lastSn+"集</span>"
-			    		    	
-			    	  }  
-			      },
-			      {field: 'duration', title: '时长(秒)', width: 80, sort: true},
-			      {field: 'area', title: '地区', width: 80, sort: true},
-			      {field: 'originPubTime', title: '影片发布时间', width: 80, sort: true},
-			      {field: 'language', title: '语言', width: 80, sort: true},
-			      {field: 'genres', title: '题材', width: 80, sort: true},
-			      {field: 'createTime', title: '创建时间', width: 80, 
+			      {field: 'createTime', title: '创建时间', width: 208, 
 			    	    templet:function(d){
 			    	    	return moment(d.createTime).format('YYYY/MM/DD HH:MM')
 			    	    }  
 			      },
-			      {fixed: 'right', width: 165, align:'center', toolbar: '#kvcontentBar'}
+			      {fixed: 'right', width: 200, title: '操作',align:'center', toolbar: '#kvcontentItemSourceBar'}
 			    ]],
 			     done: function(res, curr, count){
 			    	laypage.render({ 
@@ -68,7 +53,7 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 			                    if(!first){  
 			                        curnum = obj.curr;  
 			                        limitcount = obj.limit;  
-			                        kvContentSearch(curnum,limitcount);  
+			                        kvContentItemSourceSearch(shortFlag,contentId,curnum,limitcount);  
 			                    }  
 			                }  
 	                        

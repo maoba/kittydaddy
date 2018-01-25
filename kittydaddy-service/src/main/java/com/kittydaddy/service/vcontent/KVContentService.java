@@ -36,4 +36,12 @@ public interface KVContentService {
 	 */
 	PageInfo<KVContentEntity> queryKvContentByPage(Integer shortFlag,String id, String name, Integer status,Integer pageIndex, Integer pageSize);
     
+	
+	/**
+	 * 根据Id查询kvcontent实体信息
+	 * @param contentId
+	 * @return
+	 */
+	KVContentEntity querykvContentById(String contentId);
+    
 }

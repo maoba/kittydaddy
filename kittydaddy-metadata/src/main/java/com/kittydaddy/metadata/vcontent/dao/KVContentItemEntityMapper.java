@@ -1,5 +1,7 @@
 package com.kittydaddy.metadata.vcontent.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.kittydaddy.metadata.vcontent.domain.KVContentItemEntity;
@@ -18,4 +20,6 @@ public interface KVContentItemEntityMapper {
     int updateByPrimaryKey(KVContentItemEntity record);
 
 	KVContentItemEntity queryItemTitleAndPeriod(@Param(value="itemTitle")String itemTitle,@Param(value="itemPeriod")String itemPeriod);
+
+	List<KVContentItemEntity> queryItemByContentId(@Param(value="contentId")String contentId);
 }

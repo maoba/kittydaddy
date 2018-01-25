@@ -2,6 +2,7 @@ package com.kittydaddy.app.controller.content;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.github.pagehelper.PageInfo;
@@ -16,20 +17,26 @@ public class KVContentController extends BaseController{
 	@Autowired
 	private KVContentService kVContentService;
 	
-	@RequestMapping(method=RequestMethod.GET,value="kvdemoList.html")
-    public ModelAndView queryDemoByPage(){
- 	    ModelAndView view = new ModelAndView();
-        view.setViewName("/page/demo");
-        return view;
-    }
-	
-	
 	@RequestMapping(method=RequestMethod.GET,value="kvcontentList.html")
     public ModelAndView queryRolesByPage(){
  	    ModelAndView view = new ModelAndView();
         view.setViewName("/page/content/kvcontentList");
         return view;
     }
+	
+	/**
+	 * 跳转到编辑页面
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="editkvContent")
+	public ModelAndView editkvContentInfo(@RequestParam(value="kvcontentId") String kvcontentId){
+	    ModelAndView view = new ModelAndView();
+	    KVContentEntity kvcontentEntity = kVContentService.querykvContentById(kvcontentId);
+	    view.addObject("kvcontent",kvcontentEntity);
+	    view.setViewName("/page/content/editKvcontent");
+	    return view;
+	}	
+	
 	
 	/**
 	 * 查询用户列表
@@ -45,4 +52,5 @@ public class KVContentController extends BaseController{
        PageInfo<KVContentEntity> kvcontentList = kVContentService.queryKvContentByPage(shortFlag,id,title,status,pageIndex,pageSize);
  	   return BaseResponse.getSuccessResp("查询成功",kvcontentList.getTotal(),kvcontentList.getList());
     }
+	
 }

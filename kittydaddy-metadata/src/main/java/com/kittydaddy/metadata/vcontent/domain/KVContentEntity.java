@@ -183,7 +183,21 @@ public class KVContentEntity {
     @Transient
     private List<KVContentItemEntity> listContentItems;
     
-    public List<KVContentItemEntity> getListContentItems() {
+    /**
+     * 剧集播放地址
+     */
+    @Transient
+    private List<KVContentSourceEntity> listContentSources;
+    
+    public List<KVContentSourceEntity> getListContentSources() {
+		return listContentSources;
+	}
+
+	public void setListContentSources(List<KVContentSourceEntity> listContentSources) {
+		this.listContentSources = listContentSources;
+	}
+
+	public List<KVContentItemEntity> getListContentItems() {
 		return listContentItems;
 	}
 
