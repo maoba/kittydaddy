@@ -17,6 +17,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.common.constant.Constants;
 import com.kittydaddy.common.constant.RedisKeyConstant;
+import com.kittydaddy.common.enums.EpisodeExistEnum;
 import com.kittydaddy.common.enums.IsFreeEnum;
 import com.kittydaddy.common.enums.PublishStatusEnum;
 import com.kittydaddy.common.enums.ShortFlagEnum;
@@ -145,7 +146,7 @@ public class KVContentServiceImpl implements KVContentService{
 			content.setArea(videoDetailObj.getString("area"));
 			content.setActors(videoDetailObj.getString("actors"));
 			logger.info("**************开始获取:"+content.getChannel()+"————"+content.getTitle()+"***********");
-			kvContentMapper.insert(content);
+			
 			
 			//获取内容信息Id
 			String contentId = content.getId();
@@ -153,8 +154,16 @@ public class KVContentServiceImpl implements KVContentService{
 			
 			if(KCollectionUtils.isEmpty(collections)){
 				logger.info(String.format("影视：%s不存在播放地址",content.getTitle()));
+				content.setEpisodeExist(EpisodeExistEnum.NO.getValue());
+				kvContentMapper.insert(content);
 				return false;
+			}else{
+				//存在剧集
+				content.setEpisodeExist(EpisodeExistEnum.YES.getValue());
+				kvContentMapper.insert(content);
 			}
+			
+			
 			for(int k=0; k<collections.size(); k++){
 				String srcId = collections.getJSONObject(k).getString("src_id");
 				String srcName = collections.getJSONObject(k).getString("src_name");
@@ -351,5 +360,39 @@ public class KVContentServiceImpl implements KVContentService{
 				kvContentEntity.setListContentSources(contentSourceEntities);
 			}
 			return kvContentEntity;
+		}
+
+		@Override
+		public void changeExposideExist() {
+			List<KVContentEntity>  kvcontentList = kvContentMapper.queryKvContentByShortFlag(ShortFlagEnum.LONG.getValue());
+			logger.info("开始执行");
+			int n = 0;
+			if(KCollectionUtils.isNotEmpty(kvcontentList)){
+				for(KVContentEntity kvContentEntity : kvcontentList){
+					logger.info(kvContentEntity.getTitle()+"——开始执行剧集是否存在,第"+ (n++));
+					List<KVContentItemEntity>  itemList = kvContentItemMapper.queryItemByContentId(kvContentEntity.getId());
+					if(KCollectionUtils.isNotEmpty(itemList)){
+						kvContentEntity.setEpisodeExist(1);
+					} else{
+						kvContentEntity.setEpisodeExist(0);
+					}
+					kvContentMapper.updateByPrimaryKey(kvContentEntity);
+				}
+			logger.info("执行完毕");	
+			}
+		}
+
+		@Override
+		public void saveUpdateKVContent(Map<String, Object> params) {
+			if(params.get("contentId")!=null){//更新
+				KVContentEntity kvContentEntity = kvContentMapper.selectByPrimaryKey(params.get("contentId").toString());
+				if(kvContentEntity == null) logger.error("id:"+params.get("contentId").toString()+"不存在");
+				
+				
+				
+				
+			}else{//新增
+				
+			}
 		}
 }

@@ -57,8 +57,8 @@ layui.config({
 		    	laypage.render({ 
 		    		    elem:'laypage',
 		    		    count:count, 
-                      curr:pageIndex, 
-                      limit:res.data.length, 
+                        curr:pageIndex, 
+                        limit:limitcount, 
                       layout: ['prev', 'page', 'next', 'skip','count','limit'],  
 				    	jump:function (obj,first) {  
 		                    if(!first){  

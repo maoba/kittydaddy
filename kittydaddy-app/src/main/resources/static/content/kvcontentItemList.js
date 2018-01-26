@@ -10,6 +10,7 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 		  kvContentItemSearch(contentId,curnum,limitcount);
 		  
 		  function kvContentItemSearch(contentId,pageIndex,pageSize){
+			  debugger
 			  //第一个实例
 			  table.render({
 			     elem: '#kvcontentItemList',
@@ -31,12 +32,13 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 			    ]],
 			     done: function(res, curr, count){
 			    	laypage.render({ 
-			    		    elem:'laypage',
+			    		    elem:'laypageItem',
 			    		    count:count, 
 	                        curr:pageIndex, 
-	                        limit:res.data.length, 
+	                        limit:limitcount, 
 	                        layout: ['prev', 'page', 'next', 'skip','count','limit'],  
 					    	jump:function (obj,first) {  
+					    		debugger
 			                    if(!first){  
 			                        curnum = obj.curr;  
 			                        limitcount = obj.limit;  
@@ -48,7 +50,7 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 			      }
 			  });
 			  
-			  table.on('tool(content_list)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			  table.on('tool(kvcontentItemList)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
 				    var data = obj.data //获得当前行数据
 				    ,layEvent = obj.event; //获得 lay-event 对应的值
 				    if(layEvent === 'detail'){

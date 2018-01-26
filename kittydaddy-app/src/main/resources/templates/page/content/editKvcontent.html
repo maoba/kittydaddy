@@ -18,8 +18,8 @@
 	  <legend>视频基本信息</legend>
 	   <div class="layui-field-box">
 	   <form  class="layui-form">
-	      <input type="hidden" value="${kvcontent.id}" id="contentId"/>
-	      <input type="hidden" value="${kvcontent.shortFlag}" id="shortFlag"/>
+	      <input type="hidden" name="contentId" value="${kvcontent.id}" id="contentId"/>
+	      <input type="hidden" name="shortFlag" value="${kvcontent.shortFlag}" id="shortFlag"/>
           <input type="hidden" name="terminalType" value="0"/>
 		  <div class="layui-form-item">
 		     <div class="layui-inline">
@@ -196,16 +196,16 @@
 		  <fieldset class="layui-elem-field" style="margin-top: 20px;">
 		    <legend>剧集信息</legend>
 		    <div class="layui-field-box">
-			    <table id="kvcontentItemList" lay-filter="content_list" ></table>
-			    <div id="laypage"></div>  
+			    <table id="kvcontentItemList" lay-filter="kvcontentItemList" ></table>
+			    <div id="laypageItem"></div>  
 		    </div>
 		  </fieldset>
 	  <#else>
 		  <fieldset class="layui-elem-field" style="margin-top: 20px;">
 		    <legend>播放地址</legend>
 		    <div class="layui-field-box">
-			    <table id="kvcontentItemSourceList" lay-filter="source_list" ></table>
-			    <div id="laypage"></div>  
+			    <table id="kvcontentItemSourceList" lay-filter="kvcontentItemSourceList" ></table>
+			    <div id="laypageItemSource"></div>  
 		    </div>
 		  </fieldset>
 	  </#if>

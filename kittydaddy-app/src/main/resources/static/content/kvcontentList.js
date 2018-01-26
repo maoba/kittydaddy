@@ -69,7 +69,7 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 			    		    elem:'laypage',
 			    		    count:count, 
 	                        curr:pageIndex, 
-	                        limit:res.data.length, 
+	                        limit:limitcount, 
 	                        layout: ['prev', 'page', 'next', 'skip','count','limit'],  
 					    	jump:function (obj,first) {  
 			                    if(!first){  

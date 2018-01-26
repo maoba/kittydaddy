@@ -1,4 +1,6 @@
 package com.kittydaddy.app.controller.content;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -9,6 +11,8 @@ import com.github.pagehelper.PageInfo;
 import com.kittydaddy.app.controller.system.BaseController;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.vcontent.domain.KVContentEntity;
+import com.kittydaddy.security.annotation.CurrentUser;
+import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.vcontent.KVContentService;
 
 @RestController
@@ -38,6 +42,16 @@ public class KVContentController extends BaseController{
 	    return view;
 	}	
 	
+	/**
+	 * 赋值ExposideExist
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="changeExposideExist")
+	public String changeExposideExist(){
+		kVContentService.changeExposideExist();
+		return RESULT_SUCCESS;
+	}
+	
 	
 	/**
 	 * 查询用户列表
@@ -53,5 +67,21 @@ public class KVContentController extends BaseController{
        PageInfo<KVContentEntity> kvcontentList = kVContentService.queryKvContentByPage(shortFlag,id,title,status,pageIndex,pageSize);
  	   return BaseResponse.getSuccessResp("查询成功",kvcontentList.getTotal(),kvcontentList.getList());
     }
+	
+	
+	
+	/**
+	 * 新增或者更新内容
+	 * @param params
+	 * @param currentUserInfo
+	 * @return
+	 */
+    @RequestMapping(method=RequestMethod.POST,value="saveUpdateKVContent")
+    public String saveUpdateKVContent(@RequestParam Map<String,Object> params){
+    	kVContentService.saveUpdateKVContent(params);
+ 	   return RESULT_SUCCESS;
+    }
+	
+	
 	
 }

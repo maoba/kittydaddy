@@ -145,6 +145,11 @@ public class KVContentEntity {
      * 是否已经发布
      */
     private Integer isPublish;
+    
+    /**
+     * 是否存在剧集 0:不存在 1：存在
+     */
+    private Integer episodeExist;
 
     /**
      * 描述
@@ -189,7 +194,15 @@ public class KVContentEntity {
     @Transient
     private List<KVContentSourceEntity> listContentSources;
     
-    public List<KVContentSourceEntity> getListContentSources() {
+    public Integer getEpisodeExist() {
+		return episodeExist;
+	}
+
+	public void setEpisodeExist(Integer episodeExist) {
+		this.episodeExist = episodeExist;
+	}
+
+	public List<KVContentSourceEntity> getListContentSources() {
 		return listContentSources;
 	}
 

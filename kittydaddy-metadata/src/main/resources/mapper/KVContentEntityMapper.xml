@@ -13,6 +13,7 @@
     <result column="channel" property="channel" jdbcType="VARCHAR" />
     <result column="short_flag" property="shortFlag" jdbcType="INTEGER" />
     <result column="episode_count" property="episodeCount" jdbcType="INTEGER" />
+    <result column="episode_exist" property="episodeExist" jdbcType="INTEGER"/>
     <result column="directors" property="directors" jdbcType="VARCHAR" />
     <result column="actors" property="actors" jdbcType="VARCHAR" />
     <result column="year" property="year" jdbcType="VARCHAR" />
@@ -39,7 +40,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, sub_origin_id, origin_id, source, title, subtitle, rate, tags, channel, short_flag, 
-    episode_count, directors, actors, year, last_sn, duration, area, origin_pub_time, 
+    episode_count,episode_exist, directors, actors, year, last_sn, duration, area, origin_pub_time, 
     language, genres, yester_play_count, weekly_play_count, total_play_count, img_small_url, 
     img_medium_url, img_large_url, status, is_publish, summary, is_free, create_time, 
     update_time, publish_time, operate_id
@@ -69,6 +70,7 @@
      <if test="status !=null and status !=''">
         and status = #{status,jdbcType=INTEGER}
      </if>
+     order by episode_exist desc
   </select>
   
   
@@ -88,7 +90,7 @@
     insert into k_video_content (id, sub_origin_id, origin_id, 
       source, title, subtitle, 
       rate, tags, channel, 
-      short_flag, episode_count, directors, 
+      short_flag, episode_count,episode_exist, directors, 
       actors, year, last_sn, 
       duration, area, origin_pub_time, 
       language, genres, yester_play_count, 
@@ -100,7 +102,7 @@
     values (#{id,jdbcType=VARCHAR}, #{subOriginId,jdbcType=VARCHAR}, #{originId,jdbcType=VARCHAR}, 
       #{source,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{subtitle,jdbcType=VARCHAR}, 
       #{rate,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR}, 
-      #{shortFlag,jdbcType=INTEGER}, #{episodeCount,jdbcType=INTEGER}, #{directors,jdbcType=VARCHAR}, 
+      #{shortFlag,jdbcType=INTEGER}, #{episodeCount,jdbcType=INTEGER},#{episodeExist,jdbcType=INTEGER}, #{directors,jdbcType=VARCHAR}, 
       #{actors,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{lastSn,jdbcType=INTEGER}, 
       #{duration,jdbcType=INTEGER}, #{area,jdbcType=VARCHAR}, #{originPubTime,jdbcType=VARCHAR}, 
       #{language,jdbcType=VARCHAR}, #{genres,jdbcType=VARCHAR}, #{yesterPlayCount,jdbcType=INTEGER}, 
@@ -148,6 +150,9 @@
       </if>
       <if test="episodeCount != null" >
         episode_count,
+      </if>
+      <if test="episodeExist != null">
+        episode_exist,
       </if>
       <if test="directors != null" >
         directors,
@@ -253,6 +258,9 @@
       <if test="episodeCount != null" >
         #{episodeCount,jdbcType=INTEGER},
       </if>
+      <if test="episodeExist != null">
+        #{episodeExist,jdbcType=INTEGER},
+      </if>
       <if test="directors != null" >
         #{directors,jdbcType=VARCHAR},
       </if>
@@ -357,6 +365,9 @@
       <if test="episodeCount != null" >
         episode_count = #{episodeCount,jdbcType=INTEGER},
       </if>
+       <if test="episodeExist != null">
+        episode_exist = #{episodeExist,jdbcType=INTEGER},
+      </if>
       <if test="directors != null" >
         directors = #{directors,jdbcType=VARCHAR},
       </if>
@@ -441,6 +452,7 @@
       channel = #{channel,jdbcType=VARCHAR},
       short_flag = #{shortFlag,jdbcType=INTEGER},
       episode_count = #{episodeCount,jdbcType=INTEGER},
+      episode_exist = #{episodeExist,jdbcType=INTEGER},
       directors = #{directors,jdbcType=VARCHAR},
       actors = #{actors,jdbcType=VARCHAR},
       year = #{year,jdbcType=VARCHAR},

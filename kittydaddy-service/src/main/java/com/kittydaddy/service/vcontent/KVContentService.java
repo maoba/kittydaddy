@@ -43,4 +43,12 @@ public interface KVContentService {
 	 * @return
 	 */
 	KVContentEntity querykvContentById(String contentId);
+
+	void changeExposideExist();
+    
+	/**
+	 * 更新内容
+	 * @param params
+	 */
+	void saveUpdateKVContent(Map<String, Object> params);
 }

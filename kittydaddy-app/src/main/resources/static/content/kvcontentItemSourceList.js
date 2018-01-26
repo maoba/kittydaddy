@@ -45,10 +45,10 @@ layui.use(['table','layer','laypage','laydate','jquery'], function(){
 			    ]],
 			     done: function(res, curr, count){
 			    	laypage.render({ 
-			    		    elem:'laypage',
+			    		    elem:'laypageItemSource',
 			    		    count:count, 
 	                        curr:pageIndex, 
-	                        limit:res.data.length, 
+	                        limit:limitcount, 
 	                        layout: ['prev', 'page', 'next', 'skip','count','limit'],  
 					    	jump:function (obj,first) {  
 			                    if(!first){  
@@ -62,7 +62,7 @@ layui.use(['table','layer','laypage','laydate','jquery'], function(){
 			      }
 			  });
 			  
-			  table.on('tool(source_list)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			  table.on('tool(kvcontentItemSourceList)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
 				    var data = obj.data //获得当前行数据
 				    ,layEvent = obj.event; //获得 lay-event 对应的值
 				    if(layEvent === 'detail_stage_photo'){
