@@ -11,8 +11,6 @@ import com.github.pagehelper.PageInfo;
 import com.kittydaddy.app.controller.system.BaseController;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.vcontent.domain.KVContentEntity;
-import com.kittydaddy.security.annotation.CurrentUser;
-import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.vcontent.KVContentService;
 
 @RestController
@@ -43,17 +41,6 @@ public class KVContentController extends BaseController{
 	}	
 	
 	/**
-	 * 赋值ExposideExist
-	 * @return
-	 */
-	@RequestMapping(method=RequestMethod.GET,value="changeExposideExist")
-	public String changeExposideExist(){
-		kVContentService.changeExposideExist();
-		return RESULT_SUCCESS;
-	}
-	
-	
-	/**
 	 * 查询用户列表
 	 * @param name 姓名
 	 * @param status 状态
@@ -68,8 +55,6 @@ public class KVContentController extends BaseController{
  	   return BaseResponse.getSuccessResp("查询成功",kvcontentList.getTotal(),kvcontentList.getList());
     }
 	
-	
-	
 	/**
 	 * 新增或者更新内容
 	 * @param params
@@ -78,10 +63,8 @@ public class KVContentController extends BaseController{
 	 */
     @RequestMapping(method=RequestMethod.POST,value="saveUpdateKVContent")
     public String saveUpdateKVContent(@RequestParam Map<String,Object> params){
-    	kVContentService.saveUpdateKVContent(params);
+       kVContentService.saveUpdateKVContent(params);
  	   return RESULT_SUCCESS;
     }
-	
-	
 	
 }

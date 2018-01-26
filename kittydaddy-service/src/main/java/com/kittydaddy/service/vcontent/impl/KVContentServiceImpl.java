@@ -363,26 +363,6 @@ public class KVContentServiceImpl implements KVContentService{
 		}
 
 		@Override
-		public void changeExposideExist() {
-			List<KVContentEntity>  kvcontentList = kvContentMapper.queryKvContentByShortFlag(ShortFlagEnum.LONG.getValue());
-			logger.info("开始执行");
-			int n = 0;
-			if(KCollectionUtils.isNotEmpty(kvcontentList)){
-				for(KVContentEntity kvContentEntity : kvcontentList){
-					logger.info(kvContentEntity.getTitle()+"——开始执行剧集是否存在,第"+ (n++));
-					List<KVContentItemEntity>  itemList = kvContentItemMapper.queryItemByContentId(kvContentEntity.getId());
-					if(KCollectionUtils.isNotEmpty(itemList)){
-						kvContentEntity.setEpisodeExist(1);
-					} else{
-						kvContentEntity.setEpisodeExist(0);
-					}
-					kvContentMapper.updateByPrimaryKey(kvContentEntity);
-				}
-			logger.info("执行完毕");	
-			}
-		}
-
-		@Override
 		public void saveUpdateKVContent(Map<String, Object> params) {
 			if(params.get("contentId")!=null){//更新
 				KVContentEntity kvContentEntity = kvContentMapper.selectByPrimaryKey(params.get("contentId").toString());

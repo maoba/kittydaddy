@@ -17,6 +17,11 @@ public interface KVContentService {
 	 */
 	void executeCollectVideoJobService(Map<String, Object> map);
 	
+	/**
+	 * 采集短视频
+	 * @param subOriginId
+	 * @return
+	 */
 	boolean executeCollectSingleVideoService(String subOriginId);
     
 	/**
@@ -44,8 +49,6 @@ public interface KVContentService {
 	 */
 	KVContentEntity querykvContentById(String contentId);
 
-	void changeExposideExist();
-    
 	/**
 	 * 更新内容
 	 * @param params
