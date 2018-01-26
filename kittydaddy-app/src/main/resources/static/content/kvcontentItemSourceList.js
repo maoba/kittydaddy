@@ -1,6 +1,7 @@
-layui.use(['table','laypage','laydate','jquery'], function(){
+layui.use(['table','layer','laypage','laydate','jquery'], function(){
 		  var table = layui.table,  
-          laydate=layui.laydate,  
+          laydate=layui.laydate,
+          layer = parent.layer === undefined ? layui.layer : parent.layer,
           laypage = layui.laypage,
           $ = layui.jquery;
           
@@ -61,11 +62,21 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 			      }
 			  });
 			  
-			  table.on('tool(content_list)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			  table.on('tool(source_list)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
 				    var data = obj.data //获得当前行数据
 				    ,layEvent = obj.event; //获得 lay-event 对应的值
-				    if(layEvent === 'detail'){
-				      layer.msg('查看操作');
+				    if(layEvent === 'detail_stage_photo'){
+                      var imgUrl = data.imageUrl;
+				      layer.open({
+				    	  type: 1,
+				    	  title: false,
+				    	  closeBtn: 0,
+				    	  area: ['630px', '360px'],
+				    	  skin: 'layui-layer-nobg', //没有背景色
+				    	  shadeClose: true,
+				    	  content: '<img style="width:100%;height:100%" src='+imgUrl+'>'
+				    	});
+				      
 				    } else if(layEvent === 'del'){
 				      layer.confirm('真的删除行么', function(index){
 				        obj.del(); //删除对应行（tr）的DOM结构

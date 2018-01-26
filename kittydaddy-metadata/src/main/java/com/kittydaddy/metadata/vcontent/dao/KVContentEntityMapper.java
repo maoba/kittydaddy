@@ -22,4 +22,6 @@ public interface KVContentEntityMapper {
 	KVContentEntity queryKvContentBySubOriginId(@Param(value="subOriginId")String subOriginId);
 
 	List<KVContentEntity> queryKvContentByPage(@Param(value="shortFlag")Integer shortFlag,@Param(value="id")String id,@Param(value="title") String title,@Param(value="status")Integer status);
+
+	List<KVContentEntity> queryKvContentByShortFlag(@Param(value="shortFlag") Integer shortFlag);
 }

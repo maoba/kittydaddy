@@ -43,5 +43,4 @@ public interface KVContentService {
 	 * @return
 	 */
 	KVContentEntity querykvContentById(String contentId);
-    
 }

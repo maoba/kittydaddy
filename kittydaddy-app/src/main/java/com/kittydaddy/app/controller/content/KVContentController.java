@@ -17,6 +17,7 @@ public class KVContentController extends BaseController{
 	@Autowired
 	private KVContentService kVContentService;
 	
+	
 	@RequestMapping(method=RequestMethod.GET,value="kvcontentList.html")
     public ModelAndView queryRolesByPage(){
  	    ModelAndView view = new ModelAndView();
@@ -48,7 +49,7 @@ public class KVContentController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="kvcontentList")
-    public BaseResponse queryPermissionDemoList(Integer shortFlag,String title,String id,Integer status,Integer pageIndex,Integer pageSize){
+    public BaseResponse querykvContentList(Integer shortFlag,String title,String id,Integer status,Integer pageIndex,Integer pageSize){
        PageInfo<KVContentEntity> kvcontentList = kVContentService.queryKvContentByPage(shortFlag,id,title,status,pageIndex,pageSize);
  	   return BaseResponse.getSuccessResp("查询成功",kvcontentList.getTotal(),kvcontentList.getList());
     }

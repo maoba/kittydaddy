@@ -1,5 +1,6 @@
 package com.kittydaddy.service.vcontent.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -285,6 +286,8 @@ public class KVContentServiceImpl implements KVContentService{
 							content.setTitle(title);
 							content.setDuration(duration);
 							content.setTags(tags);
+							content.setImgLargeUrl(imgUrl);
+							content.setSource(source);
 							content.setGenres(genres);
 							content.setStatus(StatusEnum.VALID.getValue());
 							kvContentMapper.insert(content);
@@ -320,7 +323,8 @@ public class KVContentServiceImpl implements KVContentService{
 		public PageInfo<KVContentEntity> queryKvContentByPage(Integer shortFlag,String id, String title, Integer status,
 				Integer pageIndex, Integer pageSize) {
 			PageHelper.startPage(pageIndex,pageSize, true, null, true);
-			List<KVContentEntity> entitys = kvContentMapper.queryKvContentByPage(shortFlag,id,title,status);
+			List<KVContentEntity> entitys = new ArrayList<KVContentEntity>();
+			entitys = kvContentMapper.queryKvContentByPage(shortFlag,id,title,status);
 			PageInfo<KVContentEntity> page = new PageInfo<KVContentEntity>(entitys);
 			return page;
 		}
