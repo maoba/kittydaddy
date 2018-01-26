@@ -364,9 +364,24 @@ public class KVContentServiceImpl implements KVContentService{
 
 		@Override
 		public void saveUpdateKVContent(Map<String, Object> params) {
+			String title = params.get("title")==null?"": params.get("title").toString();
+			String subtitle = params.get("subtitle")==null?"":params.get("subtitle").toString();
+			String source = params.get("source")==null?"":params.get("source").toString();
+			String rate = params.get("rate")==null?"":params.get("rate").toString();
+			String channel = params.get("channel")==null?"":params.get("channel").toString();
+			String shortFlag = params.get("shortFlag")==null?"":params.get("shortFlag").toString();
+			String tags = params.get("tags")==null?"":params.get("tags").toString();
+			String episodeCount = params.get("episodeCount")==null?"":params.get("episodeCount").toString();
+			
+			
+			
+			
 			if(params.get("contentId")!=null){//更新
 				KVContentEntity kvContentEntity = kvContentMapper.selectByPrimaryKey(params.get("contentId").toString());
 				if(kvContentEntity == null) logger.error("id:"+params.get("contentId").toString()+"不存在");
+				
+				
+				
 				
 				
 				
