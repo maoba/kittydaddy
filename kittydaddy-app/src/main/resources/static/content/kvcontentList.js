@@ -105,13 +105,12 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 				        //向服务端发送删除指令
 				      });
 				    } else if(layEvent === 'edit'){
-				    	var _this = $(this)
-						var index =  layui.layer.open({
+						var index = layer.open({
 							title:false,
 							closeBtn : 0,
 							area: ['100%', '100%'],
 							type : 2,
-							content :  '/kvcontent/editkvContent?kvcontentId='+data.id
+							content :  '/kvcontent/editkvContent?contentId='+data.id
 						})
 						
 						//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）

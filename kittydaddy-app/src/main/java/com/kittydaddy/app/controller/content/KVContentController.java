@@ -35,9 +35,9 @@ public class KVContentController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="editkvContent")
-	public ModelAndView editkvContentInfo(@RequestParam(value="kvcontentId") String kvcontentId){
+	public ModelAndView editkvContentInfo(String contentId){
 	    ModelAndView view = new ModelAndView();
-	    KVContentEntity kvcontentEntity = kVContentService.querykvContentById(kvcontentId);
+	    KVContentEntity kvcontentEntity = kVContentService.querykvContentById(contentId);
 	    view.addObject("kvcontent",kvcontentEntity);
 	    view.setViewName("/page/content/editKvcontent");
 	    return view;

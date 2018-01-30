@@ -10,7 +10,6 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 		  kvContentItemSearch(contentId,curnum,limitcount);
 		  
 		  function kvContentItemSearch(contentId,pageIndex,pageSize){
-			  debugger
 			  //第一个实例
 			  table.render({
 			     elem: '#kvcontentItemList',
@@ -38,7 +37,6 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 	                        limit:limitcount, 
 	                        layout: ['prev', 'page', 'next', 'skip','count','limit'],  
 					    	jump:function (obj,first) {  
-					    		debugger
 			                    if(!first){  
 			                        curnum = obj.curr;  
 			                        limitcount = obj.limit;  
@@ -63,7 +61,7 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 				      });
 				    } else if(layEvent === 'edit'){
 				    	var _this = $(this)
-						var index =  layui.layer.open({
+						var index = layer.open({
 							title:false,
 							closeBtn : 0,
 							area: ['100%', '100%'],

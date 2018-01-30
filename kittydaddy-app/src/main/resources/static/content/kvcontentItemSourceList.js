@@ -8,13 +8,11 @@ layui.use(['form','table','layer','laypage','laydate','jquery'], function(){
           
 		  var contentId = $('#contentId').val();
 		  var shortFlag = $('#shortFlag').val();
-		  debugger
 		  var curnum = 1,limitcount=10;
 		  //初始化搜索
 		  kvContentItemSourceSearch(shortFlag,contentId,curnum,limitcount);
 		  
 		  function kvContentItemSourceSearch(shortFlag,contentId,pageIndex,pageSize){
-			  debugger
 			  //第一个实例
 			  table.render({
 			     elem: '#kvcontentItemSourceList',
@@ -92,8 +90,7 @@ layui.use(['form','table','layer','laypage','laydate','jquery'], function(){
 		            		})
 					      });
 				  } else if(layEvent === 'edit'){
-				    	var _this = $(this)
-						var index =  layui.layer.open({
+						var index = layer.open({
 							title:false,
 							closeBtn : 0,
 							area: ['50%', '52%'],
@@ -104,62 +101,9 @@ layui.use(['form','table','layer','laypage','laydate','jquery'], function(){
 			  });
 		  }
 		  
-		  
-		//返回父类
-	    $("body").on("click",".back2Item",function(){ 
-	    	var index = parent.layer.getFrameIndex(window.name); 
-	        parent.layer.close(index);
-		})
-		
-		//返回父类
-	    $("body").on("click",".back",function(){ 
-	    	var index = parent.layer.getFrameIndex(window.name); 
-	        parent.layer.close(index);
-		})
-		
-		//手动新增源
-		$(".add_source_btn").click(function(){
-			var _this = $(this)
-			var index =  layui.layer.open({
-				title:false,
-				closeBtn : 0,
-				area: ['50%', '52%'],
-				type : 2,
-				content : '/kvcontentItemSource/addkvcontentSource?relativeId='+$('#contentId').val()+'&shortFlag='+$('#shortFlag').val()
-			})
-		});
-	    
-	    //监听提交
-	    form.on('submit(addPlaySource)', function(data){
-		    $.post('/kvcontentItemSource/saveUpdateKVContentItemSource',data.field,function(result){
-		    	if('success' == result){
-		    		 layer.alert('新增播放源成功', {icon: 1}, function(index){
-		    			 parent.location.reload(); //刷新父页面
-		    		     layer.close(index);
-		    		 });
-		    		 return true;
-		    	}else{
-		    		layer.alert('新增播放源失败', {icon: 2});
-		    	}
-		    })
-		    return false;
-		});
-	    
-	    
-		//监听提交
-	    form.on('submit(editPlaySource)', function(data){
-		    $.post('/kvcontentItemSource/saveUpdateKVContentItemSource',data.field,function(result){
-		    	if('success' == result){
-		    		 layer.alert('播放地址更新成功', {icon: 1}, function(index){
-		    			 parent.location.reload(); //刷新父页面
-		    		     layer.close(index);
-		    		 });
-		    		 return true;
-		    	}else{
-		    		layer.alert('播放地址更新失败', {icon: 2});
-		    	}
-		    })
-		    return false;
-		});
-	    
+		  //返回父类
+		  $("body").on("click",".back2Item",function(){ 
+		    	var index = parent.layer.getFrameIndex(window.name); 
+		        parent.layer.close(index);
+		 })
 });

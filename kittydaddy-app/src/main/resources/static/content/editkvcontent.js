@@ -26,8 +26,9 @@ layui.config({
     
     //返回父类
     $("body").on("click","#back",function(){ 
-    	parent.location.reload(); //刷新父页面
     	var index = parent.layer.getFrameIndex(window.name); 
         parent.layer.close(index);
 	})
+	
+	
 })

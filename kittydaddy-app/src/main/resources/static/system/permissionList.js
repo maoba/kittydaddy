@@ -26,7 +26,6 @@ layui.config({
 		      {field: 'permissionCode', title: '权限编码', width:230},
 		      {field: 'permissionUrl', title: '请求地址', width:240, sort: true},
 		      {field: 'permissionType', title: '权限类型', width:240,templet:function(d){
-		    	  debugger
 		    	  if(d.permissionType == 1){
 		    		  return "资源";
 		    	  }else if(d.permissionType == 0){
