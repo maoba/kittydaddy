@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.app.controller.system.BaseController;
 import com.kittydaddy.facade.dto.system.response.BaseResponse;
 import com.kittydaddy.metadata.vcontent.domain.KVContentEntity;
+import com.kittydaddy.security.annotation.CurrentUser;
+import com.kittydaddy.security.annotation.CurrentUserInfo;
 import com.kittydaddy.service.vcontent.KVContentService;
 
 @RestController
@@ -62,7 +65,8 @@ public class KVContentController extends BaseController{
 	 * @return
 	 */
     @RequestMapping(method=RequestMethod.POST,value="saveUpdateKVContent")
-    public String saveUpdateKVContent(@RequestParam Map<String,Object> params){
+    public String saveUpdateKVContent(@RequestParam Map<String,Object> params,@CurrentUser CurrentUserInfo currentUserInfo){
+       params.put("operateId", currentUserInfo.getUserId());	
        kVContentService.saveUpdateKVContent(params);
  	   return RESULT_SUCCESS;
     }

@@ -144,19 +144,19 @@
 	        <div class="layui-inline">
 	           <label class="layui-form-label">封面照(小)</label>
 			   <div class="layui-input-inline">
-	             <input type="text" name="${kvcontent.imgSmallUrl!}"  autocomplete="off" class="layui-input">
+	             <input type="text" name="imgSmallUrl" value="${kvcontent.imgSmallUrl!}"  autocomplete="off" class="layui-input">
 	           </div>   
 	        </div>
 	        <div class="layui-inline">
 	           <label class="layui-form-label">封面照(中)</label>
 			   <div class="layui-input-inline">
-	             <input type="text" name="${kvcontent.imgMediumUrl!}"  autocomplete="off" class="layui-input">
+	             <input type="text" name="imgMediumUrl" value="${kvcontent.imgMediumUrl!}"  autocomplete="off" class="layui-input">
 	           </div>   
 	        </div>
 	        <div class="layui-inline">
 	           <label class="layui-form-label">封面照(大)</label>
 			   <div class="layui-input-inline">
-	             <input type="text" name="${kvcontent.imgLargeUrl!}"  autocomplete="off" class="layui-input">
+	             <input type="text" name = "imgLargeUrl" value="${kvcontent.imgLargeUrl!}"  autocomplete="off" class="layui-input">
 	           </div>   
 	        </div>
 	        <div class="layui-inline">
@@ -182,7 +182,7 @@
 		  
 		 <div class="layui-form-item">
 			    <div class="layui-input-block">
-			      <button class="layui-btn" lay-submit lay-filter="addPermission">立即提交</button>
+			      <button class="layui-btn" lay-submit lay-filter="updatekvContent">立即提交</button>
 			      <button class="layui-btn layui-btn-warm">新增剧集/播放地址</button>
 			      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 			      <button class="layui-btn layui-btn-normal" id="back">返回</button>

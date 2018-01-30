@@ -372,20 +372,47 @@ public class KVContentServiceImpl implements KVContentService{
 			String shortFlag = params.get("shortFlag")==null?"":params.get("shortFlag").toString();
 			String tags = params.get("tags")==null?"":params.get("tags").toString();
 			String episodeCount = params.get("episodeCount")==null?"":params.get("episodeCount").toString();
-			
-			
-			
+			String directors = params.get("directors")==null?"":params.get("directors").toString();
+			String actors = params.get("actors")==null?"":params.get("actors").toString();
+			String year = params.get("year")==null?"":params.get("year").toString();
+			String lastSn = params.get("lastSn")==null?"":params.get("lastSn").toString();
+			String duration = params.get("duration")==null?"":params.get("duration").toString();
+			String area = params.get("area")==null?"":params.get("area").toString();
+            String language = params.get("language") ==null?"":params.get("language").toString();
+            String isFree = params.get("isFree")==null?"":params.get("isFree").toString();
+			String imgSmallUrl = params.get("imgSmallUrl")==null?"":params.get("imgSmallUrl").toString();
+			String imgMediumUrl = params.get("imgMediumUrl")==null?"":params.get("imgMediumUrl").toString();
+			String imgLargeUrl = params.get("imgLargeUrl")==null?"":params.get("imgLargeUrl").toString();
+			String isPublish = params.get("isPublish")==null?"":params.get("isPublish").toString();
+			String summary = params.get("summary")==null?"":params.get("summary").toString();
 			
 			if(params.get("contentId")!=null){//更新
 				KVContentEntity kvContentEntity = kvContentMapper.selectByPrimaryKey(params.get("contentId").toString());
 				if(kvContentEntity == null) logger.error("id:"+params.get("contentId").toString()+"不存在");
 				
-				
-				
-				
-				
-				
-				
+				kvContentEntity.setActors(actors);
+				kvContentEntity.setArea(area);
+				kvContentEntity.setChannel(channel);
+				kvContentEntity.setUpdateTime(new Date());
+				kvContentEntity.setDirectors(directors);
+				kvContentEntity.setDuration(params.get("duration")==null?kvContentEntity.getDuration():Integer.parseInt(duration));
+				kvContentEntity.setEpisodeCount(params.get("episodeCount")==null?kvContentEntity.getEpisodeCount():Integer.parseInt(episodeCount));
+				kvContentEntity.setImgLargeUrl(imgLargeUrl);
+				kvContentEntity.setImgMediumUrl(imgMediumUrl);
+				kvContentEntity.setImgSmallUrl(imgSmallUrl);
+				kvContentEntity.setIsFree(params.get("isFree")==null?kvContentEntity.getIsFree():Integer.parseInt(isFree));
+				kvContentEntity.setLanguage(language);
+				kvContentEntity.setLastSn(params.get("lastSn")==null?kvContentEntity.getLastSn():Integer.parseInt(lastSn));
+				kvContentEntity.setOperateId(params.get("operateId").toString());
+				kvContentEntity.setRate(rate);
+				kvContentEntity.setSource(source);
+				kvContentEntity.setSubtitle(subtitle);
+				kvContentEntity.setSummary(summary);
+				kvContentEntity.setTags(tags);
+				kvContentEntity.setTitle(title);
+                kvContentEntity.setYear(year);
+                kvContentMapper.updateByPrimaryKey(kvContentEntity);
+                
 			}else{//新增
 				
 			}
