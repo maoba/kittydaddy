@@ -1,5 +1,6 @@
-layui.use(['table','layer','laypage','laydate','jquery'], function(){
-		  var table = layui.table,  
+layui.use(['form','table','layer','laypage','laydate','jquery'], function(){
+	var   form = layui.form,
+	      table = layui.table,  
           laydate=layui.laydate,
           layer = parent.layer === undefined ? layui.layer : parent.layer,
           laypage = layui.laypage,
@@ -7,6 +8,7 @@ layui.use(['table','layer','laypage','laydate','jquery'], function(){
           
 		  var contentId = $('#contentId').val();
 		  var shortFlag = $('#shortFlag').val();
+		  debugger
 		  var curnum = 1,limitcount=10;
 		  //初始化搜索
 		  kvContentItemSourceSearch(shortFlag,contentId,curnum,limitcount);
@@ -78,27 +80,86 @@ layui.use(['table','layer','laypage','laydate','jquery'], function(){
 				    	});
 				      
 				    } else if(layEvent === 'del'){
-				      layer.confirm('真的删除行么', function(index){
-				        obj.del(); //删除对应行（tr）的DOM结构
-				        layer.close(index);
-				        //向服务端发送删除指令
-				      });
-				    } else if(layEvent === 'edit'){
+					      layer.confirm('确定删除该信息？', function(index){
+					        obj.del(); //删除对应行（tr）的DOM结构
+					        layer.close(index);
+					        $.get('/kvcontentItemSource/deleteContentItemSource?itemSourceId='+data.id,function(result){
+								if('success' == result){
+									layer.msg("删除成功");
+								}else{
+									layer.msg("删除失败");
+								}
+		            		})
+					      });
+				  } else if(layEvent === 'edit'){
 				    	var _this = $(this)
 						var index =  layui.layer.open({
 							title:false,
 							closeBtn : 0,
-							area: ['100%', '100%'],
+							area: ['50%', '52%'],
 							type : 2,
-							content :  '/kvcontent/editkvContent?kvcontentId='+data.id
+							content :  '/kvcontentItemSource/editkvcontentSource?id='+data.id
 						})
-						
-						//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
-						$(window).resize(function(){
-							layui.layer.full(index);
-						})
-						 layui.layer.full(index);
 				    }
 			  });
 		  }
+		  
+		  
+		//返回父类
+	    $("body").on("click",".back2Item",function(){ 
+	    	var index = parent.layer.getFrameIndex(window.name); 
+	        parent.layer.close(index);
+		})
+		
+		//返回父类
+	    $("body").on("click",".back",function(){ 
+	    	var index = parent.layer.getFrameIndex(window.name); 
+	        parent.layer.close(index);
+		})
+		
+		//手动新增源
+		$(".add_source_btn").click(function(){
+			var _this = $(this)
+			var index =  layui.layer.open({
+				title:false,
+				closeBtn : 0,
+				area: ['50%', '52%'],
+				type : 2,
+				content : '/kvcontentItemSource/addkvcontentSource?relativeId='+$('#contentId').val()+'&shortFlag='+$('#shortFlag').val()
+			})
+		});
+	    
+	    //监听提交
+	    form.on('submit(addPlaySource)', function(data){
+		    $.post('/kvcontentItemSource/saveUpdateKVContentItemSource',data.field,function(result){
+		    	if('success' == result){
+		    		 layer.alert('新增播放源成功', {icon: 1}, function(index){
+		    			 parent.location.reload(); //刷新父页面
+		    		     layer.close(index);
+		    		 });
+		    		 return true;
+		    	}else{
+		    		layer.alert('新增播放源失败', {icon: 2});
+		    	}
+		    })
+		    return false;
+		});
+	    
+	    
+		//监听提交
+	    form.on('submit(editPlaySource)', function(data){
+		    $.post('/kvcontentItemSource/saveUpdateKVContentItemSource',data.field,function(result){
+		    	if('success' == result){
+		    		 layer.alert('播放地址更新成功', {icon: 1}, function(index){
+		    			 parent.location.reload(); //刷新父页面
+		    		     layer.close(index);
+		    		 });
+		    		 return true;
+		    	}else{
+		    		layer.alert('播放地址更新失败', {icon: 2});
+		    	}
+		    })
+		    return false;
+		});
+	    
 });

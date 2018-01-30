@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>猫爸系统</title>
+	<meta name="renderer" content="webkit">
+	<#assign path="${request.getContextPath()}">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="${path}/static/layui/css/layui.css" media="all" />
+</head>
+<body class="childrenBody">
+    <fieldset class="layui-elem-field" style="margin-top: 20px;">
+		    <legend>关联剧集</legend>
+		    <div class="layui-field-box">
+				    <div class="layui-form-item">
+				     <div class="layui-inline">
+			           <label class="layui-form-label">剧集类型</label>
+			            <div class="layui-input-inline">
+			               <input type="text" disabled="disabled" class="layui-input" value="${itemEntity.itemChannel!}" id="itemChannel">
+			           </div>
+			       </div>
+			       <div class="layui-inline">
+			         <label class="layui-form-label">剧集标题</label>
+			         <div class="layui-input-inline">
+			           <input type="text" disabled="disabled" class="layui-input" value="${itemEntity.itemTitle!}" id="itemTitle">
+			         </div>
+			       </div>
+			       <div class="layui-inline">
+			         <label class="layui-form-label">最近更新</label>
+			         <div class="layui-input-inline">
+			            <input type="text" disabled="disabled" class="layui-input" value="${itemEntity.itemSn!}" id="itemSn">
+			         </div>
+			       </div>
+			       <div class="layui-inline">
+			         <label class="layui-form-label">描述信息</label>
+			         <div class="layui-input-inline">
+			            <input type="text" disabled="disabled" class="layui-input" value="${itemEntity.itemSummary!}" id="itemSn">
+			         </div>
+			       </div>
+			        <div class="layui-inline">
+			            <a class="layui-btn add_source_btn" style="background-color:#5FB878">新增地址</a>
+		            </div>
+					<div class="layui-inline">
+						<a class="layui-btn layui-btn-warm back2Item" >返回</a>
+					</div>
+			    </div>
+		    </div>
+		    <input type="hidden" id="contentId" value="${itemEntity.id}">
+		    <input type="hidden" id="shortFlag" value="0">
+	</fieldset>
+	
+	
+	 <fieldset class="layui-elem-field" style="margin-top: 20px;">
+	  <legend>播放地址</legend>
+	  <div class="layui-field-box">
+		<div class="layui-form kv_content_source_list">
+		    <table id="kvcontentItemSourceList" lay-filter="kvcontentItemSourceList" ></table>
+		    <div id="laypageItemSource"></div>  
+		</div>
+	  </div>	
+	</fieldset>
+	<script type="text/html" id="kvcontentItemSourceBar">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail_stage_photo">查看剧照</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    
+	<script type="text/javascript" src="${path}/static/layui/layui.js"></script>
+	<script type="text/javascript" src="${path}/static/content/kvcontentItemSourceList.js"></script>
+	<script type="text/javascript" src="${path}/static/js/moment.js"></script>
+</body>
+</html>

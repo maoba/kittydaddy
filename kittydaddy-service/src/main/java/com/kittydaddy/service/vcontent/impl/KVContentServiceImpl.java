@@ -389,7 +389,6 @@ public class KVContentServiceImpl implements KVContentService{
 			if(params.get("contentId")!=null){//更新
 				KVContentEntity kvContentEntity = kvContentMapper.selectByPrimaryKey(params.get("contentId").toString());
 				if(kvContentEntity == null) logger.error("id:"+params.get("contentId").toString()+"不存在");
-				
 				kvContentEntity.setActors(actors);
 				kvContentEntity.setArea(area);
 				kvContentEntity.setChannel(channel);
