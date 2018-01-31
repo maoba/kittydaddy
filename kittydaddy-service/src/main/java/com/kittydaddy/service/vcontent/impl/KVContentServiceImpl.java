@@ -217,7 +217,6 @@ public class KVContentServiceImpl implements KVContentService{
 							contentSource.setSource(srcName);
 							contentSource.setStatus(StatusEnum.VALID.getValue());
 							kvContentSourceMapper.insert(contentSource);
-							logger.info("*************"+content.getChannel()+":"+content.getTitle()+"第"+ itemSn +"集(期)**********");
 						}
 					}
 					logger.info("*****影视:"+content.getTitle()+"获取成功！originId为:"+ subOriginId +"*******");

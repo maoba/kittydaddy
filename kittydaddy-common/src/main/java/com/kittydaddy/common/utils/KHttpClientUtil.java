@@ -84,9 +84,6 @@ public class KHttpClientUtil {
 	            HttpGet httpPost = new HttpGet(apiUrl);  
 	            HttpResponse response = httpclient.execute(httpPost);  
 	            int statusCode = response.getStatusLine().getStatusCode();  
-	  
-	            System.out.println("执行状态码 : " + statusCode);  
-	  
 	            HttpEntity entity = response.getEntity();  
 	            if (entity != null) {  
 	                InputStream instream = entity.getContent();  
