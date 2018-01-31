@@ -13,7 +13,7 @@ layui.config({
 		    	if('success' == result){
 		    		 layer.alert('播放地址更新成功', {icon: 1}, function(index){
 		    			 parent.location.reload(); //刷新父页面
-		    		     layer.close(index);
+		    			 layer.close(index);
 		    		 });
 		    		 return true;
 		    	}else{
@@ -23,7 +23,7 @@ layui.config({
 		    return false;
 		});
 	    
-	  //返回父类
+	   //返回父类
 	    $("body").on("click",".back",function(){ 
 	    	var index = parent.layer.getFrameIndex(window.name); 
 	        parent.layer.close(index);

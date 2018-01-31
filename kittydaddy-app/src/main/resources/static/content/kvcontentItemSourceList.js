@@ -106,4 +106,5 @@ layui.use(['form','table','layer','laypage','laydate','jquery'], function(){
 		    	var index = parent.layer.getFrameIndex(window.name); 
 		        parent.layer.close(index);
 		 })
+		 
 });
