@@ -1,4 +1,6 @@
-layui.use(['table','laypage','laydate','jquery'], function(){
+layui.config({
+	base : "/static/js/content"
+}).use(['table','laypage','laydate','jquery'], function(){
 		  var table = layui.table,  
           laydate=layui.laydate,  
           laypage = layui.laypage,

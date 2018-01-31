@@ -179,16 +179,13 @@
 		      <textarea name="summary" placeholder="请输入描述信息" class="layui-textarea">${kvcontent.summary!}</textarea>
 		    </div>
 		  </div>
-		  
-		 <div class="layui-form-item">
-			    <div class="layui-input-block">
-			      <button class="layui-btn" lay-submit lay-filter="updatekvContent">立即提交</button>
-			      <button class="layui-btn layui-btn-warm addExposideOrPlayUrl">新增剧集/播放地址</button>
-			      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-			      <button class="layui-btn layui-btn-normal" id="back">返回</button>
-			    </div>
-	      </div> 
 		 </form>
+		  <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit lay-filter="updatekvContent">立即提交</button>
+		      <button class="layui-btn layui-btn-warm addExposideOrPlayUrl">新增剧集/播放地址</button>
+		      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		      <button class="layui-btn layui-btn-normal" id="back">返回</button>
+		    </div>
        </div>
 	</fieldset>
 	
@@ -221,8 +218,6 @@
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 	<script type="text/javascript" src="${path}/static/layui/layui.js"></script>
-	<script type="text/javascript" src="${path}/static/content/addkvcontentItemSource.js"></script>
-	<script type="text/javascript" src="${path}/static/content/editkvcontentItemSource.js"></script>
 	<script type="text/javascript" src="${path}/static/content/kvcontentItemList.js"></script>
 	<script type="text/javascript" src="${path}/static/content/kvcontentItemSourceList.js"></script>
 	<script type="text/javascript" src="${path}/static/content/editkvcontent.js"></script>

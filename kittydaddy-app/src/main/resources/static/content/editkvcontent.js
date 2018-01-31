@@ -1,5 +1,5 @@
 layui.config({
-	base : "/static/js/system"
+	base : "/static/js/content"
 }).use(['form','layer','jquery','laypage','laydate'],function(){
 	var form = layui.form,
 		layer = parent.layer === undefined ? layui.layer : parent.layer,
@@ -29,6 +29,4 @@ layui.config({
     	var index = parent.layer.getFrameIndex(window.name); 
         parent.layer.close(index);
 	})
-	
-	
 })

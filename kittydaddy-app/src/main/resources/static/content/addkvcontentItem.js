@@ -1,5 +1,5 @@
 layui.config({
-	base : "/static/js/system"
+	base : "/static/js/content"
 }).use(['form','layer','jquery','laypage','laydate'],function(){
 	var form = layui.form,
 		layer = parent.layer === undefined ? layui.layer : parent.layer,
@@ -28,29 +28,4 @@ layui.config({
 	    	var index = parent.layer.getFrameIndex(window.name); 
 	        parent.layer.close(index);
 		})
-		
-		
-		//手动新增源
-		$(".addExposideOrPlayUrl").click(function(){
-			var shortFlag = $('#shortFlag').val();
-			if(shortFlag == 1){//短视频的时候，新增播放地址
-				var index = layer.open({
-					title:false,
-					closeBtn : 0,
-					area: ['50%', '52%'],
-					type : 2,
-					content : '/kvcontentItemSource/addkvcontentSource?relativeId='+$('#contentId').val()+'&shortFlag='+$('#shortFlag').val()
-				})
-				
-			}else{//长视频的时候，新增剧集
-				var index = layer.open({
-					title:false,
-					closeBtn : 0,
-					area: ['50%', '52%'],
-					type : 2,
-					content : '/kvcontentItem/addkvcontentItem?contentId='+$('#contentId').val()
-				})
-				
-			}
-		});
 })		
