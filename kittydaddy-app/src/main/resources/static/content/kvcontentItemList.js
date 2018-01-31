@@ -54,11 +54,17 @@ layui.use(['table','laypage','laydate','jquery'], function(){
 				    if(layEvent === 'detail'){
 				      layer.msg('查看操作');
 				    } else if(layEvent === 'del'){
-				      layer.confirm('真的删除行么', function(index){
-				        obj.del(); //删除对应行（tr）的DOM结构
-				        layer.close(index);
-				        //向服务端发送删除指令
-				      });
+				      layer.confirm('确认删除？', function(index){
+					        obj.del(); //删除对应行（tr）的DOM结构
+					        layer.close(index);
+					        $.get('/kvcontentItem/deleteContentItem?id='+data.id,function(result){
+								if('success' == result){
+									layer.msg("删除成功");
+								}else{
+									layer.msg("删除失败");
+								}
+		            		})
+					      });
 				    } else if(layEvent === 'edit'){
 				    	var _this = $(this)
 						var index = layer.open({

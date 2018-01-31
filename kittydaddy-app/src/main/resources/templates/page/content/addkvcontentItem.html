@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>猫爸系统</title>
+	<meta name="renderer" content="webkit">
+	<#assign path="${request.getContextPath()}">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="${path}/static/layui/css/layui.css" media="all" />
+</head>
+<body class="childrenBody">
+	<form class="layui-form">
+	  <fieldset class="layui-elem-field" style="margin-top: 20px;">
+	  <legend>新增剧集</legend>
+	  <div class="layui-field-box">
+	    <input type="hidden" name="contentId" value="${contentId}"/>
+		<div class="layui-form-item">
+			    <label class="layui-form-label">剧集类别</label>
+			    <div class="layui-input-block">
+			    	<input type="text" name="itemChannel"  class="layui-input"/>
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">剧集名称</label>
+			    <div class="layui-input-block">
+			    	<input type="text" name="itemTitle"  class="layui-input ">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">当前集数</label>
+			    <div class="layui-input-block">
+			        <input type="text" name="itemSn" class="layui-input ">
+			    </div>
+			</div>
+			
+			<div class="layui-form-item">
+			    <label class="layui-form-label">阶段</label>
+			    <div class="layui-input-block">
+			        <input type="text" name="itemPeriod" class="layui-input ">
+			    </div>
+			</div>
+			
+			<div class="layui-form-item">
+			    <label class="layui-form-label">剧集描述</label>
+			    <div class="layui-input-block">
+			        <input type="text" name="itemSummary" class="layui-input ">
+			    </div>
+			</div>
+			
+			<div class="layui-form-item" style="margin-left: 5%;">
+			    <div class="layui-input-block">
+			    	<button class="layui-btn" lay-submit="" lay-filter="addPlayItem">立即提交</button>
+					<button  class="layui-btn layui-btn-primary back">返回</button>
+			    </div>
+			</div>
+	  </div>	
+	</fieldset>
+	</form>
+	<script type="text/javascript" src="${path}/static/layui/layui.js"></script>
+	<script type="text/javascript" src="${path}/static/content/addkvcontentItem.js"></script>
+</body>
+</html>
