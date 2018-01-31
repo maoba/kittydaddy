@@ -35,5 +35,6 @@
     <module>kittydaddy-metadata</module>
     <module>kittydaddy-facade</module>
     <module>kittydaddy-app</module>
+    <module>kittydaddy-search</module>
   </modules>
 </project>
