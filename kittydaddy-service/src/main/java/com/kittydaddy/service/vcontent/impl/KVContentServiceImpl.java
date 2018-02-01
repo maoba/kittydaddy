@@ -425,23 +425,10 @@ public class KVContentServiceImpl implements KVContentService{
 		@Override
 		public Map<String,String> queryKVContentSourceByTitle(String title) {
 			Map<String,String> sources = new HashMap<String,String>();
-			//查询短视频
-			List<KVContentEntity> shortContents = kvContentMapper.queryKvContentByPage(ShortFlagEnum.SHORT.getValue(), null, title, StatusEnum.VALID.getValue());
-			if(KCollectionUtils.isNotEmpty(shortContents)){
-				for(KVContentEntity entity : shortContents){
-					List<KVContentSourceEntity> contentSources = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_SOURCE, entity.getId());
-					if(KCollectionUtils.isNotEmpty(contentSources)){
-						for(KVContentSourceEntity sourceEntity : contentSources){
-							sources.put(entity.getTitle(), sourceEntity.getPlayUrl());
-						}
-					}
-				}
-			}
-			
 			//查询长视频
 			List<KVContentEntity> longContents = kvContentMapper.queryKvContentByPage(ShortFlagEnum.LONG.getValue(), null, title, StatusEnum.VALID.getValue());
             if(KCollectionUtils.isNotEmpty(longContents)){
-            	for(KVContentEntity entity : shortContents){
+            	for(KVContentEntity entity : longContents){
             		List<KVContentItemEntity> kvContentItemEntitys = kvContentItemMapper.queryItemByContentId(entity.getId());
             		for(KVContentItemEntity itemEntity : kvContentItemEntitys){
             			List<KVContentSourceEntity> contentSources = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_ITEM, itemEntity.getId());
