@@ -65,7 +65,7 @@
         and id=#{id,jdbcType=VARCHAR}
      </if>
      <if test="title !=null and title !=''">
-        and title like '%#{title,jdbcType=VARCHAR}%'
+        and title like CONCAT('%','${title}','%' )
      </if>
      <if test="status !=null and status !=''">
         and status = #{status,jdbcType=INTEGER}

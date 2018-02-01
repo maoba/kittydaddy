@@ -2,8 +2,13 @@ package com.kittydaddy.service.vcontent.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.eclipse.core.runtime.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -415,5 +420,39 @@ public class KVContentServiceImpl implements KVContentService{
 			}else{//新增
 				
 			}
+		}
+
+		@Override
+		public Map<String,String> queryKVContentSourceByTitle(String title) {
+			Map<String,String> sources = new HashMap<String,String>();
+			//查询短视频
+			List<KVContentEntity> shortContents = kvContentMapper.queryKvContentByPage(ShortFlagEnum.SHORT.getValue(), null, title, StatusEnum.VALID.getValue());
+			if(KCollectionUtils.isNotEmpty(shortContents)){
+				for(KVContentEntity entity : shortContents){
+					List<KVContentSourceEntity> contentSources = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_SOURCE, entity.getId());
+					if(KCollectionUtils.isNotEmpty(contentSources)){
+						for(KVContentSourceEntity sourceEntity : contentSources){
+							sources.put(entity.getTitle(), sourceEntity.getPlayUrl());
+						}
+					}
+				}
+			}
+			
+			//查询长视频
+			List<KVContentEntity> longContents = kvContentMapper.queryKvContentByPage(ShortFlagEnum.LONG.getValue(), null, title, StatusEnum.VALID.getValue());
+            if(KCollectionUtils.isNotEmpty(longContents)){
+            	for(KVContentEntity entity : shortContents){
+            		List<KVContentItemEntity> kvContentItemEntitys = kvContentItemMapper.queryItemByContentId(entity.getId());
+            		for(KVContentItemEntity itemEntity : kvContentItemEntitys){
+            			List<KVContentSourceEntity> contentSources = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_ITEM, itemEntity.getId());
+            			if(KCollectionUtils.isNotEmpty(contentSources)){
+    						for(KVContentSourceEntity sourceEntity : contentSources){
+    							sources.put(entity.getTitle(), sourceEntity.getPlayUrl());
+    						}
+    					}
+            		}
+            	}
+			}
+			return sources;
 		}
 }
