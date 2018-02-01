@@ -68,6 +68,7 @@ public class KVContentServiceImpl implements KVContentService{
 	public void executeCollectVideoJobService(Map<String, Object> map) {
     	for(Integer subOriginId = 1; subOriginId<999999999; subOriginId++){
     		Object obj = redisUtil.get(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX+subOriginId);
+    		logger.info("****获取第："+subOriginId+"条********");
     		if(obj != null) continue;
     		if(!this.executeCollectSingleVideoService(subOriginId.toString())) continue;
     		redisUtil.set(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX+subOriginId, subOriginId);

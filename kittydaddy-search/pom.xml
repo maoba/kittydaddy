@@ -32,7 +32,54 @@
        <artifactId>kittydaddy-metadata</artifactId>
        <version>1.0.0-SNAPSHOT</version>
     </dependency>
+    <dependency>
+	  <groupId>org.apache.lucene</groupId>
+	  <artifactId>lucene-core</artifactId>
+	  <version>6.6.0</version>
+    </dependency>
+	<dependency>
+	  <groupId>org.apache.lucene</groupId>
+	  <artifactId>lucene-analyzers-common</artifactId>
+	  <version>6.6.0</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.lucene</groupId>
+	  <artifactId>lucene-queryparser</artifactId>
+	  <version>6.6.0</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.lucene</groupId>
+	  <artifactId>lucene-demo</artifactId>
+	  <version>6.6.0</version>
+	</dependency>
   </dependencies>
+  
+   <repositories>
+		<repository>
+			<id>nexus</id>
+			<name>Team Nexus Repository</name>
+			<url>http://139.196.216.117:8081/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus</id>
+			<name>Team Nexus Repository</name>
+			<url>http://139.196.216.117:8081/nexus/content/groups/public</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Local Nexus Repository</name>
+			<url>http://139.196.216.117:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Local Nexus Repository</name>
+			<url>http://139.196.216.117:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
   
   <build>
        <plugins>  
