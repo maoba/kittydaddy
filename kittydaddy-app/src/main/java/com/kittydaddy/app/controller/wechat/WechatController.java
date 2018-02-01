@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.kittydaddy.app.controller.system.BaseController;
 import com.kittydaddy.common.utils.KSignUtil;
-import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.service.wechat.WechatService;
 
 /**
