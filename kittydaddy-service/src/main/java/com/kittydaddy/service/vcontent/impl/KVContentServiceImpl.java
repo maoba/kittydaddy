@@ -3,12 +3,8 @@ package com.kittydaddy.service.vcontent.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import org.eclipse.core.runtime.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,12 +67,13 @@ public class KVContentServiceImpl implements KVContentService{
 
 	@Override
 	public void executeCollectVideoJobService(Map<String, Object> map) {
-    	for(Integer subOriginId = 1; subOriginId<999999999; subOriginId++){
-    		Object obj = redisUtil.get(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX+subOriginId);
+		Integer subOriginId = 1;
+		Object object = redisUtil.get(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX);
+		if(object!=null) subOriginId = (Integer)object;
+    	for(; subOriginId<999999999; subOriginId++){
     		logger.info("****获取第："+subOriginId+"条********");
-    		if(obj != null) continue;
     		if(!this.executeCollectSingleVideoService(subOriginId.toString())) continue;
-    		redisUtil.set(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX+subOriginId, subOriginId);
+    		redisUtil.set(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX, subOriginId);
     	}
     }
 	
@@ -106,6 +103,7 @@ public class KVContentServiceImpl implements KVContentService{
     		KVContentEntity kvContent = kvContentMapper.queryKvContentBySubOriginId(subOriginId.toString());
 			if(kvContent!=null){
 				 logger.info(String.format("影视'%s'已存在！", kvContent));
+				 redisUtil.set(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX, subOriginId);
 				 return false;
 			}
 			
@@ -263,25 +261,24 @@ public class KVContentServiceImpl implements KVContentService{
 		private boolean execute(){
 			for(SourceEnum sourceEnum : SourceEnum.values()){
 				for(ShortGenresEnum shortGenresEnum : ShortGenresEnum.values()){
+					String requestUrl = this.achieveShortListReqeustUrl(shortListUrl, shortGenresEnum.getValue(), sourceEnum.getValue());
 					try{
-						String requestUrl = this.achieveShortListReqeustUrl(shortListUrl, shortGenresEnum.getValue(), sourceEnum.getValue());
 						String jsonContent = KHttpClientUtil.doGet(requestUrl);
 						JSONObject shortJsonObject = JSON.parseObject(jsonContent);
 						JSONArray shortList = shortJsonObject.getJSONObject("data").getJSONArray("short_list");
 						if(KCollectionUtils.isEmpty(shortList)) continue;
-						
 						for(int i = 0;i<shortList.size();i++){
 							JSONObject jsonObject = shortList.getJSONObject(i);
 							String id = jsonObject.getString("id");
-							Object obj = redisUtil.get(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX+id);
+							String title = jsonObject.getString("title");
+							Object obj = redisUtil.get(RedisKeyConstant.SHORT_SUBORIGIN_INDEX_PREFIX+id);
+							if(obj != null){
+								logger.info("**"+title+"已经存在**");
+								continue;
+							} 
 							String srcId = jsonObject.getString("src_id");
 							String source = jsonObject.getString("source");
-							String title = jsonObject.getString("title");
 							logger.info("********短视频：《"+title+"》开始入库***********");
-							if(obj!=null){
-								logger.info("****短视频:"+title+"已经存在****");
-								continue;
-							}
 							Integer duration = jsonObject.getInteger("duration");
 							String originId = jsonObject.getString("origin_id");
 							String tags = jsonObject.getString("tags");
@@ -296,6 +293,8 @@ public class KVContentServiceImpl implements KVContentService{
 							content.setSource(source);
 							content.setShortFlag(ShortFlagEnum.SHORT.getValue());
 							content.setSubOriginId(id);
+							content.setChannel("短视频");
+							content.setEpisodeCount(1);
 							content.setCreateTime(new Date());
 							content.setTitle(title);
 							content.setDuration(duration);
@@ -320,12 +319,13 @@ public class KVContentServiceImpl implements KVContentService{
 							contentSource.setStatus(StatusEnum.VALID.getValue());
 							kvContentSourceMapper.insert(contentSource);
 							
-							redisUtil.set(RedisKeyConstant.SUBORIGIN_INDEX_PREFIX+id, id);
+							redisUtil.set(RedisKeyConstant.SHORT_SUBORIGIN_INDEX_PREFIX+id,id);
 							logger.info("********短视频：《"+title+"》入库成功***********");
 						}
 					}catch(Exception e){
 						e.printStackTrace();
 						logger.info("****出现未知异常****");
+						logger.info("****请求的url地址为:"+requestUrl);
 						continue;
 					}
 				}

@@ -23,7 +23,7 @@ public class CollectShortContentJob {
 	private KVContentService contentService;
 	
 		
-	@Scheduled(cron = "0 0 13 ? * *")
+	@Scheduled(cron = "0 41 13 ? * *")
     public void collectShortJob(){
 		  logger.info("*******开始获取短视频信息********");
 		  Map<String,Object> map = new HashMap<String, Object>();
