@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import com.kittydaddy.service.vcontent.KVContentService;
 /**
  * @author kitty daddy
@@ -19,7 +18,7 @@ public class CollectVideoContentJob {
 	@Autowired
 	private KVContentService kvContentService;
 	
-    @Scheduled(cron = "0 30 18 ? * *")
+    @Scheduled(cron = "0 00 13 ? * *")
     public void collectVideoJob(){
     	  logger.info("*****长视频暴力获取开始执行*************");
     	  Map<String,Object> map = new HashMap<String,Object>();

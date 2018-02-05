@@ -1,4 +1,4 @@
-package com.kittydaddy.service.search;
+package com.kittydaddy.search.system;
 
 import java.util.List;
 

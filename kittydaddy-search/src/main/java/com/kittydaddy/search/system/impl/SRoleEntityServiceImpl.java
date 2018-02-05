@@ -1,4 +1,4 @@
-package com.kittydaddy.service.search.impl;
+package com.kittydaddy.search.system.impl;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kittydaddy.metadata.repository.system.SRoleEntityRepository;
 import com.kittydaddy.metadata.system.domain.search.SRoleEntity;
-import com.kittydaddy.service.search.SRoleEntityService;
+import com.kittydaddy.search.system.SRoleEntityService;
 
 @Service
 public class SRoleEntityServiceImpl implements SRoleEntityService{

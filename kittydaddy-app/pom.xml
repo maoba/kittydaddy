@@ -94,9 +94,9 @@
        </dependency>
        
        <dependency>
-            <groupId>kittydaddy</groupId>
-            <artifactId>kittydaddy-facade</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+         <groupId>kittydaddy-search</groupId>
+         <artifactId>kittydaddy-search</artifactId>
+         <version>1.0.0-SNAPSHOT</version>
        </dependency>
        
         <dependency>  
