@@ -1,4 +1,4 @@
-package com.kittydaddy.metadata.system.domain.search;
+package com.kittydaddy.search.model.system;
 
 import java.util.Date;
 import org.springframework.data.annotation.Id;

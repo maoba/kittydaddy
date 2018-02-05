@@ -1,13 +1,13 @@
-package com.kittydaddy.search.system.impl;
+package com.kittydaddy.search.service.system.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kittydaddy.metadata.repository.system.SRoleEntityRepository;
-import com.kittydaddy.metadata.system.domain.search.SRoleEntity;
-import com.kittydaddy.search.system.SRoleEntityService;
+import com.kittydaddy.search.model.system.SRoleEntity;
+import com.kittydaddy.search.repository.system.SRoleEntityRepository;
+import com.kittydaddy.search.service.system.SRoleEntityService;
 
 @Service
 public class SRoleEntityServiceImpl implements SRoleEntityService{
@@ -28,8 +28,4 @@ public class SRoleEntityServiceImpl implements SRoleEntityService{
 	public SRoleEntity save(SRoleEntity role) {
 		return sRoleEntityRepository.save(role);
 	}
-	
-	
-	
-   
 }

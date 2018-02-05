@@ -1,9 +1,10 @@
-package com.kittydaddy.metadata.repository.system;
+package com.kittydaddy.search.repository.system;
 
 import java.util.List;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import com.kittydaddy.metadata.system.domain.search.SRoleEntity;
+
+import com.kittydaddy.search.model.system.SRoleEntity;
 
 public interface SRoleEntityRepository extends ElasticsearchRepository<SRoleEntity, String>{
 	  //根据名称查询

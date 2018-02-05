@@ -1,8 +1,8 @@
-package com.kittydaddy.search.system;
+package com.kittydaddy.search.service.system;
 
 import java.util.List;
 
-import com.kittydaddy.metadata.system.domain.search.SRoleEntity;
+import com.kittydaddy.search.model.system.SRoleEntity;
 
 public interface SRoleEntityService {
 	List<SRoleEntity> findByRoleName(String roleName);

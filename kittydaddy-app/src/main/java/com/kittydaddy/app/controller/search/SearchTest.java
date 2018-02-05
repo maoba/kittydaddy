@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.kittydaddy.metadata.system.domain.search.SRoleEntity;
-import com.kittydaddy.search.system.SRoleEntityService;
+import com.kittydaddy.search.model.system.SRoleEntity;
+import com.kittydaddy.search.service.system.SRoleEntityService;
 
 @RestController
 @RequestMapping(value="/search")
@@ -18,7 +17,7 @@ public class SearchTest{
 
 //	    @Autowired
 //	    private ElasticsearchTemplate esTemplate;
-
+//
 //	    @Before
 //	    public void before() {
 //	        esTemplate.deleteIndex(SRoleEntity.class);

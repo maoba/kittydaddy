@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import java.net.InetAddress;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "com.kittydaddy.metadata.repository")
+@EnableElasticsearchRepositories(basePackages = "com.kittydaddy.search.repository")
 public class MyESConfig{
 	
 	    @Value("${elasticsearch.host}")
