@@ -8,4 +8,6 @@ public interface PublishContentService {
 
 	List<PublishContentEntity> findByTitle(String title);
 
+	String buildRespMsgByTitle(String title);
+
 }

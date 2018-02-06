@@ -1,20 +1,17 @@
 package com.kittydaddy.service.wechat.impl;
-
 import java.util.Date;
 import java.util.Map;
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.kittydaddy.common.constant.Constants;
 import com.kittydaddy.common.utils.KCollectionUtils;
 import com.kittydaddy.common.utils.KMessageUtil;
+import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.common.wechat.TextMessage;
+import com.kittydaddy.search.service.vcontent.PublishContentService;
 import com.kittydaddy.service.vcontent.KVContentService;
 import com.kittydaddy.service.wechat.WechatService;
 
@@ -26,6 +23,9 @@ public class WechatServiceImpl implements WechatService{
 	private static final Logger LOGGER = LoggerFactory.getLogger(WechatServiceImpl.class);
 	@Autowired
 	private KVContentService kvcontentService;
+	
+	@Autowired
+	private PublishContentService publishContentService;
 	
 	@Override
 	public String weixinPost(HttpServletRequest request) {
@@ -49,10 +49,12 @@ public class WechatServiceImpl implements WechatService{
 	            //自动回复
 	            TextMessage text = new TextMessage();
 	            Map<String,String> map = kvcontentService.queryKVContentSourceByTitle(content);
-	            if(KCollectionUtils.isNotEmpty(map.values())){
-	            	 text.setContent(map.toString());
+	            //根据名称进行查询
+	            String msg = publishContentService.buildRespMsgByTitle(content);
+	            if(KStringUtils.isNotEmpty(msg)){
+	            	text.setContent(msg);
 	            }else{
-	            	 text.setContent("对不起，目前您搜索的播放源不存在，猫爸后续及时添加，请原谅~");
+	            	text.setContent("对不起，目前您搜索的播放源不存在，猫爸后续及时添加，请原谅~");
 	            }
 	            text.setToUserName(fromUserName);
 	            text.setFromUserName(toUserName);
