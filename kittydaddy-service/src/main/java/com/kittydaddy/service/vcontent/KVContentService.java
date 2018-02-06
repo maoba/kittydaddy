@@ -63,4 +63,12 @@ public interface KVContentService {
 	 * @return
 	 */
 	Map<String,String> queryKVContentSourceByTitle(String title);
+
+	/**
+	 * 发布内容
+	 * @param contentId 内容id
+	 * @param operateId 操作人id
+	 * @throws Exception
+	 */
+	boolean publishContent(String contentId, String operateId) throws Exception;
 }

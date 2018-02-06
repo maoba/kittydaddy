@@ -1,82 +1,29 @@
-package com.kittydaddy.search.model.vcontent;
+package com.kittydaddy.metadata.pvcontent.domain;
 
 import java.util.Date;
-import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-/**
- * 剧集
- * @author kitty daddy
- */
-@Document(indexName = "kvcontentitem", type = "contentitem")
-public class SKVContentItemEntity {
-	/**
-	 * 编码id
-	 */
-	@Id
+public class PContentItemEntity {
     private String id;
 
-    /**
-     * 剧集类型
-     */
     private String itemChannel;
 
-    /**
-     * 剧集标题
-     */
     private String itemTitle;
 
-    /**
-     * 最近更新剧集
-     */
     private Integer itemSn;
-   
-    /**
-     * 剧集阶段
-     */
+
     private String itemPeriod;
 
-    /**
-     * 剧集描述信息
-     */
     private String itemSummary;
 
-    /**
-     * 状态 -1:删除 0:失效 1:生效
-     */
     private Integer status;
 
-    /**
-     * 关联内容id
-     */
     private String contentId;
 
-    /**
-     * 创建时间
-     */
     private Date createTime;
 
-    /**
-     * 更新时间
-     */
     private Date updateTime;
-    
-    /**
-     * 播放源
-     */
-    private List<SKVContentSourceEntity> contentSources;
-    
-	public List<SKVContentSourceEntity> getContentSources() {
-		return contentSources;
-	}
 
-	public void setContentSources(List<SKVContentSourceEntity> contentSources) {
-		this.contentSources = contentSources;
-	}
-
-	public String getId() {
+    public String getId() {
         return id;
     }
 

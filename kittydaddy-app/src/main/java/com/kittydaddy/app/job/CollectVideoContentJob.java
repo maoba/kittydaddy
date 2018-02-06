@@ -18,7 +18,7 @@ public class CollectVideoContentJob {
 	@Autowired
 	private KVContentService kvContentService;
 	
-    @Scheduled(cron = "0 00 13 ? * *")
+    @Scheduled(cron = "0 00 19 ? * *")
     public void collectVideoJob(){
     	  logger.info("*****长视频暴力获取开始执行*************");
     	  Map<String,Object> map = new HashMap<String,Object>();

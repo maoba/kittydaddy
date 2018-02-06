@@ -120,6 +120,23 @@ layui.config({
 							layui.layer.full(index);
 						})
 						 layui.layer.full(index);
+						
+				    } else if(layEvent === 'pub'){
+				    	layer.confirm('确认发布么？', function(index){
+				    		if(data.isPublish == 0){
+				    			$.get('/kvcontent/publishContent?id='+data.id,function(result){
+									if('success' == result){
+										layer.msg("发布成功");
+									}else{
+										layer.msg("发布失败");
+									}
+									parent.location.reload(); //刷新父页面
+			            		})
+				    		}else{
+				    			layer.msg("已经发布！请勿重复发布");
+				    		}
+					        
+					    });
 				    }
 			  });
 		  }

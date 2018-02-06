@@ -195,8 +195,83 @@ CREATE TABLE `k_video_content_source` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='视频内容源表';
 
 
-
-
+--内容metadata(视频内容基本信息发布表)
+CREATE TABLE `p_k_video_content` (
+   `id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '主键',
+   `sub_origin_id` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '第三标识id',
+   `origin_id` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+   `source` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '来源',
+   `title` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '标题',
+   `subtitle` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '二级标题',
+   `rate` varchar(16) COLLATE utf8_bin DEFAULT NULL COMMENT '评分',
+   `tags` varchar(512) COLLATE utf8_bin DEFAULT NULL,
+   `channel` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '视频类别',
+   `short_flag` int(2) DEFAULT '0' COMMENT '0:表示长视频 1:表示短视频',
+   `episode_count` int(16) DEFAULT '0' COMMENT '总剧集数',
+   `directors` varchar(256) COLLATE utf8_bin DEFAULT NULL COMMENT '导演',
+   `actors` varchar(256) COLLATE utf8_bin DEFAULT NULL COMMENT '演员',
+   `year` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '年份',
+   `last_sn` int(8) DEFAULT '0' COMMENT '最近更新集数',
+   `duration` int(32) DEFAULT '0' COMMENT '时长',
+   `area` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '地区',
+   `origin_pub_time` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '影视发布时间',
+   `language` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '影片语言',
+   `genres` varchar(512) COLLATE utf8_bin DEFAULT NULL,
+   `yester_play_count` int(16) DEFAULT '0' COMMENT '年播放次数',
+   `weekly_play_count` int(16) DEFAULT '0' COMMENT '周播放次数',
+   `total_play_count` int(16) DEFAULT '0' COMMENT '总播放次数',
+   `img_small_url` varchar(256) COLLATE utf8_bin DEFAULT NULL COMMENT '视频封面小图片地址',
+   `img_medium_url` varchar(256) COLLATE utf8_bin DEFAULT NULL COMMENT '视频封面中等图片地址',
+   `img_large_url` varchar(1024) COLLATE utf8_bin DEFAULT NULL,
+   `status` int(4) DEFAULT '1' COMMENT '-1：删除 0：失效 1：生效',
+   `is_publish` int(4) DEFAULT '0' COMMENT '0:未发布 1:已发布',
+   `summary` text COLLATE utf8_bin COMMENT '影片描述信息',
+   `is_free` int(4) DEFAULT '0' COMMENT '1:表示免费  2:表示收费',
+   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+   `operate_id` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '操作人id',
+   `episode_exist` int(4) DEFAULT NULL COMMENT '是否存在剧集0：不存在 1：存在',
+   PRIMARY KEY (`id`),
+   KEY `origin_id` (`origin_id`),
+   KEY `k_short_flag` (`short_flag`),
+   KEY `k_short_status_flag` (`status`,`short_flag`),
+   KEY `title` (`title`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='发布视频内容信息表'
+ 
+ --发布内容剧集标
+ CREATE TABLE `p_k_video_content_item` (
+   `id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '主键',
+   `item_channel` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '剧集类别，例如：电视剧、综艺、动漫',
+   `item_title` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '剧集名称',
+   `item_sn` int(16) DEFAULT '0' COMMENT '当前集数',
+   `item_period` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '阶段',
+   `item_summary` varchar(512) COLLATE utf8_bin DEFAULT NULL COMMENT '剧集描述',
+   `status` int(4) DEFAULT '1' COMMENT '-1：删除 0：失效 1：生效',
+   `content_id` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '关联内容id',
+   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+   PRIMARY KEY (`id`),
+   KEY `content_id` (`content_id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='发布视频剧集内容信息表'
+ 
+ --发布内容源剧集
+ CREATE TABLE `p_k_video_content_source` (
+   `id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '主键',
+   `play_url` varchar(1024) COLLATE utf8_bin DEFAULT NULL COMMENT '剧集名称',
+   `source_id` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '来源id',
+   `source` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '来源名称',
+   `is_free` int(4) DEFAULT '0' COMMENT '1:表示免费  2:表示收费',
+   `relative_id` varchar(128) COLLATE utf8_bin DEFAULT NULL COMMENT '关联id',
+   `relative_type` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '关联类型',
+   `image_url` varchar(1024) COLLATE utf8_bin DEFAULT NULL,
+   `status` int(4) DEFAULT '1' COMMENT '-1:删除 0：失效 1：生效',
+   `duration` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '剧集时长',
+   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+   PRIMARY KEY (`id`),
+   KEY `relative_id` (`relative_id`),
+   KEY `k_relativeid_relativetype` (`relative_id`,`relative_type`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='发布视频内容源表'
 
 
 

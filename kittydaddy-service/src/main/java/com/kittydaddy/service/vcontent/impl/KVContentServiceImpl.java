@@ -25,10 +25,17 @@ import com.kittydaddy.common.enums.ShortFlagEnum;
 import com.kittydaddy.common.enums.ShortGenresEnum;
 import com.kittydaddy.common.enums.SourceEnum;
 import com.kittydaddy.common.enums.StatusEnum;
+import com.kittydaddy.common.utils.KBeanUtil;
 import com.kittydaddy.common.utils.KCollectionUtils;
 import com.kittydaddy.common.utils.KHttpClientUtil;
 import com.kittydaddy.common.utils.KJSONPParser;
 import com.kittydaddy.common.utils.KStringUtils;
+import com.kittydaddy.metadata.pvcontent.dao.PContentEntityMapper;
+import com.kittydaddy.metadata.pvcontent.dao.PContentItemEntityMapper;
+import com.kittydaddy.metadata.pvcontent.dao.PContentSourceEntityMapper;
+import com.kittydaddy.metadata.pvcontent.domain.PContentEntity;
+import com.kittydaddy.metadata.pvcontent.domain.PContentItemEntity;
+import com.kittydaddy.metadata.pvcontent.domain.PContentSourceEntity;
 import com.kittydaddy.metadata.util.RedisUtil;
 import com.kittydaddy.metadata.vcontent.dao.KVContentEntityMapper;
 import com.kittydaddy.metadata.vcontent.dao.KVContentItemEntityMapper;
@@ -36,6 +43,8 @@ import com.kittydaddy.metadata.vcontent.dao.KVContentSourceEntityMapper;
 import com.kittydaddy.metadata.vcontent.domain.KVContentEntity;
 import com.kittydaddy.metadata.vcontent.domain.KVContentItemEntity;
 import com.kittydaddy.metadata.vcontent.domain.KVContentSourceEntity;
+import com.kittydaddy.search.model.pvcontent.PublishContentEntity;
+import com.kittydaddy.search.repository.pvcontent.PublishContentEntityRepository;
 import com.kittydaddy.service.vcontent.KVContentService;
 
 @Service
@@ -49,6 +58,18 @@ public class KVContentServiceImpl implements KVContentService{
 	
 	@Autowired
 	private KVContentSourceEntityMapper kvContentSourceMapper;
+	
+	@Autowired
+	private PContentEntityMapper pContentMapper;
+	
+	@Autowired
+	private PContentItemEntityMapper pContentItemMapper;
+	
+	@Autowired
+	private PContentSourceEntityMapper pContentSourceMapper;
+	
+	@Autowired
+	private PublishContentEntityRepository publishContentRepository;
 	
 	@Value("${kitty.video.content.detail}")
 	private String detailUrl;
@@ -441,5 +462,120 @@ public class KVContentServiceImpl implements KVContentService{
             	}
 			}
 			return sources;
+		}
+
+		@Override
+		public boolean publishContent(String contentId, String operateId) throws Exception {
+			/***1、发布到前端表******/
+			PContentEntity pContentEntity = pContentMapper.selectByPrimaryKey(contentId);
+			KVContentEntity kvContentEntity = kvContentMapper.selectByPrimaryKey(contentId);
+			if(pContentEntity == null) {
+				pContentEntity = new PContentEntity();
+				KBeanUtil.copy(kvContentEntity, pContentEntity);
+				pContentMapper.insert(pContentEntity);
+			}else{
+				KBeanUtil.copy(kvContentEntity, pContentEntity);
+				pContentMapper.updateByPrimaryKey(pContentEntity);
+			}
+			
+			if(kvContentEntity.getShortFlag()==ShortFlagEnum.SHORT.getValue()){//发布短视频
+				List<PContentSourceEntity> shortSourceEntities = pContentSourceMapper.findSourceByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_CONTENT,contentId);
+				List<KVContentSourceEntity> kvContentSourceEntities = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_CONTENT, contentId);
+				if(!existFreeSource(kvContentSourceEntities))return false;
+				if(KCollectionUtils.isEmpty(shortSourceEntities)) return false;
+				for(PContentSourceEntity pContentSourceEntity : shortSourceEntities){
+					pContentSourceMapper.deleteByPrimaryKey(pContentSourceEntity.getId());
+					
+					PContentSourceEntity pContentSource = new PContentSourceEntity();
+					KBeanUtil.copy(pContentSourceEntity, pContentSource);
+					pContentSourceMapper.insert(pContentSource);
+				}
+				
+			}else if(kvContentEntity.getShortFlag()==ShortFlagEnum.LONG.getValue()){//发布长视频
+				KBeanUtil.copy(kvContentEntity, pContentEntity);
+				pContentEntity.setOperateId(operateId);
+				pContentMapper.updateByPrimaryKey(pContentEntity);
+				
+				//删除原来的剧集，新增新的剧集
+				List<PContentItemEntity> pItemEntities = pContentItemMapper.findItemByContentId(contentId);
+				if(KCollectionUtils.isNotEmpty(pItemEntities)){
+					for(PContentItemEntity pItemEntity : pItemEntities){
+						pContentItemMapper.deleteByPrimaryKey(pItemEntity.getId());
+					}
+				}
+				List<KVContentItemEntity> kvItemEntities = kvContentItemMapper.queryItemByContentId(contentId);
+				if(KCollectionUtils.isEmpty(kvItemEntities)) return false;
+				for(KVContentItemEntity itemEntity : kvItemEntities){
+					PContentItemEntity pItemEntity = new PContentItemEntity();
+					KBeanUtil.copy(itemEntity, pItemEntity);
+					pContentItemMapper.insert(pItemEntity);
+					
+					List<PContentSourceEntity> contentSourceEntities = pContentSourceMapper.findSourceByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_ITEM,pItemEntity.getId());
+					if(KCollectionUtils.isNotEmpty(contentSourceEntities)){
+						for(PContentSourceEntity contentSourceEntity : contentSourceEntities){
+							 pContentSourceMapper.deleteByPrimaryKey(contentSourceEntity.getId());
+						}
+					}
+					
+					List<KVContentSourceEntity> contentSources = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_ITEM, itemEntity.getId());
+					if(KCollectionUtils.isEmpty(contentSources)) return false;
+					if(!existFreeSource(contentSources)) return false;
+					for(KVContentSourceEntity contentSource : contentSources){
+						  PContentSourceEntity pContentSource = new PContentSourceEntity();
+						  KBeanUtil.copy(contentSource, pContentSource);
+						  pContentSourceMapper.insert(pContentSource);
+					}
+				}
+			}
+			
+			/***2、发布到搜索引擎****/
+			PublishContentEntity publishContentEntity = publishContentRepository.findOne(contentId);
+			if(publishContentEntity == null) {
+				publishContentEntity = new PublishContentEntity();
+			}else{
+				publishContentRepository.delete(publishContentEntity);
+			};
+            
+			KVContentEntity contentEntity = kvContentMapper.selectByPrimaryKey(contentId);
+			KBeanUtil.copy(contentEntity, publishContentEntity);
+			
+			if(ShortFlagEnum.LONG.getValue() == contentEntity.getShortFlag()){//发布长视频
+				List<KVContentItemEntity> contentItemEntities = kvContentItemMapper.queryItemByContentId(contentId);
+				if(KCollectionUtils.isEmpty(contentItemEntities)) return false;
+				for(KVContentItemEntity itemEntity : contentItemEntities){
+					List<KVContentSourceEntity> sources = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_ITEM, itemEntity.getId());
+					itemEntity.setContentSourceList(sources);
+				}
+				publishContentEntity.setContentItems(contentItemEntities);
+				
+			}else if(ShortFlagEnum.SHORT.getValue() == contentEntity.getShortFlag()){//发布短视频
+				List<KVContentSourceEntity> contentSourceEntities = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_CONTENT, contentId);
+				if(KCollectionUtils.isEmpty(contentSourceEntities)) return false;
+				publishContentEntity.setContentSources(contentSourceEntities);
+			}
+			publishContentRepository.save(publishContentEntity);
+			
+			/***3、更新发布状态****/
+			kvContentEntity.setIsPublish(PublishStatusEnum.YES.getValue());
+			kvContentEntity.setPublishTime(new Date());
+			kvContentMapper.updateByPrimaryKey(kvContentEntity);
+			return true;
+		}
+		
+		
+		/**
+		 * 判断source中是否存在免费源
+		 * @param contentSources
+		 * @return
+		 */
+		private boolean existFreeSource(List<KVContentSourceEntity> contentSources){
+			boolean flag = false;
+			for(KVContentSourceEntity contentSourceEntity : contentSources){
+				if(IsFreeEnum.YES.getValue() == contentSourceEntity.getIsFree()){
+					 flag = true;
+					 break;
+				}
+			}
+			return flag;
 		}
 }

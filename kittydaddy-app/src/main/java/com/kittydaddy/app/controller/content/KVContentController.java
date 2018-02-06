@@ -71,7 +71,20 @@ public class KVContentController extends BaseController{
  	   return RESULT_SUCCESS;
     }
 	
-    
-    
+    /**
+     * 发布内容
+     * @param id
+     * @return
+     */
+    @RequestMapping(method=RequestMethod.GET,value="publishContent")
+    public String publishContent(String id,@CurrentUser CurrentUserInfo currentUserInfo){
+    	 try{
+    		 boolean flag = kVContentService.publishContent(id,currentUserInfo.getUserId());
+    		 if(flag) return RESULT_SUCCESS;
+    	 }catch(Exception e){
+    		 return RESULT_FAILURE;
+    	 }
+    	 return RESULT_SUCCESS;
+    }
     
 }

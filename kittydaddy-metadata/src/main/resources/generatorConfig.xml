@@ -34,7 +34,7 @@
         </javaTypeResolver>  
   
         <!--要生成的 pojo 模块位置-->  
-        <javaModelGenerator targetPackage="com.kittydaddy.metadata.vcontent.domain" targetProject="src/main/java">  
+        <javaModelGenerator targetPackage="com.kittydaddy.metadata.pvcontent.domain" targetProject="src/main/java">  
             <property name="enableSubPackages" value="false"/>  
             <property name="trimStrings" value="true"/>  
         </javaModelGenerator>  
@@ -45,14 +45,14 @@
         </sqlMapGenerator>  
   
         <!--要生成的 Mapper 接口类  如果要生成基于注解的形式，type设置为ANNOTATEDMAPPER -->  
-        <javaClientGenerator targetPackage="com.kittydaddy.metadata.vcontent.dao" targetProject="src/main/java" type="XMLMAPPER">  
+        <javaClientGenerator targetPackage="com.kittydaddy.metadata.pvcontent.dao" targetProject="src/main/java" type="XMLMAPPER">  
             <property name="enableSubPackages" value="false"/>  
         </javaClientGenerator>  
   
         <!--要根据哪张表生成，要在这里配置-->  
         <!--用百分号表示生成所有表,可以直接省去一个一个写 <table tableName="%" /> -->  
-        <table tableName="k_video_content_item" 
-        domainObjectName="KVContentItemEntity"
+        <table tableName="p_k_video_content_source" 
+        domainObjectName="PContentSourceEntity"
         enableCountByExample="false" 
         enableDeleteByExample="false" 
         enableSelectByExample="false"
