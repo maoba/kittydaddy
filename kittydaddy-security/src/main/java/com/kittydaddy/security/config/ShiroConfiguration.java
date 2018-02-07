@@ -226,6 +226,7 @@ public class ShiroConfiguration {
 		/** ##################从数据库读取权限规则，加载到shiroFilter中##################" **/
 		filterChainDefinitionMap.put("/login", "anon");
 		filterChainDefinitionMap.put("/logout", "anon");
+		filterChainDefinitionMap.put("/wx/**", "anon");
 		filterChainDefinitionMap.put("/**", "anon");//anon 可以理解为不拦截
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 	}

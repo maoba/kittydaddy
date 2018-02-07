@@ -14,7 +14,7 @@
 <body>
 <!--header--> 
 <header>
-  <div class="logo"><h1><a href="" title=""><img src="${path}/static/wx/fujian/logo.png" alt="手机版"></a></h1></div>
+  <div class="logo"><h1><a href="" title=""><img style="padding-left: 16px;" src="${path}/static/wx/fujian/logo.png" alt="手机版"></a></h1></div>
   <div class="search">
     <form method="get" id="1275089224">
       <span class="close_search">取消×</span>
@@ -45,10 +45,10 @@
 			<li><span>正文</span></li>
 		</ul>
 	</div>
- <div class="row">
+ <div class="row" style="padding-bottom: 40px;">
   <div class="dtcn">
    <div class="dtpic"> 
-      <a id="detail_play_pic" href="" title=""> <img src="${content.imgMediumUrl!}" alt=""> <i class="globalPlayIcon"></i> </a> 
+      <a id="detail_play_pic" href="" title=""> <img style="height:170px;"  src="${content.imgMediumUrl!}" alt=""> <i class="globalPlayIcon"></i> </a> 
    </div>
    <div class="dtinto">
     <span class="sName">
@@ -59,28 +59,31 @@
        <a href="" target="_blank" title="">${content.genres!}</a>
     </span> 
     <span class="sDes">
+	    <span>语言&nbsp;:&nbsp;${content.language!}</span>
+    </span> 
+    <span class="sDes">
 	    <span>导演&nbsp;:&nbsp;${content.directors!}</span>
     </span> 
     <span class="sDes">
 	    <span>演员&nbsp;:&nbsp;${content.actors!}</span>
     </span> 
     <span class="sSource">
-	    <em class="emTit" style="padding-left: 100px;padding-top: 20px;">来源：</em>
+	    <em class="emTit" >来源：</em>
 	    <#if content.contentItems[0].contentSourceList[0].source='爱奇艺'>
-		         <img src="${path}/static/wx/fujian/iqiyi.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">爱奇艺</em>	
+		         <img src="${path}/static/wx/fujian/iqiyi.gif"  alt="" class="iconLogo" /><em>爱奇艺</em>	
 		    <#elseif content.contentItems[0].contentSourceList[0].source='腾讯'>   	
-		          <img src="${path}/static/wx/fujian/qq.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">腾讯</em>
+		          <img src="${path}/static/wx/fujian/qq.gif"  alt="" class="iconLogo" /><em>腾讯</em>
 		    <#elseif content.contentItems[0].contentSourceList[0].source='土豆'>   	
-		         <img src="${path}/static/wx/fujian/tudou.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">土豆</em>
+		         <img src="${path}/static/wx/fujian/tudou.gif"  alt="" class="iconLogo" /><em>土豆</em>
 		    <#elseif content.contentItems[0].contentSourceList[0].source='优酷'> 
-		          <img src="${path}/static/wx/fujian/youku.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">优酷</em>
+		          <img src="${path}/static/wx/fujian/youku.gif"  alt="" class="iconLogo" /><em>优酷</em>
 		    <#elseif content.contentItems[0].contentSourceList[0].source='乐视'> 
-		          <img src="${path}/static/wx/fujian/letv.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">乐视</em>
+		          <img src="${path}/static/wx/fujian/letv.gif"  alt="" class="iconLogo" /><em>乐视</em>
 		    <#else>      
-		          <img src="${path}/static/wx/fujian/qita.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">其他</em>
+		          <img src="${path}/static/wx/fujian/qita.gif"  alt="" class="iconLogo" /><em>其他</em>
 	    </#if> 
 	       
-	    <div class="mores" style="margin-top: 14px;">
+	    <div class="mores">
 				<span class="m-tab">更多来源</span>
 				<div class="m-list">
 					<span class="m-tabhiden">更多来源</span>
@@ -92,8 +95,8 @@
 	      </div>
 		</div>
 	</span>
-     <p class="pPlayBtn clearfix" id="detail_play_p">
-           <a href="${content.contentItems[0].contentSourceList[0].playUrl!}" class="playBtn_HD" title="立即播放" rel="nofollow">立即播放</a>
+     <p class="pPlayBtn clearfix" id="detail_play_p" style="bottom: -1;">
+           <a href="${content.contentItems[0].contentSourceList[0].playUrl!}" style="top: 40px;" class="playBtn_HD" title="立即播放" rel="nofollow">立即播放</a>
      </p>
    </div>
   </div>
@@ -112,14 +115,11 @@
   <p>
     <a href="" rel="nofollow" title="关于猫爸">关于猫爸</a>
     <a href="" title="">网站导航</a>
-    <a href="" title="">SITEMAP</a>
-    <a href="" title="">RSS</a>
-    <a href="" title="">电脑版</a>
 </p>
 </section>
 <section class="footer">
   <p>
-  Copyright © 2016 手机端 All Rights Reserved.
+  Copyright © 2018 手机端 All Rights Reserved.
 </p>
 </section>
 <script src="${path}/static/wx/js/jquery.min.js"></script>

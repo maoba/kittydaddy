@@ -25,7 +25,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(request.getServletPath().endsWith("login.html") || request.getServletPath().endsWith("login.do")) {
+        //表示不受拦截器拦截
+    	if(request.getServletPath().endsWith("login.html") || 
+        		request.getServletPath().endsWith("login.do") || 
+        		request.getServletPath().endsWith("/wx/playVideo.html")) {
             return true;
         }
         

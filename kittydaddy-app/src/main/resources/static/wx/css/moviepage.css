@@ -10,7 +10,7 @@ header div.search a.menu{display:block;background:url(../images/menu.png) center
 .row {background-color:#fff;padding:2%;border-top:1px solid #d2d2d2;border-bottom:1px solid #d2d2d2;margin-top:10px;}
 .dtcn {height:9.26667rem;padding-bottom:0.33333rem;position:relative;}
 .dtcn a{color:#0885D4;}
-.dtcn .dtpic {width:6.63333rem;height:9.26667rem;overflow:hidden;position:relative;z-index:30;}
+.dtcn .dtpic {width:6.63333rem;height:9.26667rem;position:relative;z-index:30;}
 .dtcn .dtpic img {width:6.63333rem;height:9.26667rem;vertical-align:top;display:block;}
 .dtcn .dtpic img.timg {width:6.63333rem;height:6.2rem;}
 .dtcn .dtinto {position:relative;margin-top:-9.26667rem;z-index:20;margin-left:7.16667rem;height:9.26667rem;text-align:left;}
