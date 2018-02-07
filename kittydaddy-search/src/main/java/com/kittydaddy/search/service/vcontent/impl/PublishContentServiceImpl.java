@@ -27,6 +27,11 @@ public class PublishContentServiceImpl implements PublishContentService{
 	public List<PublishContentEntity> findByTitle(String title) {
 		return publishContentEntityRepository.findByTitle(title);
 	}
+	
+	@Override
+	public PublishContentEntity findById(String contentId) {
+		return publishContentEntityRepository.findOne(contentId);
+	}
 
 	@Override
 	public String buildRespMsgByTitle(String title) {
@@ -68,4 +73,5 @@ public class PublishContentServiceImpl implements PublishContentService{
 		}
 		return respMsg.toString();
 	}
+
 }

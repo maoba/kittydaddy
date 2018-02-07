@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>移动版</title>
+  <meta name="keywords" content=""/>
+  <meta name="description" content=""/>
+  <meta name="shenma-site-verification" content="">
+  <#assign path="${request.getContextPath()}">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+  <link rel="stylesheet" href="${path}/static/wx/css/base.css" />
+<link rel="stylesheet" href="${path}/static/wx/css/moviepage.css" type="text/css" />
+</head>
+<body>
+<!--header--> 
+<header>
+  <div class="logo"><h1><a href="" title=""><img src="${path}/static/wx/fujian/logo.png" alt="手机版"></a></h1></div>
+  <div class="search">
+    <form method="get" id="1275089224">
+      <span class="close_search">取消×</span>
+      <input type="text" name="q" class="txt" value="" id="bdcsMain" >
+      <input type="submit" class="sub" value="">
+    </form>
+  </div>
+  <div class="menu_btn"><span class="arrow_up"></span></div>
+</header>
+<div class="menu">
+  <ul>
+    <li><a href="" title="">首页</a></li>
+    <li><a href="" title="">电影</a></li>
+    <li><a href="" title="">电视剧</a></li>
+    <li><a href="" title="">综艺</a></li>
+    <li><a href="" title="">动漫</a></li>
+    <li><a href="" title="">娱乐</a></li>
+    <li><a href="" title="">明星</a></li>
+    <li><a href="" title="">专题</a></li>
+  </ul>
+</div>
+<!--/header-->
+<div class="mwrap">
+	<div class="mnav">
+		<ul>
+			<li class="goback" onclick="window.history.back(-1)"><span>返回</span></li>
+			<li class="local"><a href="" title="电影">电影</a></li>
+			<li><span>正文</span></li>
+		</ul>
+	</div>
+ <div class="row">
+  <div class="dtcn">
+   <div class="dtpic"> 
+      <a id="detail_play_pic" href="" title=""> <img src="${content.imgMediumUrl!}" alt=""> <i class="globalPlayIcon"></i> </a> 
+   </div>
+   <div class="dtinto">
+    <span class="sName">
+        <h1>${content.title!}</h1>
+    </span> 
+    <span class="sDes">
+       <em class="emYellow">${content.rate!}</em>分&nbsp;<i class="grayColor">/</i>&nbsp;${content.year!}&nbsp;&nbsp;
+       <a href="" target="_blank" title="">${content.genres!}</a>
+    </span> 
+    <span class="sDes">
+	    <span>导演&nbsp;:&nbsp;${content.directors!}</span>
+    </span> 
+    <span class="sDes">
+	    <span>演员&nbsp;:&nbsp;${content.actors!}</span>
+    </span> 
+    <span class="sSource">
+	    <em class="emTit" style="padding-left: 100px;padding-top: 20px;">来源：</em>
+	    <#if content.contentItems[0].contentSourceList[0].source='爱奇艺'>
+		         <img src="${path}/static/wx/fujian/iqiyi.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">爱奇艺</em>	
+		    <#elseif content.contentItems[0].contentSourceList[0].source='腾讯'>   	
+		          <img src="${path}/static/wx/fujian/qq.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">腾讯</em>
+		    <#elseif content.contentItems[0].contentSourceList[0].source='土豆'>   	
+		         <img src="${path}/static/wx/fujian/tudou.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">土豆</em>
+		    <#elseif content.contentItems[0].contentSourceList[0].source='优酷'> 
+		          <img src="${path}/static/wx/fujian/youku.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">优酷</em>
+		    <#elseif content.contentItems[0].contentSourceList[0].source='乐视'> 
+		          <img src="${path}/static/wx/fujian/letv.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">乐视</em>
+		    <#else>      
+		          <img src="${path}/static/wx/fujian/qita.gif" style="padding-top: 20px;" alt="" class="iconLogo" /><em style="padding-top: 20px;">其他</em>
+	    </#if> 
+	       
+	    <div class="mores" style="margin-top: 14px;">
+				<span class="m-tab">更多来源</span>
+				<div class="m-list">
+					<span class="m-tabhiden">更多来源</span>
+		      <#list content.contentItems as item>
+                    <#list item.contentSourceList as source>
+                        <a href="${source.playUrl!}" rel="nofollow"><em>${source.source!}</em></a>
+                    </#list>
+             </#list>			
+	      </div>
+		</div>
+	</span>
+     <p class="pPlayBtn clearfix" id="detail_play_p">
+           <a href="${content.contentItems[0].contentSourceList[0].playUrl!}" class="playBtn_HD" title="立即播放" rel="nofollow">立即播放</a>
+     </p>
+   </div>
+  </div>
+ </div>
+<div class="row">
+  <div class="mod_z">
+   <div class="th_z"> <span class="sMark">《${content.title!}》详细剧情</span> </div>
+   <div class="tb_z">
+    <div class="ptxt">
+       ${content.summary!}
+    </div>
+   </div>
+  </div>
+ </div>
+<section class="about">
+  <p>
+    <a href="" rel="nofollow" title="关于猫爸">关于猫爸</a>
+    <a href="" title="">网站导航</a>
+    <a href="" title="">SITEMAP</a>
+    <a href="" title="">RSS</a>
+    <a href="" title="">电脑版</a>
+</p>
+</section>
+<section class="footer">
+  <p>
+  Copyright © 2016 手机端 All Rights Reserved.
+</p>
+</section>
+<script src="${path}/static/wx/js/jquery.min.js"></script>
+<script src="${path}/static/wx/js/touchslide.js"></script>
+<script src="${path}/static/wx/js/iscroll.js"></script>
+<script type="text/javascript" src="${path}/static/wx/js/common.js"></script>
+<div style="display:none;"><script src="${path}/static/wx/js/stat.js" language="JavaScript"></script></div>
+</body>
+</html>
