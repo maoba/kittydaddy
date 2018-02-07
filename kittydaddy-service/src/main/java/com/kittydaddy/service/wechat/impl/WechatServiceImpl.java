@@ -7,12 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kittydaddy.common.constant.Constants;
-import com.kittydaddy.common.utils.KCollectionUtils;
 import com.kittydaddy.common.utils.KMessageUtil;
 import com.kittydaddy.common.utils.KStringUtils;
 import com.kittydaddy.common.wechat.TextMessage;
 import com.kittydaddy.search.service.vcontent.PublishContentService;
-import com.kittydaddy.service.vcontent.KVContentService;
 import com.kittydaddy.service.wechat.WechatService;
 
 /**
@@ -21,8 +19,6 @@ import com.kittydaddy.service.wechat.WechatService;
 @Service
 public class WechatServiceImpl implements WechatService{
 	private static final Logger LOGGER = LoggerFactory.getLogger(WechatServiceImpl.class);
-	@Autowired
-	private KVContentService kvcontentService;
 	
 	@Autowired
 	private PublishContentService publishContentService;
@@ -41,14 +37,12 @@ public class WechatServiceImpl implements WechatService{
 	        String msgType = requestMap.get("MsgType");
 	        // 消息内容
 	        String content = requestMap.get("Content");
-	        
 	        LOGGER.info("FromUserName is:" + fromUserName + ", ToUserName is:" + toUserName + ", MsgType is:" + msgType);
 	
 	        // 文本消息
 	        if (msgType.equals(Constants.REQ_MESSAGE_TYPE_TEXT)) {
 	            //自动回复
 	            TextMessage text = new TextMessage();
-	            Map<String,String> map = kvcontentService.queryKVContentSourceByTitle(content);
 	            //根据名称进行查询
 	            String msg = publishContentService.buildRespMsgByTitle(content);
 	            if(KStringUtils.isNotEmpty(msg)){

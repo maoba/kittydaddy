@@ -12,6 +12,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.kittydaddy.common.wechat.ArticlesMessage;
 import com.kittydaddy.common.wechat.TextMessage;
 import com.thoughtworks.xstream.XStream;
 
@@ -59,4 +60,16 @@ public class KMessageUtil {
         xstream.alias("xml", textMessage.getClass());
         return xstream.toXML(textMessage);
     }
+    
+    /**
+     * 图文消息转换成xml
+     * @param articleMessage
+     * @return
+     */
+    public static String articleMessageToXml(ArticlesMessage articleMessage){
+    	XStream xstream = new XStream();
+        xstream.alias("xml", articleMessage.getClass());
+        return xstream.toXML(articleMessage);
+    }
+    
 }

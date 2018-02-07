@@ -1,8 +1,6 @@
 package com.kittydaddy.service.vcontent;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.github.pagehelper.PageInfo;
 import com.kittydaddy.metadata.vcontent.domain.KVContentEntity;
@@ -57,13 +55,6 @@ public interface KVContentService {
 	 */
 	void saveUpdateKVContent(Map<String, Object> params);
 	
-	/**
-	 * 根据标题查找源信息
-	 * @param title
-	 * @return
-	 */
-	Map<String,String> queryKVContentSourceByTitle(String title);
-
 	/**
 	 * 发布内容
 	 * @param contentId 内容id

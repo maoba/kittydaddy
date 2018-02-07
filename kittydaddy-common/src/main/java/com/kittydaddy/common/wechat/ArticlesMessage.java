@@ -3,7 +3,7 @@ package com.kittydaddy.common.wechat;
  * @author kitty daddy
  * 自动回复图文消息
  */
-public class ArticleMessage {
+public class ArticlesMessage {
 	//接收方帐号（收到的OpenID）
 	private String ToUserName;
 	//开发者微信号
