@@ -179,30 +179,40 @@
 		      <textarea name="summary" placeholder="请输入描述信息" class="layui-textarea">${kvcontent.summary!}</textarea>
 		    </div>
 		  </div>
+		  <button class="layui-btn" lay-submit lay-filter="updatekvContent">立即提交</button>
+		  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		  <button class="layui-btn layui-btn-normal" id="back">返回</button>
 		 </form>
-		  <div class="layui-input-block">
-		      <button class="layui-btn" lay-submit lay-filter="updatekvContent">立即提交</button>
-		      <button class="layui-btn layui-btn-warm addExposideOrPlayUrl">新增剧集/播放地址</button>
-		      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-		      <button class="layui-btn layui-btn-normal" id="back">返回</button>
-		    </div>
        </div>
 	</fieldset>
 	
+	  
 	  <#if kvcontent.shortFlag = 0 >
 		  <fieldset class="layui-elem-field" style="margin-top: 20px;">
 		    <legend>剧集信息</legend>
 		    <div class="layui-field-box">
+		        <blockquote class="layui-elem-quote permission_search">
+		           <div class="layui-inline">
+		             <button class="layui-btn layui-btn-warm addExposideOrPlayUrl">新增剧集</button>
+		           </div> 
+		        </blockquote>
 			    <table id="kvcontentItemList" lay-filter="kvcontentItemList" ></table>
 			    <div id="laypageItem"></div>  
+			    
 		    </div>
 		  </fieldset>
 	  <#else>
 		  <fieldset class="layui-elem-field" style="margin-top: 20px;">
 		    <legend>播放地址</legend>
 		    <div class="layui-field-box">
+		         <blockquote class="layui-elem-quote permission_search">
+		           <div class="layui-inline">
+		             <button class="layui-btn layui-btn-warm addExposideOrPlayUrl">新增播放地址</button>
+		           </div> 
+		        </blockquote>
 			    <table id="kvcontentItemSourceList" lay-data="{id: 'kvcontentItemSourceList'}" lay-filter="kvcontentItemSourceList" ></table>
 			    <div id="laypageItemSource"></div>  
+			    <button class="layui-btn layui-btn-warm addExposideOrPlayUrl">新增剧集/播放地址</button>
 		    </div>
 		  </fieldset>
 	  </#if>

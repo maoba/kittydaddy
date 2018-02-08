@@ -43,6 +43,7 @@ public class PublishContentServiceImpl implements PublishContentService{
 				WechatSearchDto wechatSearchDto = new WechatSearchDto();
 				//设置电影名称
 				wechatSearchDto.setTitle(titleStr);
+				wechatSearchDto.setContentId(pContentEntity.getId());
 				List<WechatSearchItemDto> searchItems = new ArrayList<WechatSearchItemDto>(); 
 				
 				List<KVContentItemEntity> contentItems = pContentEntity.getContentItems();
@@ -72,6 +73,12 @@ public class PublishContentServiceImpl implements PublishContentService{
 			}
 		}
 		return respMsg.toString();
+	}
+
+	@Override
+	public void deleteByContentId(String contentId) {
+		PublishContentEntity pubEntity = publishContentEntityRepository.findOne(contentId);
+		publishContentEntityRepository.delete(pubEntity);
 	}
 
 }

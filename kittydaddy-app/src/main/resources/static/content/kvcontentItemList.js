@@ -7,7 +7,7 @@ layui.config({
           $ = layui.jquery;
           
 		  var contentId = $('#contentId').val();
-		  var curnum = 1,limitcount=20;
+		  var curnum = 1,limitcount=10;
 		  //初始化搜索
 		  kvContentItemSearch(contentId,curnum,limitcount);
 		  
@@ -15,7 +15,7 @@ layui.config({
 			  //第一个实例
 			  table.render({
 			     elem: '#kvcontentItemList',
-			     height:'full-153',
+			     height:'300',
 			     url: '/kvcontentItem/kvcontentItemList?contentId='+contentId+'&pageIndex='+pageIndex+'&pageSize='+pageSize, //数据接口
 			     page: false, //开启分页
 			     cols: [[ //表头

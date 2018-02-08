@@ -26,5 +26,8 @@ public interface PublishContentService {
 	 * @return
 	 */
 	PublishContentEntity findById(String contentId);
-
+     
+	
+	
+	void deleteByContentId(String contentId);
 }
