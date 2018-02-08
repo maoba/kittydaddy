@@ -34,6 +34,7 @@ public class WXController extends BaseController{
 		}else if(KCollectionUtils.isNotEmpty(contentItems) && contentItems.size()>1){
 			//跳转到电视
 			 view.setViewName("/wx/ds_show");
+             view.addObject("lastItemTitle",contentItems.get(contentItems.size()-1).getItemTitle());
 		}else{
 			 view.setViewName("/page/404");
 		}

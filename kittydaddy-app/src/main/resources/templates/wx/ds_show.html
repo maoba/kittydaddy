@@ -14,7 +14,7 @@
 <body>
 <!--header--> 
 <header>
-  <div class="logo"><h1><a href="" title=""><img src="${path}/static/wx/fujian/logo.png" alt="手机版"></a></h1></div>
+  <div class="logo"><h1><a href="" title=""><img style="padding-left: 20px;" src="${path}/static/wx/fujian/logo.png" alt="手机版"></a></h1></div>
   <div class="search">
     <form method="get" id="1275089224">
       <span class="close_search">取消×</span>
@@ -86,16 +86,27 @@
   <div class="tabList" id="episode_tab">
    <div class="con" style="width: 428px;">
           <p class="pTab">
-                 <#if content.channel = '电视剧'>
-				     <a href="javascript:void(0)" target="_self" >1-${content.lastSn!}</a>
+                 <#if content.channel = '电视剧'||content.channel = '动漫'>
+				     <a href="javascript:void(0)" target="_self" >1——${content.lastSn!}</a>
 				 </#if>  
+				 
+				 <#if content.channel = '综艺'>
+				     <a href="javascript:void(0)" target="_self" >${lastItemTitle!}——${content.contentItems[0].itemTitle!}</a>
+				 </#if>
           </p>
    </div>
   </div>
 	  <div class="numList clearfix" style="display:none;">
-			<#list content.contentItems as item>
-			    <span><a href="${item.contentSourceList[0].playUrl!}" rel="nofollow">${item.itemSn!}</a></span>
-			</#list>
+	        <#if content.channel = '电视剧'|| content.channel = '动漫'>
+				<#list content.contentItems as item>
+				    <span><a href="${item.contentSourceList[0].playUrl!}" rel="nofollow">${item.itemSn!}</a></span>
+				</#list>
+			</#if>
+			<#if content.channel = '综艺'>
+			    <#list content.contentItems as item>
+				    <span><a href="${item.contentSourceList[0].playUrl!}" rel="nofollow">${item.itemTitle!}</a></span>
+				</#list>
+			</#if>
     	</div>
 	 </div>
 </div>
@@ -108,6 +119,9 @@
   </div>
    </div>
   </div>
+ </div>
+ <div class="row">
+   <img style="width: 345px;" src="${path}/static/wx/fujian/0.jpg" alt="">
  </div>
 <div class="flink">
 	<div class="flinkbox">

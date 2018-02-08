@@ -446,12 +446,7 @@ public class KVContentServiceImpl implements KVContentService{
 
 		@Override
 		public boolean publishContent(String contentId, String operateId) throws Exception {
-			/***1、生成影视的模板*******/
-			
-			
-			
-			
-			/***2、发布到前端表******/
+			/***1、发布到前端表******/
 			PContentEntity pContentEntity = pContentMapper.selectByPrimaryKey(contentId);
 			KVContentEntity kvContentEntity = kvContentMapper.selectByPrimaryKey(contentId);
 			if(pContentEntity == null) {
@@ -513,7 +508,7 @@ public class KVContentServiceImpl implements KVContentService{
 				}
 			}
 			
-			/***3、发布到搜索引擎****/
+			/***2、发布到搜索引擎****/
 			PublishContentEntity publishContentEntity = publishContentRepository.findOne(contentId);
 			if(publishContentEntity == null) {
 				publishContentEntity = new PublishContentEntity();
