@@ -1,4 +1,4 @@
-package com.kittydaddy.app.job;
+package com.kittydaddy.app.spider.liuliang;
 
 import java.util.HashMap;
 import java.util.Map;
