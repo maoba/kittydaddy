@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>影视猫爸</title>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="description" content="影视猫爸">
+<#assign path="${request.getContextPath()}">
+<link rel="stylesheet" href="${path}/static/jquery-weui/lib/weui.min.css">
+<link rel="stylesheet" href="${path}/static/jquery-weui/css/jquery-weui.css">
+<link rel="stylesheet" href="${path}/static/jquery-weui/css/demos.css">
+
+    <style>
+      .swiper-container {
+        width: 100%;
+      } 
+
+      .swiper-container img {
+        display: block;
+        width: 100%;
+      }
+      
+      .font-style {
+         border: 0;
+         font-weight: inherit;
+         font-style: inherit;
+         font-size: 100%;
+         font-family: "微软雅黑","微软雅黑","Microsoft YaHei",Helvetica,Tahoma,sans-serif;
+         vertical-align: baseline;
+      }
+    </style>
+  </head>
+
+  <body ontouchstart>
+    <div class="swiper-container">
+      <!-- Additional required wrapper -->
+      <div class="swiper-wrapper">
+        <!-- Slides -->
+        <div class="swiper-slide"><img src="${path}/static/jquery-weui/image/swiper-1.jpg" /></div>
+        <div class="swiper-slide"><img src="${path}/static/jquery-weui/image/swiper-2.jpg" /></div>
+        <div class="swiper-slide"><img src="${path}/static/jquery-weui/image/swiper-3.jpg" /></div>
+      </div>
+      <!-- If we need pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+    <br>
+    <div data-role="line" style="text-align: center;" class="font-style">————影院入口————</div>
+    <div class="weui-grids">
+      <a href="" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="${path}/static/jquery-weui/image/1.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+                         一号影厅
+        </p>
+      </a>
+      <a href="" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="${path}/static/jquery-weui/image/2.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+                      二号影厅
+        </p>
+      </a>
+      <a href="" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="${path}/static/jquery-weui/image/3.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+                  三号影厅
+        </p>
+      </a>
+      <a href="" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="${path}/static/jquery-weui/image/4.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+          四号影厅
+        </p>
+      </a>
+      <a href="" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="${path}/static/jquery-weui/image/5.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+         五号影厅
+        </p>
+      </a>
+      <a href="" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="${path}/static/jquery-weui/image/6.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+                     六号影厅
+        </p>
+      </a>
+      <a href="" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="${path}/static/jquery-weui/image/7.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+                      七号影厅
+        </p>
+      </a>
+      <a href="" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="${path}/static/jquery-weui/image/8.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+                        八号影厅
+        </p>
+      </a>
+    </div>  
+    <br>
+    <div data-role="line" style="text-align: center;" class="font-style">————今日推荐————</div>  
+    <script src="${path}/static/jquery-weui/lib/jquery-2.1.4.js"></script>
+    <script src="${path}/static/jquery-weui/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script src="${path}/static/jquery-weui/js/jquery-weui.js"></script>
+<script src="${path}/static/jquery-weui/js/swiper.js"></script>
+
+    <script>
+      $(".swiper-container").swiper({
+        loop: true,
+        autoplay: 3000
+      });
+    </script>
+  </body>
+</html>

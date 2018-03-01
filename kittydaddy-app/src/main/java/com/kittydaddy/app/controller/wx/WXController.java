@@ -18,6 +18,13 @@ public class WXController extends BaseController{
 	@Autowired
 	private PublishContentService publishContentService;
 	
+	@RequestMapping(method=RequestMethod.GET,value="main")
+	public ModelAndView main(){
+		 ModelAndView view = new ModelAndView();
+		 view.setViewName("wap_main");
+		 return view;
+	}
+	
 	@RequestMapping(method=RequestMethod.GET,value="playVideo.html")
     public ModelAndView playWXVideo(String contentId){
 		ModelAndView view = new ModelAndView();

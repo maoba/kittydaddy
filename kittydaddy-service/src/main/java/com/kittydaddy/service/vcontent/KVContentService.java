@@ -62,4 +62,10 @@ public interface KVContentService {
 	 * @throws Exception
 	 */
 	boolean publishContent(String contentId, String operateId) throws Exception;
+    
+	/**
+	 * 修复是否存在剧集标识
+	 * @param map
+	 */
+	void fixEpisodeExistFlag(Map<String, Object> map);
 }

@@ -139,5 +139,24 @@ layui.config({
 					    });
 				    }
 			  });
+			  
+			  
+			  //手动新增视频
+			  $('.add_kvcontent_btn').on('click',function(){
+				  var index = layer.open({
+						title:false,
+						closeBtn : 0,
+						area: ['100%', '100%'],
+						type : 2,
+						content :  '/kvcontent/addkvContent'
+					})
+					
+					//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+					$(window).resize(function(){
+						layui.layer.full(index);
+					})
+					layui.layer.full(index);
+			  })
+			  
 		  }
 });

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -370,7 +372,11 @@ public class KVContentServiceImpl implements KVContentService{
 			if(kvContentEntity == null) logger.error(String.format("根据内容id：s%没有查询出对应的内容实体类", kvContentEntity));
 			if(ShortFlagEnum.LONG.getValue() ==kvContentEntity.getShortFlag()){//设置长视频播放剧集以及地址
 				List<KVContentItemEntity> kvContentItemEntities = kvContentItemMapper.queryItemByContentId(kvContentEntity.getId());
-				if(KCollectionUtils.isEmpty(kvContentItemEntities)) logger.info(String.format("%s没有找到相关的剧集以及播放地址", kvContentEntity.getTitle()));
+				if(KCollectionUtils.isEmpty(kvContentItemEntities)) {
+					logger.info(String.format("%s没有找到相关的剧集以及播放地址", kvContentEntity.getTitle()));
+					kvContentEntity.setEpisodeExist(EpisodeExistEnum.NO.getValue());
+					kvContentMapper.updateByPrimaryKey(kvContentEntity);
+				}
 				
 				for(KVContentItemEntity kvContentItemEntity : kvContentItemEntities){
 					List<KVContentSourceEntity> kvContentSources = kvContentSourceMapper.findByRelativeTypeAndRelativeId(Constants.TABLE_K_VIDEO_ITEM, kvContentItemEntity.getId());
@@ -440,7 +446,32 @@ public class KVContentServiceImpl implements KVContentService{
                 kvContentMapper.updateByPrimaryKey(kvContentEntity);
                 
 			}else{//新增
-				
+				KVContentEntity kvContentEntity = new KVContentEntity();
+				kvContentEntity.setActors(actors);
+				kvContentEntity.setArea(area);
+				kvContentEntity.setChannel(channel);
+				kvContentEntity.setCreateTime(new Date());
+				kvContentEntity.setDirectors(directors);
+				kvContentEntity.setDuration(params.get("duration")==null?kvContentEntity.getDuration():Integer.parseInt(duration));
+				kvContentEntity.setEpisodeCount(params.get("episodeCount")==null?kvContentEntity.getEpisodeCount():Integer.parseInt(episodeCount));
+				kvContentEntity.setEpisodeExist(EpisodeExistEnum.NO.getValue());
+                kvContentEntity.setImgLargeUrl(imgLargeUrl);
+                kvContentEntity.setImgMediumUrl(imgMediumUrl);
+                kvContentEntity.setImgSmallUrl(imgSmallUrl);
+				kvContentEntity.setIsFree(params.get("isFree")==null?0:Integer.parseInt(params.get("isFree").toString()));
+				kvContentEntity.setIsPublish(PublishStatusEnum.NO.getValue());
+				kvContentEntity.setLanguage(language);
+				kvContentEntity.setLastSn(params.get("lastSn")==null?kvContentEntity.getLastSn():KIntegerUtil.str2Integer(lastSn));
+				kvContentEntity.setRate(rate);
+				kvContentEntity.setShortFlag(params.get("shortFlag")==null?0:Integer.parseInt(params.get("shortFlag").toString()));
+				kvContentEntity.setSource(source);
+				kvContentEntity.setStatus(StatusEnum.VALID.getValue());
+				kvContentEntity.setSubtitle(subtitle);
+				kvContentEntity.setSummary(summary);
+				kvContentEntity.setTags(tags);
+				kvContentEntity.setTitle(title);
+				kvContentEntity.setYear(year);
+				kvContentMapper.updateByPrimaryKeySelective(kvContentEntity);
 			}
 		}
 
@@ -557,5 +588,22 @@ public class KVContentServiceImpl implements KVContentService{
 				}
 			}
 			return flag;
+		}
+
+		/**
+		 * 更新剧集是否存在标识
+		 */
+		@Override
+		public void fixEpisodeExistFlag(Map<String, Object> map) {
+			List<KVContentEntity> entitys = kvContentMapper.queryKvContentByPage(null,null,null,null);
+			if(KCollectionUtils.isNotEmpty(entitys)){
+				for(KVContentEntity contentEntity : entitys){
+					List<KVContentItemEntity> contentItemEntities = kvContentItemMapper.queryItemByContentId(contentEntity.getId());
+					if(KCollectionUtils.isNotEmpty(contentItemEntities)){
+						contentEntity.setEpisodeExist(EpisodeExistEnum.YES.getValue());
+						kvContentMapper.updateByPrimaryKey(contentEntity);
+					}
+				}
+			}
 		}
 }

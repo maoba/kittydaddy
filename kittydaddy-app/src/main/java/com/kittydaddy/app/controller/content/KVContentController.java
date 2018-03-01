@@ -31,6 +31,16 @@ public class KVContentController extends BaseController{
     }
 	
 	/**
+	 * 跳转到新增页面
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="addkvContent")
+	public ModelAndView addkvContentInfo(){
+		ModelAndView view = new ModelAndView();
+		view.setViewName("/page/content/addKvcontent");
+		return view;
+	}
+	
+	/**
 	 * 跳转到编辑页面
 	 * @return
 	 */
