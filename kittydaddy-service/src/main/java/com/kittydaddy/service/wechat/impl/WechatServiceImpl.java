@@ -96,7 +96,7 @@ public class WechatServiceImpl implements WechatService{
 	            // 订阅
 	            if (eventType.equals(Constants.EVENT_TYPE_SUBSCRIBE)) {
 	                TextMessage text = new TextMessage();
-	                text.setContent("欢迎关注影视猫爸，目前功能正在逐步开发中，请猫粉们耐心等待，预计3月1号全面上线~");
+	                text.setContent("欢迎关注影视猫爸，目前功能正在逐步开发中，请猫迷们耐心等待，预计6月1号全面上线~");
 	                text.setToUserName(fromUserName);
 	                text.setFromUserName(toUserName);
 	                text.setCreateTime(Long.toString(new Date().getTime()));
@@ -110,7 +110,7 @@ public class WechatServiceImpl implements WechatService{
 	                String eventKey = requestMap.get("EventKey");// 事件KEY值，与创建自定义菜单时指定的KEY值对应
 	                if (eventKey.equals("customer_telephone")) {
 	                    TextMessage text = new TextMessage();
-	                    text.setContent("正在开发中，请耐心等待，预计3月1日上线。");
+	                    text.setContent("正在开发中，请耐心等待，预计6月1日上线。");
 	                    text.setToUserName(fromUserName);
 	                    text.setFromUserName(toUserName);
 	                    text.setCreateTime(new Date().getTime() + "");
