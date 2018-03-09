@@ -452,7 +452,11 @@ public class KVContentServiceImpl implements KVContentService{
 				kvContentEntity.setChannel(channel);
 				kvContentEntity.setCreateTime(new Date());
 				kvContentEntity.setDirectors(directors);
-				kvContentEntity.setDuration(params.get("duration")==null?kvContentEntity.getDuration():Integer.parseInt(duration));
+				if(params.get("duration")!=null && params.get("duration").toString().length()==0){
+					kvContentEntity.setDuration(0);
+				}else{
+					kvContentEntity.setDuration(params.get("duration")==null?kvContentEntity.getDuration():Integer.parseInt(duration));	
+				}
 				kvContentEntity.setEpisodeCount(params.get("episodeCount")==null?kvContentEntity.getEpisodeCount():Integer.parseInt(episodeCount));
 				kvContentEntity.setEpisodeExist(EpisodeExistEnum.NO.getValue());
                 kvContentEntity.setImgLargeUrl(imgLargeUrl);
@@ -461,7 +465,11 @@ public class KVContentServiceImpl implements KVContentService{
 				kvContentEntity.setIsFree(params.get("isFree")==null?0:Integer.parseInt(params.get("isFree").toString()));
 				kvContentEntity.setIsPublish(PublishStatusEnum.NO.getValue());
 				kvContentEntity.setLanguage(language);
-				kvContentEntity.setLastSn(params.get("lastSn")==null?kvContentEntity.getLastSn():KIntegerUtil.str2Integer(lastSn));
+				if(params.get("lastSn")!=null&&params.get("lastSn").toString().length()==0){
+					kvContentEntity.setLastSn(0);
+				}else{
+					kvContentEntity.setLastSn(params.get("lastSn")==null?kvContentEntity.getLastSn():KIntegerUtil.str2Integer(lastSn));	
+				}
 				kvContentEntity.setRate(rate);
 				kvContentEntity.setShortFlag(params.get("shortFlag")==null?0:Integer.parseInt(params.get("shortFlag").toString()));
 				kvContentEntity.setSource(source);
