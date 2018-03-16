@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/kittydaddy.iml" filepath="$PROJECT_DIR$/kittydaddy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kittydaddy-app/kittydaddy-app.iml" filepath="$PROJECT_DIR$/kittydaddy-app/kittydaddy-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kittydaddy-common/kittydaddy-common.iml" filepath="$PROJECT_DIR$/kittydaddy-common/kittydaddy-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kittydaddy-facade/kittydaddy-facade.iml" filepath="$PROJECT_DIR$/kittydaddy-facade/kittydaddy-facade.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kittydaddy-metadata/kittydaddy-metadata.iml" filepath="$PROJECT_DIR$/kittydaddy-metadata/kittydaddy-metadata.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kittydaddy-search/kittydaddy-search.iml" filepath="$PROJECT_DIR$/kittydaddy-search/kittydaddy-search.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kittydaddy-security/kittydaddy-security.iml" filepath="$PROJECT_DIR$/kittydaddy-security/kittydaddy-security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kittydaddy-service/kittydaddy-service.iml" filepath="$PROJECT_DIR$/kittydaddy-service/kittydaddy-service.iml" />
+    </modules>
+  </component>
+</project>

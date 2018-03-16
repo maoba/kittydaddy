@@ -426,7 +426,7 @@ public class KVContentServiceImpl implements KVContentService{
 				kvContentEntity.setChannel(channel);
 				kvContentEntity.setUpdateTime(new Date());
 				kvContentEntity.setDirectors(directors);
-				kvContentEntity.setDuration(params.get("duration")==null?kvContentEntity.getDuration():Integer.parseInt(duration));
+				kvContentEntity.setDuration(params.get("duration")==null?kvContentEntity.getDuration():KIntegerUtil.str2Integer(duration));
 				kvContentEntity.setEpisodeCount(params.get("episodeCount")==null?kvContentEntity.getEpisodeCount():KIntegerUtil.str2Integer(episodeCount));
 				kvContentEntity.setImgLargeUrl(imgLargeUrl);
 				kvContentEntity.setImgMediumUrl(imgMediumUrl);
@@ -455,7 +455,7 @@ public class KVContentServiceImpl implements KVContentService{
 				if(params.get("duration")!=null && params.get("duration").toString().length()==0){
 					kvContentEntity.setDuration(0);
 				}else{
-					kvContentEntity.setDuration(params.get("duration")==null?kvContentEntity.getDuration():Integer.parseInt(duration));	
+					kvContentEntity.setDuration(params.get("duration")==null?kvContentEntity.getDuration():KIntegerUtil.str2Integer(duration));
 				}
 				kvContentEntity.setEpisodeCount(params.get("episodeCount")==null?kvContentEntity.getEpisodeCount():Integer.parseInt(episodeCount));
 				kvContentEntity.setEpisodeExist(EpisodeExistEnum.NO.getValue());

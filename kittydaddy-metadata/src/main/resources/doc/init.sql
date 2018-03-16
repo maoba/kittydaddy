@@ -275,6 +275,27 @@ CREATE TABLE `p_k_video_content` (
 
 
 
+--电影天堂电影内容
+DROP TABLE IF EXISTS `k_heaven_content_resource`;
+CREATE TABLE `k_heaven_content_resource` (
+  `id` varchar(64) NOT NULL  COMMENT '主键',
+  `title` varchar(128) default null comment '电影名称',
+  `genres` varchar(512) COLLATE utf8_bin DEFAULT NULL comment '分类',
+  `role_name` varchar(512) default null comment '主演名称',
+  `summary` varchar(1024) COLLATE utf8_bin DEFAULT NULL COMMENT '影片介绍信息',
+  `rate` varchar(16) COLLATE utf8_bin DEFAULT NULL COMMENT '豆瓣评分',
+  `title_pic` VARCHAR(512) default null comment '标题图片',
+  `summary_pic` VARCHAR(512) default null comment '介绍图片',
+  `download_url` VARCHAR(512) default null comment '资源下载地址',
+  `status` int(4) DEFAULT '1' COMMENT '-1：删除 0：失效 1：生效',
+  `is_publish` INT(4) DEFAULT 0 COMMENT '0:未发布 1:已发布',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `publish_time` datetime default null comment '发布时间',
+  PRIMARY KEY (`id`),
+  KEY `title`(`title`),
+  KEY `is_publish`(`is_publish`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='电影天堂采集内容表';
 
 
 

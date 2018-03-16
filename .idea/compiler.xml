@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="kittydaddy-app" />
+        <module name="kittydaddy-common" />
+        <module name="kittydaddy-facade" />
+        <module name="kittydaddy-metadata" />
+        <module name="kittydaddy-search" />
+        <module name="kittydaddy-security" />
+        <module name="kittydaddy-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="kittydaddy" target="1.6" />
+      <module name="kittydaddy-app" target="1.8" />
+      <module name="kittydaddy-common" target="1.8" />
+      <module name="kittydaddy-facade" target="1.8" />
+      <module name="kittydaddy-metadata" target="1.8" />
+      <module name="kittydaddy-search" target="1.8" />
+      <module name="kittydaddy-security" target="1.8" />
+      <module name="kittydaddy-service" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
