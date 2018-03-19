@@ -12,7 +12,8 @@ public class KBeanUtil {
 	 * @param source 源对象
 	 * @param target 目标对象
 	 */
-   public static void copy(Object source,Object target){
+   public static Object copy(Object source,Object target){
 	   BeanUtils.copyProperties(source, target);
+	   return target;
    }
 }

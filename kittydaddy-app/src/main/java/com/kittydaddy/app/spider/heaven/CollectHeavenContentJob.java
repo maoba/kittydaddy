@@ -1,5 +1,6 @@
 package com.kittydaddy.app.spider.heaven;
 
+import com.kittydaddy.service.spider.heaven.KHeavenContentResService;
 import com.kittydaddy.service.vcontent.KVContentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +21,14 @@ public class CollectHeavenContentJob {
     private static final Logger logger = LoggerFactory.getLogger(CollectHeavenContentJob.class);
 
     @Autowired
-    private KVContentService contentService;
+    private KHeavenContentResService heavenContentResService;
 
 
-    @Scheduled(cron = "0 41 13 ? * *")
+    @Scheduled(cron = "0 40 15 ? * *")
     public void collectShortJob(){
         logger.info("*******开启当日电影天堂信息采集********");
         Map<String,Object> map = new HashMap<String, Object>();
-        contentService.executeCollectShortVideoJobService(map);
+        heavenContentResService.startCollectHeavenResource(map);
         logger.info("*****当日电影天堂信息采集结束*****");
     }
 }

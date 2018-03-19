@@ -41,6 +41,7 @@ public class WechatSearchDto {
 		this.contentId = contentId;
 	}
 
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

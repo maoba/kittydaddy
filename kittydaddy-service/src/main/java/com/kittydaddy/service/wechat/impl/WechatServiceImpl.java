@@ -44,7 +44,7 @@ public class WechatServiceImpl implements WechatService{
 	            //自动回复
 	            TextMessage text = new TextMessage();
 	            //根据名称进行查询
-	            String msg = publishContentService.buildRespMsgByTitle(content);
+				String msg = publishContentService.buildRespMsgByTitle(content);
 	            if(KStringUtils.isNotEmpty(msg)){
 	            	text.setContent(msg);
 	            }else{
@@ -96,7 +96,7 @@ public class WechatServiceImpl implements WechatService{
 	            // 订阅
 	            if (eventType.equals(Constants.EVENT_TYPE_SUBSCRIBE)) {
 	                TextMessage text = new TextMessage();
-	                text.setContent("感谢关注影视猫爸，目前功能正在逐步开发中，请猫迷们耐心等待，预计6月1号全面上线，加微信号:fllufy领取红包哦");
+	                text.setContent("感谢关注影视猫爸，目前功能正在逐步开发中，请猫迷们耐心等待，预计6月1号全面上线!");
 	                text.setToUserName(fromUserName);
 	                text.setFromUserName(toUserName);
 	                text.setCreateTime(Long.toString(new Date().getTime()));

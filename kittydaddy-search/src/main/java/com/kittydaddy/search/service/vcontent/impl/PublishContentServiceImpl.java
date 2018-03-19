@@ -2,6 +2,11 @@ package com.kittydaddy.search.service.vcontent.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.kittydaddy.common.utils.KStringUtils;
+import com.kittydaddy.facade.dto.search.DownLoadSourceDto;
+import com.kittydaddy.search.model.heavencontent.HeavenContentEntity;
+import com.kittydaddy.search.repository.heavencontent.HeavenContentEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kittydaddy.common.utils.KCollectionUtils;
@@ -17,6 +22,9 @@ import com.kittydaddy.search.service.vcontent.PublishContentService;
 public class PublishContentServiceImpl implements PublishContentService{
 	   
     private PublishContentEntityRepository publishContentEntityRepository;
+
+    @Autowired
+    private HeavenContentEntityRepository heavenContentEntityRepository;
 
     @Autowired
 	public void setPublishContentEntityRepository(PublishContentEntityRepository publishContentEntityRepository) {
@@ -72,6 +80,24 @@ public class PublishContentServiceImpl implements PublishContentService{
 				respMsg.append(resp+"\n\n");
 			}
 		}
+
+		List<HeavenContentEntity> heavenContentEntities = heavenContentEntityRepository.findByTitle(title);
+
+		if(KCollectionUtils.isNotEmpty(heavenContentEntities)){
+           for(HeavenContentEntity heavenContentEntity : heavenContentEntities){
+			    List<String> sourceList = new ArrayList<>();
+			    if(KStringUtils.isNotEmpty(heavenContentEntity.getDownloadUrl())){
+			    	String[] sources = heavenContentEntity.getDownloadUrl().split(":~~~~:");
+                    if(sources != null && sources.length > 0){
+                         for(String source : sources){
+                              sourceList.add(source+"\n");
+						 }
+					}
+				}
+           	    respMsg.append("电影名称："+ heavenContentEntity.getTitle() +"\n\n");
+           	    respMsg.append("迅雷下载：\n" + sourceList.toString().substring(1,sourceList.toString().length()-1) +"\n\n");
+		   }
+		}
 		return respMsg.toString();
 	}
 
@@ -80,5 +106,4 @@ public class PublishContentServiceImpl implements PublishContentService{
 		PublishContentEntity pubEntity = publishContentEntityRepository.findOne(contentId);
 		publishContentEntityRepository.delete(pubEntity);
 	}
-
 }

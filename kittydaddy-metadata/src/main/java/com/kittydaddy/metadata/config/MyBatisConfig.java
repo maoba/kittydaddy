@@ -23,7 +23,7 @@ import com.github.pagehelper.PageHelper;
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan(basePackages={"com.kittydaddy.metadata.*.dao"})
+@MapperScan(basePackages={"com.kittydaddy.metadata.*.dao","com.kittydaddy.metadata.*.*.dao"})
 public class MyBatisConfig implements TransactionManagementConfigurer {
     @Autowired
     DataSource dataSource;

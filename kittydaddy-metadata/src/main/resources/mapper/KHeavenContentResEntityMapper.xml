@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kittydaddy.metadata.spider.heaven.dao.KHeavenContentResEntityMapper">
+  <resultMap id="BaseResultMap" type="com.kittydaddy.metadata.spider.heaven.domain.KHeavenContentResEntity">
+
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="genres" jdbcType="VARCHAR" property="genres" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="rate" jdbcType="VARCHAR" property="rate" />
+    <result column="title_pic" jdbcType="VARCHAR" property="titlePic" />
+    <result column="summary_pic" jdbcType="VARCHAR" property="summaryPic" />
+    <result column="download_url" jdbcType="VARCHAR" property="downloadUrl" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_publish" jdbcType="INTEGER" property="isPublish" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, genres, role_name, summary, rate, title_pic, summary_pic, download_url, 
+    status, is_publish, create_time, update_time, publish_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+    select 
+    <include refid="Base_Column_List" />
+    from k_heaven_content_resource
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findByTitle" resultMap="BaseResultMap">
+     select * from k_heaven_content_resource where title = #{title}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from k_heaven_content_resource
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kittydaddy.metadata.spider.heaven.domain.KHeavenContentResEntity" useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+      SELECT UUID() FROM dual
+    </selectKey>
+    insert into k_heaven_content_resource (id, title, genres, 
+      role_name, summary, rate, 
+      title_pic, summary_pic, download_url, 
+      status, is_publish, create_time, 
+      update_time, publish_time)
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{genres,jdbcType=VARCHAR}, 
+      #{roleName,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{rate,jdbcType=VARCHAR}, 
+      #{titlePic,jdbcType=VARCHAR}, #{summaryPic,jdbcType=VARCHAR}, #{downloadUrl,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{isPublish,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{publishTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.kittydaddy.metadata.spider.heaven.domain.KHeavenContentResEntity">
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+      SELECT UUID() FROM dual
+    </selectKey>
+    insert into k_heaven_content_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="genres != null">
+        genres,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+      <if test="rate != null">
+        rate,
+      </if>
+      <if test="titlePic != null">
+        title_pic,
+      </if>
+      <if test="summaryPic != null">
+        summary_pic,
+      </if>
+      <if test="downloadUrl != null">
+        download_url,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="isPublish != null">
+        is_publish,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="publishTime != null">
+        publish_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="genres != null">
+        #{genres,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null">
+        #{rate,jdbcType=VARCHAR},
+      </if>
+      <if test="titlePic != null">
+        #{titlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="summaryPic != null">
+        #{summaryPic,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null">
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isPublish != null">
+        #{isPublish,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kittydaddy.metadata.spider.heaven.domain.KHeavenContentResEntity">
+
+    update k_heaven_content_resource
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="genres != null">
+        genres = #{genres,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=VARCHAR},
+      </if>
+      <if test="titlePic != null">
+        title_pic = #{titlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="summaryPic != null">
+        summary_pic = #{summaryPic,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null">
+        download_url = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isPublish != null">
+        is_publish = #{isPublish,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kittydaddy.metadata.spider.heaven.domain.KHeavenContentResEntity">
+
+    update k_heaven_content_resource
+    set title = #{title,jdbcType=VARCHAR},
+      genres = #{genres,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      rate = #{rate,jdbcType=VARCHAR},
+      title_pic = #{titlePic,jdbcType=VARCHAR},
+      summary_pic = #{summaryPic,jdbcType=VARCHAR},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      is_publish = #{isPublish,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

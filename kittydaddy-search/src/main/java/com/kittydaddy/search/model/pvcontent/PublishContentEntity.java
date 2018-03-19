@@ -7,7 +7,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import com.kittydaddy.metadata.vcontent.domain.KVContentItemEntity;
 import com.kittydaddy.metadata.vcontent.domain.KVContentSourceEntity;
-import com.kittydaddy.search.model.vcontent.SKVContentItemEntity;
 
 /**
  * 
