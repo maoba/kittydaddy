@@ -3,6 +3,7 @@ package com.kittydaddy.service.spider.heaven.impl;
 import com.kittydaddy.common.enums.PublishStatusEnum;
 import com.kittydaddy.common.enums.StatusEnum;
 import com.kittydaddy.common.utils.KBeanUtil;
+import com.kittydaddy.common.utils.KCollectionUtils;
 import com.kittydaddy.metadata.spider.heaven.dao.KHeavenContentResEntityMapper;
 import com.kittydaddy.metadata.spider.heaven.domain.KHeavenContentResEntity;
 import com.kittydaddy.search.model.heavencontent.HeavenContentEntity;
@@ -14,6 +15,8 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.jsoup.Jsoup;
@@ -29,12 +32,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 /**
  * @author kittydaddy
  */
 @Service
 public class KHeavenContentResServiceImpl implements KHeavenContentResService{
+
+    private static final Logger logger = LoggerFactory.getLogger(KHeavenContentResServiceImpl.class);
 
     @Autowired
     private KHeavenContentResEntityMapper heavenContentResEntityMapper;
@@ -65,9 +71,9 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
         //获取分类信息
         String genres = map.get("genres") ==null?"":map.get("genres").toString();
 
-        KHeavenContentResEntity resEntity = heavenContentResEntityMapper.findByTitle(title);
-        if(resEntity ==null){
-             resEntity = new KHeavenContentResEntity();
+        List<KHeavenContentResEntity> resEntities = heavenContentResEntityMapper.findByTitle(title);
+        if(KCollectionUtils.isEmpty(resEntities)){
+            KHeavenContentResEntity resEntity = new KHeavenContentResEntity();
              resEntity.setCreateTime(new Date());
              resEntity.setDownloadUrl(downLoadUrl);
              resEntity.setGenres(genres);
@@ -80,23 +86,14 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
              resEntity.setSummaryPic(summaryPic);
              resEntity.setRoleName(roleName);
              heavenContentResEntityMapper.insert(resEntity);
-
+            return resEntity.getId();
         }else{
-             resEntity.setUpdateTime(new Date());
-             resEntity.setDownloadUrl(downLoadUrl);
-             resEntity.setGenres(genres);
-             resEntity.setRate(rate);
-             resEntity.setSummary(summary);
-             resEntity.setTitlePic(titlePic);
-             resEntity.setTitle(title);
-             resEntity.setSummaryPic(summaryPic);
-             resEntity.setRoleName(roleName);
-             heavenContentResEntityMapper.updateByPrimaryKey(resEntity);
+            logger.info("当前该资源已经存在");
         }
-        return resEntity.getId();
+        return null;
     }
 
-    private String downLoadHtml(String url) {
+    private String downLoadHtml(String url,int retryTime) {
         String html = null;
         //创建一个请求客户端
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -119,7 +116,10 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
             }
             html = sb.toString();
         } catch (IOException e) {
-            System.out.println(url + "的连接失败");
+            if(retryTime<3){
+                  downLoadHtml(url,retryTime++);
+            }
+           logger.info(url + "的连接失败");
         }
         return html;
     }
@@ -158,7 +158,7 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
                 //获取一个页面的html
                 String html = null;
                 try{
-                    html = downLoadHtml(url);
+                    html = downLoadHtml(url,1);
                 }catch(IllegalArgumentException e){
                     System.out.println(url+"非法的url");
                     continue;
@@ -226,6 +226,8 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
         }
         System.out.println("下载完毕");
     }
+
+
 
     //发布到搜索引擎
     private void publishHeavenContent(String id) {
@@ -372,5 +374,23 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
         Matcher m = p.matcher(url);
         if(m.matches())return true;
         return false;
+    }
+
+    @Override
+    public void cleanHeanContentRes(Map<String, Object> map) {
+        List<KHeavenContentResEntity> resEntities = heavenContentResEntityMapper.findByTitle(null);
+        //获取没有下载地址的资源
+        List<KHeavenContentResEntity> emptyEntities = resEntities.stream().filter((KHeavenContentResEntity heavenContent)->heavenContent.getDownloadUrl().equals("")).collect(Collectors.toList());
+
+        if(KCollectionUtils.isNotEmpty(emptyEntities)){
+            for(KHeavenContentResEntity resEntity : emptyEntities){
+                   //删除没有下载地址的资源
+                   heavenContentResEntityMapper.deleteByPrimaryKey(resEntity.getId());
+
+                   //搜索引擎删除没有下载地址的资源
+                   heavenContentService.deleteById(resEntity.getId());
+                   logger.info(resEntity.getTitle()+"—————>已删除");
+            }
+        }
     }
 }

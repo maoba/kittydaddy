@@ -30,8 +30,13 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
+  <!--根据标题查询内容-->
   <select id="findByTitle" resultMap="BaseResultMap">
-     select * from k_heaven_content_resource where title = #{title}
+     select * from k_heaven_content_resource  where 1=1
+    <if test="title!=null and title!='' ">
+      and title = #{title}
+    </if>
+
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from k_heaven_content_resource

@@ -5,4 +5,6 @@ import com.kittydaddy.search.model.heavencontent.HeavenContentEntity;
 public interface HeavenContentService {
 
     void publish(HeavenContentEntity contentEntity);
+
+    void deleteById(String id);
 }

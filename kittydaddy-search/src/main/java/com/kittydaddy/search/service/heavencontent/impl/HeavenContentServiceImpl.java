@@ -17,4 +17,9 @@ public class HeavenContentServiceImpl implements HeavenContentService{
     public void publish(HeavenContentEntity contentEntity) {
         heavenContentEntityRepository.save(contentEntity);
     }
+
+    @Override
+    public void deleteById(String id) {
+        heavenContentEntityRepository.delete(id);
+    }
 }

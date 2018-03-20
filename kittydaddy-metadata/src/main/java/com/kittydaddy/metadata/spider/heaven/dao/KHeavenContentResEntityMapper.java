@@ -3,6 +3,8 @@ package com.kittydaddy.metadata.spider.heaven.dao;
 import com.kittydaddy.metadata.spider.heaven.domain.KHeavenContentResEntity;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface KHeavenContentResEntityMapper {
 
     int deleteByPrimaryKey(String id);
@@ -22,5 +24,5 @@ public interface KHeavenContentResEntityMapper {
 
     int updateByPrimaryKey(KHeavenContentResEntity record);
 
-    KHeavenContentResEntity findByTitle(@Param(value="title") String title);
+    List<KHeavenContentResEntity> findByTitle(@Param(value="title") String title);
 }
