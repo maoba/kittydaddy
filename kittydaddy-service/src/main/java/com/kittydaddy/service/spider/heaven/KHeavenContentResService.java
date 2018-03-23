@@ -6,5 +6,5 @@ public interface KHeavenContentResService {
 
     void startCollectHeavenResource(Map<String, Object> map);
 
-    void cleanHeavennContentRes(Map<String, Object> map);
+    void cleanHeavenContentRes(Map<String, Object> map);
 }

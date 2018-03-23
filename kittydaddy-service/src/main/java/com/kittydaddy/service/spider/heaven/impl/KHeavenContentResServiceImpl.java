@@ -93,7 +93,7 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
         return null;
     }
 
-    private String downLoadHtml(String url,int retryTime) {
+    private String downLoadHtml(String url) {
         String html = null;
         //创建一个请求客户端
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -116,9 +116,6 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
             }
             html = sb.toString();
         } catch (IOException e) {
-            if(retryTime<3){
-                  downLoadHtml(url,retryTime++);
-            }
            logger.info(url + "的连接失败");
         }
         return html;
@@ -158,7 +155,7 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
                 //获取一个页面的html
                 String html = null;
                 try{
-                    html = downLoadHtml(url,1);
+                    html = downLoadHtml(url);
                 }catch(IllegalArgumentException e){
                     System.out.println(url+"非法的url");
                     continue;
@@ -376,8 +373,7 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
         return false;
     }
 
-    @Override
-    public void cleanHeavennContentRes(Map<String, Object> map) {
+    public void cleanHeavenContentRes(Map<String, Object> map) {
         List<KHeavenContentResEntity> resEntities = heavenContentResEntityMapper.findByTitle(null);
         //获取没有下载地址的资源
         List<KHeavenContentResEntity> emptyEntities = resEntities.stream().filter((KHeavenContentResEntity heavenContent)

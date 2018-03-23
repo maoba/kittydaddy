@@ -25,7 +25,7 @@ public class CleanHeavenJob {
     public void fixEpisodeExistJob(){
         logger.info("*******开始修清除电影天堂无效数据********");
         Map<String,Object> map = new HashMap<String, Object>();
-        kHeavenContentResService.cleanHeanContentRes(map);
+        kHeavenContentResService.cleanHeavenContentRes(map);
         logger.info("*****电影天堂无效数据清除完毕*****");
     }
 }
