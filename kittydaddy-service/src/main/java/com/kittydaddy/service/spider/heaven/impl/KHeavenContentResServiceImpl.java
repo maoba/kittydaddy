@@ -377,10 +377,11 @@ public class KHeavenContentResServiceImpl implements KHeavenContentResService{
     }
 
     @Override
-    public void cleanHeanContentRes(Map<String, Object> map) {
+    public void cleanHeavennContentRes(Map<String, Object> map) {
         List<KHeavenContentResEntity> resEntities = heavenContentResEntityMapper.findByTitle(null);
         //获取没有下载地址的资源
-        List<KHeavenContentResEntity> emptyEntities = resEntities.stream().filter((KHeavenContentResEntity heavenContent)->heavenContent.getDownloadUrl().equals("")).collect(Collectors.toList());
+        List<KHeavenContentResEntity> emptyEntities = resEntities.stream().filter((KHeavenContentResEntity heavenContent)
+                ->heavenContent.getDownloadUrl().equals("")).collect(Collectors.toList());
 
         if(KCollectionUtils.isNotEmpty(emptyEntities)){
             for(KHeavenContentResEntity resEntity : emptyEntities){
